@@ -341,8 +341,9 @@
 
   /* ================= top bar layout ================= */
   .side, .sideNote { display: none; }
-  .topbar { position: sticky; top: 0; z-index: 5; background: rgba(11, 13, 20, .72); border-bottom: 1px solid var(--line);
-    backdrop-filter: blur(16px) saturate(1.3); -webkit-backdrop-filter: blur(16px) saturate(1.3); }
+  .topbar { position: sticky; top: 0; z-index: 5; background: transparent; border-bottom: 1px solid transparent; transition: background .25s, border-color .25s; }
+  .topbar.solid { background: rgba(8, 9, 18, .55); border-bottom-color: rgba(255,255,255,.06); backdrop-filter: blur(16px) saturate(1.3); -webkit-backdrop-filter: blur(16px) saturate(1.3); }
+  .topbar .tab.on, .topbar .tab[aria-current] { background: rgba(255,255,255,.08); }
   .topIn { max-width: 1160px; margin: 0 auto; height: 64px; padding: 0 24px; display: flex; align-items: center; gap: 24px; }
   .topbar .brand { padding: 0; margin: 0; border: 0; }
   .topnav { display: flex; gap: 4px; margin: 0 auto; }
@@ -593,6 +594,52 @@
   .cB { display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px; border-radius: 7px; background: #232733; color: #D9DBE3 !important; font-size: 11px; font-weight: 600; }
   .cB svg { width: 12px; height: 12px; }
   .cB.red { background: #E5484D; color: #fff !important; }
+
+  /* ================= the full-screen hero ================= */
+  main { padding-top: 0; }
+  #home { max-width: none; }
+  #home > *:not(.heroFull) { max-width: 1160px; margin-left: auto; margin-right: auto; }
+  .heroFull { position: relative; margin: -64px -24px 0; min-height: max(820px, 100vh); display: grid; justify-items: center; align-items: center; overflow: hidden; text-align: center; isolation: isolate; }
+  #heroBg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; }
+  .heroFull::after { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+    background: radial-gradient(50% 45% at 50% 48%, rgba(6,7,16,.5), transparent 75%), linear-gradient(180deg, transparent 72%, var(--night)); }
+  .heroFull::before { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1; mix-blend-mode: screen;
+    background: radial-gradient(40% 45% at 20% 32%, rgba(60, 80, 255, .30), transparent 70%), radial-gradient(36% 42% at 82% 60%, rgba(140, 70, 255, .28), transparent 70%), radial-gradient(28% 30% at 64% 12%, rgba(40, 160, 255, .16), transparent 70%), radial-gradient(26% 28% at 10% 85%, rgba(190, 80, 255, .14), transparent 70%); }
+  .heroIn { position: relative; z-index: 2; padding: 112px 24px 110px; display: flex; flex-direction: column; align-items: center; }
+  .heroLogo { width: clamp(96px, 10vw, 128px); border-radius: 26%; margin-bottom: 22px; box-shadow: 0 0 0 1px rgba(255,255,255,.1), 0 24px 60px rgba(0,0,0,.6), 0 0 90px rgba(120, 120, 255, .35); animation: rise .8s cubic-bezier(.2, .8, .2, 1) both; }
+  .heroName { font-size: clamp(44px, 7vw, 84px); font-weight: 800; letter-spacing: -.02em; text-transform: uppercase; line-height: .95; text-shadow: 0 6px 40px rgba(0,0,0,.6); }
+  .heroTag { color: #D6D7DE; font-size: clamp(16px, 1.6vw, 19px); max-width: 44ch; margin: 16px auto 26px; text-shadow: 0 2px 16px rgba(0,0,0,.7); }
+  .heroIn .ctaRow { justify-content: center; }
+  .heroIn .meta { margin-top: 14px; color: #A3A6B5; }
+  .heroChips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 26px; }
+  .heroChips a { padding: 8px 14px; border-radius: 999px; font-size: 13.5px; font-weight: 600; color: var(--feather); text-decoration: none;
+    background: rgba(11, 13, 20, .55); border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: border-color .15s, background .15s; }
+  .heroChips a:hover { border-color: rgba(250, 204, 21, .5); background: rgba(250, 204, 21, .1); }
+  .homeMore { display: grid; grid-template-columns: 1.6fr 1fr; gap: 16px; margin-top: 24px !important; }
+  .homeMore .homeNew { margin: 0; }
+  .homeMore .homeNew[hidden] + .joinDc { grid-column: 1 / -1; }
+  .joinDc { display: flex; align-items: center; gap: 16px; padding: 24px; color: inherit; text-decoration: none; transition: border-color .2s; }
+  .joinDc:hover { border-color: rgba(88, 101, 242, .55); }
+  .joinDc svg { width: 40px; height: 40px; color: #8B95FF; flex: none; }
+  .joinDc b { display: block; font-size: 17px; font-weight: 600; }
+  .joinDc span { color: #8D91A5; font-size: 14px; }
+
+  /* features page */
+  .featHead { text-align: center; padding: 24px 0 8px; }
+  .featHead h1 { font-size: clamp(40px, 6vw, 72px); font-weight: 800; letter-spacing: -.02em; text-transform: uppercase; }
+  .featHead .lede { margin: 14px auto 24px; }
+  .jump { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .jump a { padding: 8px 14px; border-radius: 999px; font-size: 13.5px; font-weight: 600; color: var(--feather); text-decoration: none; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.12); }
+  .jump a:hover { border-color: rgba(250, 204, 21, .5); }
+  #features .rows { margin-top: 80px; }
+  .row { scroll-margin-top: 96px; }
+  #features .onlyHere { margin-top: 140px; }
+  @media (max-width: 900px) {
+    .heroFull { margin: -58px -16px 0; min-height: auto; }
+    .heroIn { padding: 104px 16px 80px; }
+    .homeMore { grid-template-columns: 1fr; }
+    #features .onlyHere { margin-top: 88px; }
+  }
 </style>
 </head>
 <body>
@@ -614,30 +661,58 @@
 
 <!-- ============ HOME ============ -->
 <section class="page" id="home" aria-label="Home">
-  <div class="hero3">
-    <h1>Every version. Every mod.<br>All your friends.</h1>
-    <p class="lede">Better than other clients, with improved features and the best FPS boost. Plus your friends in every game.</p>
-    <div class="ctaRow">
-      <a class="get dlMain" href="#download">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>
-        <span>Download for Windows</span>
-      </a>
-      <a class="ghostBtn dlAlt" href="#download">Download for Linux</a>
-    </div>
-    <p class="meta" data-ver>Windows 10 and 11, and Linux. It keeps itself up to date.</p>
+  <div class="heroFull">
+    <canvas id="heroBg" aria-hidden="true"></canvas>
+    <div class="heroIn">
+      <img class="heroLogo" src="icon.png" alt="Duckky Client logo: a yellow duck in sunglasses">
+      <h1 class="heroName">Duckky Client</h1>
+      <p class="heroTag">Better than other clients, with improved features and the best FPS boost. Plus your friends in every game.</p>
+      <div class="ctaRow">
+        <a class="get dlMain" href="#download">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>
+          <span>Download for Windows</span>
+        </a>
+        <a class="ghostBtn dlAlt" href="#download">Download for Linux</a>
       </div>
-  <section class="facts" aria-label="At a glance">
-    <div><b>1.8 to the newest</b><span>Every Minecraft release</span></div>
-    <div><b>4 mod loaders</b><span>Fabric, Quilt, Forge, NeoForge</span></div>
-    <div><b>Modrinth + CurseForge</b><span>Mods and modpacks in one search</span></div>
-    <div><b>Friends in modpacks</b><span>From 1.7.10 to 1.21.1</span></div>
+      <p class="meta" data-ver>Windows 10 and 11, and Linux. It keeps itself up to date.</p>
+      <div class="heroChips">
+        <a href="#versions">Every version</a><a href="#friends">Friends in game</a><a href="#performance">Boosted FPS</a><a href="#download">Windows &amp; Linux</a>
+      </div>
+    </div>
+  </div>
+  <section class="homeMore" aria-label="News">
+    <article class="glass rel homeNew" hidden>
+      <header><b id="hnV">What's new</b><span class="newest">Newest</span><time id="hnD"></time></header>
+      <ul id="hnL"></ul>
+      <a class="more" href="https://github.com/Duckkyinc/Duckky-Client/releases">Every update</a>
+    </article>
+    <a class="glass joinDc" href="https://discord.gg/h8Bd3A9Pex">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.32 4.37A19.8 19.8 0 0 0 15.4 2.84a13.7 13.7 0 0 0-.63 1.29 18.4 18.4 0 0 0-5.53 0 13.6 13.6 0 0 0-.64-1.29 19.7 19.7 0 0 0-4.92 1.53C.56 9.04-.29 13.6.13 18.09a19.9 19.9 0 0 0 6.03 3.05c.49-.66.92-1.36 1.3-2.1a12.9 12.9 0 0 1-2.04-.98c.17-.13.34-.26.5-.39a14.2 14.2 0 0 0 12.16 0l.5.39c-.65.39-1.33.71-2.05.98.38.74.81 1.44 1.3 2.1a19.8 19.8 0 0 0 6.04-3.05c.5-5.2-.84-9.72-3.55-13.72zM8.02 15.33c-1.18 0-2.16-1.09-2.16-2.42s.95-2.42 2.16-2.42c1.21 0 2.18 1.1 2.16 2.42 0 1.33-.95 2.42-2.16 2.42zm7.97 0c-1.18 0-2.15-1.09-2.15-2.42s.95-2.42 2.15-2.42c1.21 0 2.18 1.1 2.16 2.42 0 1.33-.95 2.42-2.16 2.42z"/></svg>
+      <div><b>Join the Discord</b><span>Updates, help and people to play with</span></div>
+    </a>
   </section>
+  <section class="cta" aria-label="Download">
+    <h2>Ready to play?</h2>
+    <p class="lede">Download Duckky Client and start in a minute. It keeps itself up to date.</p>
+    <div class="ctaRow">
+      <a class="get dlMain2" href="#download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><span>Download for Windows</span></a>
+      <a class="ghostBtn dlAlt2" href="#download">Download for Linux</a>
+    </div>
+  </section>
+</section>
+
+<!-- ============ FEATURES ============ -->
+<section class="page" id="features" aria-label="Features" hidden>
+  <div class="featHead">
+    <h1>Our features</h1>
+    <p class="lede">Everything you need to play every version with your mods and your friends - fast.</p>
+    <div class="jump"><a href="#performance">Boosted FPS</a><a href="#friends">Social</a><a href="#versions">Every version</a><a href="#crashes">Crash helper</a></div>
+  </div>
   <section class="rows" aria-label="Highlights">
-    <div class="row">
+    <div class="row" id="performance">
       <div class="rowText">
         <h2>The best FPS boost</h2>
         <p>Duckky Client tunes Java for your PC and adds speed-up mods to any version or modpack that's missing them - a faster renderer, memory savers and more. Nothing to set up.</p>
-        <a class="more" href="#performance">How it works</a>
       </div>
       <div class="rowArt mini" aria-hidden="true">
         <div class="mList big">
@@ -649,11 +724,10 @@
         </div>
       </div>
     </div>
-    <div class="row flip">
+    <div class="row flip" id="friends">
       <div class="rowText">
         <h2>Your friends, in every game</h2>
         <p>See who's online and what they're playing, chat and call, and invite them into your world. It works inside modpacks too, from 1.7.10 to 1.21.1.</p>
-        <a class="more" href="#friends">See Social</a>
       </div>
       <div class="rowArt mini" aria-hidden="true">
         <div class="sApp">
@@ -678,11 +752,10 @@
         </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row" id="versions">
       <div class="rowText">
         <h2>Every version, every mod</h2>
         <p>Any Minecraft release from 1.8 to the newest, on Fabric, Quilt, Forge or NeoForge. Search Modrinth and CurseForge in one place and install whole modpacks in a click.</p>
-        <a class="more" href="#features">See all features</a>
       </div>
       <div class="rowArt mini" aria-hidden="true">
         <div class="mGrid">
@@ -691,11 +764,11 @@
         </div>
       </div>
     </div>
-    <div class="row flip">
+    <div class="row flip" id="crashes">
       <div class="rowText">
         <h2>When it crashes, it fixes it</h2>
         <p>Instead of a crash log you get the mod that did it, in plain words, and a button that fixes it. Can't tell which one? It finds the broken mod for you.</p>
-        <a class="more" href="#only">Only in Duckky Client</a>
+        <a class="more" href="#only">More only in Duckky Client</a>
       </div>
       <div class="rowArt mini" aria-hidden="true">
         <div class="mCrash">
@@ -705,18 +778,7 @@
       </div>
     </div>
   </section>
-  <section class="cta" aria-label="Download">
-    <h2>Ready to play?</h2>
-    <p class="lede">Download Duckky Client and start in a minute. It keeps itself up to date.</p>
-    <div class="ctaRow">
-      <a class="get dlMain2" href="#download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><span>Download for Windows</span></a>
-      <a class="ghostBtn dlAlt2" href="#download">Download for Linux</a>
-    </div>
-  </section>
-</section>
 
-<!-- ============ FEATURES ============ -->
-<section class="page" id="features" aria-label="Features" hidden>
   <section class="fsec onlyHere" id="only" aria-label="Only in Duckky Client">
     <div class="pageHead"><h2>Only in Duckky Client</h2><p class="lede">Built for the things that usually go wrong - and for playing with friends wherever you are.</p></div>
     <div class="bento">
@@ -814,54 +876,16 @@
 
 
 
-<!-- ============ FRIENDS ============ -->
-<section class="fsec" id="friends" aria-label="Social">
-  <div class="pageHead">
-    <h2>Social: your friends, in every game</h2>
-    <p class="lede">Add friends by their Minecraft name. See what they're playing, talk to them and get into the same world.</p>
-  </div>
-  <div class="feat">
-    <div class="words">
-      <ul class="ticks">
-        <li>Chats and groups<small>Messages, pictures and files, with friends or a whole group.</small></li>
-        <li>Calls<small>Voice calls with one friend or a group, with mute and deafen - and a call bar in game.</small></li>
-        <li>Invite to your world<small>Open your singleplayer world to friends over the internet. They join with one click.</small></li>
-        <li>In modpacks too<small>A Friends button on the title and pause screens in modpacks from 1.7.10 to 1.21.1.</small></li>
-      </ul>
-    </div>
-  </div>
-  <section class="glass band" aria-label="More">
-    <div><h3>See what they play</h3><p>Who's online, which version or server they're on, and a button to join them.</p></div>
-    <div><h3>Share settings</h3><p>Send a friend your key binds and controls. They take what they want and can undo it.</p></div>
-    <div><h3>Your profile</h3><p>A banner, a bio and the mods you play with, for your friends to see.</p></div>
-  </section>
-</section>
 
-<!-- ============ PERFORMANCE ============ -->
-<section class="fsec" id="performance" aria-label="Performance">
-  <div class="pageHead">
-    <h2>FPS boosting</h2>
-    <p class="lede">It looks at your PC and your mods, and sets the game up to run as smoothly as it can.</p>
-  </div>
-  <section class="glass band" aria-label="How">
-    <div><h3>Tuned for your PC</h3><p>Memory and Java settings picked for your processor and RAM, with the faster graphics card used.</p></div>
-    <div><h3>Speed-up mods</h3><p>Versions and modpacks missing them get a faster renderer and memory savers - never next to ones they already have.</p></div>
-    <div><h3>Starts faster</h3><p>The slow parts of starting a version are prepared ahead of time.</p></div>
-  </section>
-  <div class="feat flip">
-    <div class="words">
-      <h3>When something breaks, it says why</h3>
-      <p>No more reading crash logs. You get what went wrong in plain words, and a button that fixes it.</p>
-      <ul class="ticks">
-        <li>Names the mod that crashed the game</li>
-        <li>Can't tell? It finds the broken mod for you, a few tries at a time</li>
-        <li>Notices when your world freezes and says what it's stuck on</li>
-        <li>Speed-up mods it added come back out by themselves if a pack doesn't like them</li>
-      </ul>
-    </div>
-  </div>
-</section>
 
+  <section class="cta" aria-label="Download">
+    <h2>Ready to play?</h2>
+    <p class="lede">Download Duckky Client and start in a minute. It keeps itself up to date.</p>
+    <div class="ctaRow">
+      <a class="get dlMain3" href="#download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><span>Download for Windows</span></a>
+      <a class="ghostBtn dlAlt3" href="#download">Download for Linux</a>
+    </div>
+  </section>
 </section>
 
 <!-- ============ DOWNLOAD ============ -->
@@ -908,6 +932,7 @@
 </footer>
 </main>
 
+<script src="bg.js"></script>
 <script>
   // Where the Download button points: the setup on the GitHub releases page - people get the file straight away.
   var REPO = 'Duckkyinc/Duckky-Client';
@@ -923,6 +948,8 @@
   alt.href = onLinux ? FILES.windows : FILES.linux;
   alt.textContent = onLinux ? 'Download for Windows' : 'Download for Linux';
   var m2 = document.querySelector('.dlMain2'), a2 = document.querySelector('.dlAlt2');
+  var m3 = document.querySelector('.dlMain3'), a3 = document.querySelector('.dlAlt3');
+  if (m3) { m3.href = main.href; m3.querySelector('span').textContent = main.querySelector('span').textContent; a3.href = alt.href; a3.textContent = alt.textContent; }
   if (m2) { m2.href = main.href; m2.querySelector('span').textContent = main.querySelector('span').textContent; a2.href = alt.href; a2.textContent = alt.textContent; }
   if (onLinux) document.querySelector('.osCards').prepend(document.getElementById('os-linux'));
 
@@ -942,6 +969,28 @@
   }
   window.addEventListener('hashchange', show);
   show();
+
+  // ---- the newest update on Home, from the GitHub release notes ----
+  function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  fetch('https://api.github.com/repos/' + REPO + '/releases?per_page=5').then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (rel) {
+    var r = rel.filter(function (x) { return !x.draft && x.body; })[0]; if (!r) return;
+    var items = r.body.split(/\r?\n/).map(function (l) { return l.replace(/^\s*[-*+]\s+/, '').replace(/\*\*(.+?)\*\*/g, '$1'); }).filter(function (l) { return l.trim() && !/^#/.test(l); }).slice(0, 3);
+    if (!items.length) return;
+    document.getElementById('hnV').textContent = r.name || r.tag_name;
+    var d = new Date(r.published_at); if (!isNaN(d)) document.getElementById('hnD').textContent = d.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+    document.getElementById('hnL').innerHTML = items.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('');
+    document.querySelector('.homeNew').hidden = false;
+  }).catch(function () {});
+
+  // ---- the top bar: see-through over the hero, a light glass once you scroll ----
+  (function () { var t = document.querySelector('.topbar'); function f() { t.classList.toggle('solid', scrollY > 12); } addEventListener('scroll', f, { passive: true }); f(); })();
+
+  // ---- the hero's moving background: the launcher's own Deep Space scene (still when motion is reduced) ----
+  (function () {
+    var c = document.getElementById('heroBg'); if (!c || !window.DuckBG) return;
+    DuckBG.mount(c, 'space');
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches && DuckBG.setMode) DuckBG.setMode('paused');
+  })();
 
   // ---- the newest version, next to the Download buttons ----
   fetch('https://api.github.com/repos/' + REPO + '/releases/latest').then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (r) {

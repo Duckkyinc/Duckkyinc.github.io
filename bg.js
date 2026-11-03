@@ -166,6 +166,9 @@
   }
 
   // ---------------- scenes ----------------
+  // (new stars start spread over the whole screen, corners too - starting them only over the middle left the edges and corners nearly empty)
+  const SPREAD = 1.45;
+
   const scenes = {
     solid: {
       // Solid color: one still color - your color from the picker (kept dark, so everything on it stays readable).
@@ -488,7 +491,7 @@
     space: {
       name: 'Deep Space',
       theme: TH('#8ea2ff'),
-      create() { return { stars: Array.from({ length: 220 }, () => ({ x: rnd(-1, 1), y: rnd(-1, 1), z: rnd(0.05, 1) })) }; },
+      create() { return { stars: Array.from({ length: 300 }, () => ({ x: rnd(-SPREAD, SPREAD), y: rnd(-SPREAD, SPREAD), z: rnd(0.05, 1) })) }; },
       draw(g, st, t, dt, w, h) {
         g.fillStyle = K('#04050a');
         g.fillRect(0, 0, w, h);
@@ -499,10 +502,10 @@
         // stars coming slowly towards you
         const cx = w / 2, cy = h / 2;
         for (const s of st.stars) {
-          s.z -= Math.min(dt, 0.1) * 0.2;
-          if (s.z < 0.03) { s.z = 1; s.x = rnd(-1, 1); s.y = rnd(-1, 1); }
+          s.z -= Math.min(dt, 0.1) * 0.28;
+          if (s.z < 0.03) { s.z = 1; s.x = rnd(-SPREAD, SPREAD); s.y = rnd(-SPREAD, SPREAD); }
           const px = cx + (s.x / s.z) * w * 0.35, py = cy + (s.y / s.z) * h * 0.35;
-          if (px < -10 || px > w + 10 || py < -10 || py > h + 10) { s.z = 1; s.x = rnd(-1, 1); s.y = rnd(-1, 1); continue; }
+          if (px < -10 || px > w + 10 || py < -10 || py > h + 10) { s.z = 1; s.x = rnd(-SPREAD, SPREAD); s.y = rnd(-SPREAD, SPREAD); continue; }
           const near = 1 - s.z;
           g.fillStyle = `rgba(${K('210, 220, 255')}, ${(0.15 + near * 0.75).toFixed(3)})`;
           g.beginPath();

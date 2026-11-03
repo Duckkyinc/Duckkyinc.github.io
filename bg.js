@@ -502,7 +502,7 @@
           s.z -= Math.min(dt, 0.1) * 0.2;
           if (s.z < 0.03) { s.z = 1; s.x = rnd(-1, 1); s.y = rnd(-1, 1); }
           const px = cx + (s.x / s.z) * w * 0.35, py = cy + (s.y / s.z) * h * 0.35;
-          if (px < -10 || px > w + 10 || py < -10 || py > h + 10) { s.z = 1; continue; }
+          if (px < -10 || px > w + 10 || py < -10 || py > h + 10) { s.z = 1; s.x = rnd(-1, 1); s.y = rnd(-1, 1); continue; }
           const near = 1 - s.z;
           g.fillStyle = `rgba(${K('210, 220, 255')}, ${(0.15 + near * 0.75).toFixed(3)})`;
           g.beginPath();

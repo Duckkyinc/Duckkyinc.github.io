@@ -365,9 +365,8 @@
   @keyframes bob { 50% { transform: translate(-50%, -8px); } }
 
   /* facts strip */
-  .facts { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin: 8px 0 0; }
+  .facts { display: grid; grid-template-columns: repeat(4, 1fr); margin: 8px 0 0; }
   .facts > div { padding: 26px 20px; text-align: center; }
-  .facts > div + div { border-left: 1px solid var(--line); }
   .facts b { display: block; font-size: 19px; font-weight: 700; letter-spacing: -.02em; }
   .facts span { color: #8D91A5; font-size: 13.5px; }
 
@@ -398,8 +397,6 @@
     main { padding: 0 16px 48px; }
     .hero3 { padding-top: 48px; }
     .facts { grid-template-columns: 1fr 1fr; }
-    .facts > div:nth-child(3) { border-left: 0; }
-    .facts > div:nth-child(n+3) { border-top: 1px solid var(--line); }
     .onlyGrid { grid-template-columns: 1fr; }
     .footCols { grid-template-columns: 1fr 1fr; }
     .footAbout { grid-column: 1 / -1; }

@@ -610,8 +610,9 @@
   .heroIn .ctaRow { justify-content: center; }
   .heroIn .meta { margin-top: 14px; color: #A3A6B5; }
   .heroChips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 26px; }
-  .heroChips a { padding: 8px 14px; border-radius: 999px; font-size: 13.5px; font-weight: 600; color: var(--feather); text-decoration: none;
+  .heroChips a { display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; border-radius: 999px; font-size: 13.5px; font-weight: 600; color: var(--feather); text-decoration: none;
     background: rgba(11, 13, 20, .55); border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: border-color .15s, background .15s; }
+  .heroChips svg { width: 15px; height: 15px; color: var(--yolk); flex: none; }
   .heroChips a:hover { border-color: rgba(250, 204, 21, .5); background: rgba(250, 204, 21, .1); }
   .homeMore { display: grid; grid-template-columns: 1.6fr 1fr; gap: 16px; margin-top: 24px !important; }
   .homeMore .homeNew { margin: 0; }
@@ -674,7 +675,7 @@
       </div>
       <p class="meta" data-ver>Windows 10 and 11, and Linux. It keeps itself up to date.</p>
       <div class="heroChips">
-        <a href="#versions">Every version</a><a href="#friends">Friends in game</a><a href="#performance">Boosted FPS</a><a href="#download">Windows &amp; Linux</a>
+        <a href="#friends"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c.7-3.4 3-5.4 6-5.4s5.3 2 6 5.4"/><path d="M16 4.6a3.2 3.2 0 0 1 0 6.4M21 20c-.4-2.4-1.6-4-3.3-4.9"/></svg>Friends in any modpack</a><a href="#only"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>Voice calls in game</a><a href="#crashes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg>Fixes crashes for you</a><a href="#performance"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"/></svg>Auto FPS boost</a><a href="#only"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6z"/><path d="m9 12 2 2 4-4"/></svg>Blocks account stealers</a>
       </div>
     </div>
   </div>

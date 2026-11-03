@@ -986,11 +986,10 @@
   // ---- the top bar: see-through over the hero, a light glass once you scroll ----
   (function () { var t = document.querySelector('.topbar'); function f() { t.classList.toggle('solid', scrollY > 12); } addEventListener('scroll', f, { passive: true }); f(); })();
 
-  // ---- the hero's moving background: the launcher's own Deep Space scene (still when motion is reduced) ----
+  // ---- the moving background behind every page: the launcher's Deep Space scene ----
   (function () {
     var c = document.getElementById('spaceBg'); if (!c || !window.DuckBG) return;
     DuckBG.mount(c, 'space');
-    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches && DuckBG.setMode) DuckBG.setMode('paused');
   })();
 
   // ---- the newest version, next to the Download buttons ----

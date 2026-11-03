@@ -499,7 +499,7 @@
         // stars coming slowly towards you
         const cx = w / 2, cy = h / 2;
         for (const s of st.stars) {
-          s.z -= Math.min(dt, 0.1) * 0.11;
+          s.z -= Math.min(dt, 0.1) * 0.2;
           if (s.z < 0.03) { s.z = 1; s.x = rnd(-1, 1); s.y = rnd(-1, 1); }
           const px = cx + (s.x / s.z) * w * 0.35, py = cy + (s.y / s.z) * h * 0.35;
           if (px < -10 || px > w + 10 || py < -10 || py > h + 10) { s.z = 1; continue; }

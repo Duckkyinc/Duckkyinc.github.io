@@ -1,0 +1,778 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Duckky Client</title>
+<meta name="description" content="Better than other clients, with improved features and the best FPS boost. Plus your friends in every game.">
+
+<!-- The card Discord (and others) show when the site's link is pasted. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Duckky Client">
+<meta property="og:title" content="Download Duckky Client">
+<meta property="og:description" content="Better than other clients, with improved features and the best FPS boost. Plus your friends in every game.">
+<meta property="og:url" content="https://duckkyinc.github.io/">
+<meta property="og:image" content="https://duckkyinc.github.io/logo.png">
+<meta property="og:image:width" content="1024">
+<meta property="og:image:height" content="1024">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#FACC15">
+<link rel="icon" href="icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --night: #0D0F17;      /* the page */
+    --pond: #151927;       /* glass panels, under the blur */
+    --yolk: #FACC15;       /* Duckky yellow */
+    --beak: #F59E0B;       /* the warmer edge of the button */
+    --feather: #F5F3EA;    /* text */
+    --reed: #9A9DAE;       /* quieter text */
+    --line: rgba(255, 255, 255, .08);
+    --glass: rgba(21, 25, 39, .62);
+    --side: 248px;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html { -webkit-text-size-adjust: 100%; scroll-padding-top: 88px; }
+  body {
+    min-height: 100vh;
+    background: var(--night);
+    color: var(--feather);
+    font: 400 16.5px/1.6 "DM Sans", system-ui, sans-serif;
+    overflow-x: hidden;
+  }
+  /* the sun and the block grid from the download page - behind everything */
+  body::before {
+    content: ""; position: fixed; left: 58%; top: 26%;
+    width: min(1000px, 150vw); aspect-ratio: 1; transform: translate(-50%, -50%);
+    background: radial-gradient(closest-side, rgba(250, 204, 21, .22), rgba(250, 204, 21, .06) 55%, transparent 72%);
+    pointer-events: none; z-index: 0;
+  }
+  body::after {
+    content: ""; position: fixed; inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at 58% 30%, #000 10%, transparent 72%);
+    pointer-events: none; z-index: 0;
+  }
+  a { color: var(--yolk); }
+  :focus-visible { outline: 3px solid var(--feather); outline-offset: 3px; border-radius: 8px; }
+
+  /* ---------- the side tabs (like the launcher's own) ---------- */
+  .side {
+    position: fixed; z-index: 3; top: 16px; bottom: 16px; left: 16px; width: var(--side);
+    display: flex; flex-direction: column; gap: 4px; padding: 16px 12px;
+    background: var(--glass); border: 1px solid var(--line); border-radius: 22px;
+    backdrop-filter: blur(16px) saturate(1.3); -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; padding: 2px 8px 16px; text-decoration: none; color: var(--feather); }
+  .brand img { width: 36px; height: 36px; border-radius: 10px; }
+  .brand b { font: 700 19px/1 "Fredoka", sans-serif; }
+  .tab {
+    display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px;
+    color: var(--reed); text-decoration: none; font-weight: 600; font-size: 15px;
+    border: 1px solid transparent; transition: background .15s, color .15s;
+  }
+  .tab svg { width: 20px; height: 20px; flex: none; }
+  .tab:hover { background: rgba(255,255,255,.04); color: var(--feather); }
+  .tab[aria-current="page"] {
+    color: var(--feather); background: rgba(250, 204, 21, .10); border-color: rgba(250, 204, 21, .32);
+    box-shadow: inset 3px 0 0 var(--yolk);
+  }
+  .tab[aria-current="page"] svg { color: var(--yolk); }
+  .side .grow { flex: 1; }
+  .sideGet {
+    display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border-radius: 14px;
+    background: linear-gradient(180deg, var(--yolk), var(--beak)); color: #1B1503; text-decoration: none;
+    font: 600 16px/1 "Fredoka", sans-serif; box-shadow: 0 4px 0 #B7790A;
+  }
+  .sideGet svg { width: 18px; height: 18px; }
+  .sideGet:active { transform: translateY(3px); box-shadow: 0 1px 0 #B7790A; }
+  .sideNote { color: #6C7083; font-size: 12px; text-align: center; margin-top: 8px; }
+
+  /* ---------- the pages ---------- */
+  main { position: relative; z-index: 1; margin-left: calc(var(--side) + 32px); padding: 40px 40px 64px 24px; }
+  .page { max-width: 980px; margin: 0 auto; }
+  .page[hidden] { display: none; }
+  h1, h2, h3 { font-family: "Fredoka", "DM Sans", sans-serif; font-weight: 700; line-height: 1.1; }
+  h1 { font-size: clamp(40px, 6vw, 64px); letter-spacing: -.01em; }
+  h2 { font-size: clamp(30px, 4vw, 42px); margin-bottom: 10px; }
+  h3 { font-size: 20px; font-weight: 600; margin-bottom: 6px; }
+  .lede { color: var(--reed); font-size: 18.5px; max-width: 46ch; text-wrap: balance; }
+  .pageHead { margin-bottom: 28px; }
+  .fsec { margin-top: 72px; scroll-margin-top: 88px; }
+  .fsec .pageHead h2 { font-size: clamp(28px, 3.6vw, 38px); }
+  .pageHead .lede { margin-top: 6px; }
+
+  /* home: the download page's hero */
+  .hero { text-align: center; padding-top: 12px; }
+  .duck {
+    width: clamp(130px, 24vw, 176px); aspect-ratio: 1; border-radius: 24%; display: block; margin: 0 auto 24px;
+    box-shadow: 0 30px 80px rgba(250, 204, 21, .18), 0 10px 30px rgba(0, 0, 0, .55);
+    animation: land .9s cubic-bezier(.2, .9, .25, 1.2) both;
+  }
+  @keyframes land { from { transform: translateY(-26px) rotate(-6deg) scale(.92); opacity: 0; } }
+  .hero .lede { margin: 14px auto 30px; max-width: 40ch; }
+  .get {
+    display: inline-flex; align-items: center; gap: 12px; padding: 18px 34px; border-radius: 18px;
+    background: linear-gradient(180deg, var(--yolk), var(--beak)); color: #1B1503;
+    font: 600 20px/1 "Fredoka", sans-serif; text-decoration: none;
+    box-shadow: 0 6px 0 #B7790A, 0 16px 40px rgba(250, 204, 21, .28); transition: transform .12s, box-shadow .12s;
+  }
+  .get:hover { transform: translateY(-2px); box-shadow: 0 8px 0 #B7790A, 0 20px 46px rgba(250, 204, 21, .36); }
+  .get:active { transform: translateY(5px); box-shadow: 0 1px 0 #B7790A, 0 8px 20px rgba(250, 204, 21, .25); }
+  .get svg { width: 22px; height: 22px; }
+  .meta { color: var(--reed); font-size: 14px; margin-top: 16px; }
+
+  .glass {
+    background: var(--glass); border: 1px solid var(--line); border-radius: 22px;
+    backdrop-filter: blur(14px) saturate(1.3); -webkit-backdrop-filter: blur(14px) saturate(1.3);
+  }
+  .three { margin-top: 44px; display: grid; grid-template-columns: repeat(3, 1fr); text-align: left; overflow: hidden; }
+  .three > * { padding: 20px 20px 22px; color: inherit; text-decoration: none; display: block; }
+  .three > * + * { border-left: 1px solid var(--line); }
+  .three a:hover { background: rgba(255,255,255,.03); }
+  .three b { display: block; font: 600 17px/1.25 "Fredoka", sans-serif; margin-bottom: 6px; }
+  .three p { color: var(--reed); font-size: 14.5px; line-height: 1.45; }
+
+  .capOut { margin-top: 10px; }
+
+  /* a feature: words next to its screenshot */
+  .feat { margin: 0 0 20px; padding: 26px 28px; background: var(--glass); border: 1px solid var(--line); border-radius: 22px;
+    backdrop-filter: blur(14px) saturate(1.3); -webkit-backdrop-filter: blur(14px) saturate(1.3); }
+  .feat .ticks { grid-template-columns: 1fr 1fr; column-gap: 32px; row-gap: 16px; }
+  .words p { color: var(--reed); margin-bottom: 14px; }
+  .ticks { list-style: none; padding: 0; display: grid; gap: 10px; }
+  .ticks li { position: relative; padding-left: 28px; color: var(--feather); font-size: 15.5px; line-height: 1.5; }
+  .ticks li::before {
+    content: ""; position: absolute; left: 0; top: 4px; width: 18px; height: 18px; border-radius: 6px;
+    background: rgba(250, 204, 21, .14) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FACC15' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center / 12px no-repeat;
+  }
+  .ticks small { display: block; color: var(--reed); font-size: 14px; }
+
+  /* the all-features grid */
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); overflow: hidden; }
+  .grid > * { padding: 22px; border-top: 1px solid var(--line); border-left: 1px solid var(--line); color: inherit; text-decoration: none; }
+  .grid > *:nth-child(-n+3) { border-top: 0; }
+  .grid > *:nth-child(3n+1) { border-left: 0; }
+  .grid a:hover { background: rgba(255,255,255,.03); }
+  .grid svg { width: 26px; height: 26px; color: var(--yolk); margin-bottom: 12px; }
+  .grid p { color: var(--reed); font-size: 14.5px; line-height: 1.5; }
+  .more { margin-top: 10px; display: inline-block; font-weight: 600; font-size: 14px; color: var(--yolk); text-decoration: none; }
+
+  /* a quiet band of three facts */
+  .band { display: grid; grid-template-columns: repeat(3, 1fr); margin-bottom: 40px; overflow: hidden; }
+  .band > * { padding: 22px; }
+  .band > * + * { border-left: 1px solid var(--line); }
+  .band p { color: var(--reed); font-size: 14.5px; }
+
+  /* versions list - the loaders each version range has */
+  .vtable { width: 100%; border-collapse: collapse; font-size: 15px; }
+  .vtable th, .vtable td { text-align: left; padding: 12px 18px; border-top: 1px solid var(--line); }
+  .vtable thead th { border-top: 0; color: var(--reed); font-weight: 600; font-size: 13.5px; }
+  .vtable td:first-child { font-weight: 700; white-space: nowrap; }
+  .chip { display: inline-block; padding: 2px 9px; margin: 2px 4px 2px 0; border-radius: 7px; font-size: 13px; font-weight: 600;
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); }
+  .chip.on { background: rgba(250, 204, 21, .12); border-color: rgba(250, 204, 21, .35); color: #FDE68A; }
+
+  .plays { margin-top: 20px; padding: 22px 24px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 24px; align-items: center; text-align: left; }
+  .plays p { color: var(--reed); font-size: 14.5px; }
+  .plays .chips { justify-self: end; }
+  .plays .more { grid-column: 1 / -1; margin-top: 2px; }
+  .homeNew { margin-top: 20px; text-align: left; }
+  .homeNew .more { margin-top: 14px; }
+  @media (max-width: 640px) { .plays { grid-template-columns: 1fr; } .plays .chips { justify-self: start; } }
+  /* what's new */
+  .rel { padding: 22px 24px; margin-bottom: 14px; }
+  .rel header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+  .rel header b { font: 700 22px/1 "Fredoka", sans-serif; }
+  .rel header time { color: var(--reed); font-size: 14px; }
+  .rel .newest { font-size: 12.5px; font-weight: 700; color: #1B1503; background: var(--yolk); border-radius: 6px; padding: 2px 8px; }
+  .rel ul { padding-left: 20px; display: grid; gap: 8px; }
+  .rel li { color: #D9D7CE; font-size: 15px; }
+  .rel li::marker { color: var(--yolk); }
+
+  /* help */
+  details { border-top: 1px solid var(--line); }
+  details:first-child { border-top: 0; }
+  summary { cursor: pointer; list-style: none; padding: 18px 22px; font-weight: 600; font-size: 16.5px; display: flex; justify-content: space-between; gap: 16px; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; color: var(--yolk); font: 600 22px/1 "Fredoka", sans-serif; transition: transform .2s; }
+  details[open] summary::after { transform: rotate(45deg); }
+  details > div { padding: 0 22px 20px; color: var(--reed); max-width: 72ch; }
+  details > div p + p { margin-top: 8px; }
+
+  /* download */
+  .dlCard { padding: 34px; text-align: center; margin-bottom: 28px; }
+  .dlCard .duck { width: 112px; margin-bottom: 18px; animation: none; }
+  .dlCard h2 { margin-bottom: 4px; }
+  .dlCard .lede { margin: 0 auto 26px; }
+  .steps { list-style: none; padding: 0; counter-reset: s; display: grid; grid-template-columns: repeat(3, 1fr); overflow: hidden; }
+  .steps li { padding: 22px; counter-increment: s; }
+  .steps li + li { border-left: 1px solid var(--line); }
+  .steps li::before { content: counter(s); display: grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; margin-bottom: 12px;
+    background: rgba(250, 204, 21, .14); color: var(--yolk); font: 700 16px/1 "Fredoka", sans-serif; }
+  .steps p { color: var(--reed); font-size: 14.5px; }
+  .need { margin-top: 28px; }
+  .need .vtable td:first-child { color: var(--reed); font-weight: 600; width: 34%; }
+
+  footer { margin-top: 56px; color: #6C7083; font-size: 12.5px; text-align: center; }
+  footer a { color: inherit; }
+
+  /* phones and small windows: the tabs go along the top */
+  @media (max-width: 900px) {
+    .side { position: sticky; top: 0; left: 0; right: 0; bottom: auto; width: auto; margin: 0; border-radius: 0 0 18px 18px;
+      flex-direction: row; align-items: center; overflow-x: auto; padding: 10px 12px; gap: 4px; scrollbar-width: none; }
+    .side::-webkit-scrollbar { display: none; }
+    .brand { padding: 0 8px 0 0; }
+    .brand b, .side .grow, .sideNote { display: none; }
+    .tab { flex: none; padding: 8px 11px; font-size: 14px; }
+    .tab[aria-current="page"] { box-shadow: inset 0 -3px 0 var(--yolk); }
+    .sideGet { flex: none; padding: 9px 14px; font-size: 14px; }
+    main { margin-left: 0; padding: 28px 16px 48px; }
+    .feat { padding: 22px 20px; }
+    .feat .ticks { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    .three, .band, .steps, .grid { grid-template-columns: 1fr; }
+    .three > * + *, .band > * + *, .steps li + li { border-left: 0; border-top: 1px solid var(--line); }
+    .grid > * { border-left: 0 !important; border-top: 1px solid var(--line) !important; }
+    .grid > *:first-child { border-top: 0 !important; }
+    .vtable th, .vtable td { padding: 10px 12px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .duck { animation: none; } .get, .tab, summary::after { transition: none; } }
+
+  /* ================= the professional pass (wins over the rules above) ================= */
+  :root { --night: #0B0D14; --glass: rgba(17, 20, 31, .74); --line: rgba(255, 255, 255, .07); --font: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif; }
+  body { font: 400 15.5px/1.6 var(--font); -webkit-font-smoothing: antialiased; }
+  body::before { background: radial-gradient(closest-side, rgba(250, 204, 21, .13), rgba(250, 204, 21, .035) 55%, transparent 72%); left: 64%; top: 18%; }
+  body::after { background-image: linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px); }
+  h1, h2, h3, .brand b, .three b, .rel header b, .get, .sideGet, .steps li::before, summary::after { font-family: var(--font); }
+  h1 { font-size: clamp(42px, 5.4vw, 64px); font-weight: 700; letter-spacing: -.04em; line-height: 1.02; }
+  h2 { font-size: clamp(28px, 3.2vw, 36px); font-weight: 700; letter-spacing: -.03em; line-height: 1.12; }
+  h3 { font-size: 16.5px; font-weight: 600; letter-spacing: -.01em; }
+  .fsec .pageHead h2 { font-size: clamp(24px, 2.6vw, 30px); }
+  .lede { font-size: 17px; line-height: 1.6; color: #A3A6B5; }
+  main { padding-top: 48px; }
+  .page { max-width: 1040px; }
+
+  /* side tabs: quieter, tighter */
+  .side { border-radius: 16px; padding: 18px 12px; background: rgba(13, 15, 23, .78); }
+  .brand { padding: 0 8px 18px; margin-bottom: 6px; border-bottom: 1px solid var(--line); }
+  .brand img { width: 30px; height: 30px; border-radius: 8px; }
+  .brand b { font-size: 16px; font-weight: 700; letter-spacing: -.02em; }
+  .tab { font-size: 14.5px; font-weight: 500; padding: 9px 12px; border-radius: 10px; margin-top: 4px; }
+  .tab svg { width: 18px; height: 18px; }
+  .tab[aria-current="page"] { background: rgba(255,255,255,.06); border-color: transparent; box-shadow: inset 2px 0 0 var(--yolk); }
+
+  /* buttons: flat, one clear primary */
+  .get, .sideGet { background: var(--yolk); color: #17130A; font-weight: 600; letter-spacing: -.01em; border-radius: 11px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.45), 0 8px 24px rgba(250, 204, 21, .16); transition: background .15s, transform .15s, box-shadow .15s; }
+  .get { padding: 13px 22px; font-size: 15.5px; gap: 10px; }
+  .get svg { width: 18px; height: 18px; }
+  .get:hover, .sideGet:hover { background: #FDD835; transform: translateY(-1px); box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 12px 30px rgba(250, 204, 21, .22); }
+  .get:active, .sideGet:active { transform: none; box-shadow: inset 0 1px 0 rgba(255,255,255,.3), 0 4px 12px rgba(250, 204, 21, .14); }
+  .sideGet { padding: 11px; font-size: 14.5px; }
+  .ghostBtn { display: inline-flex; align-items: center; padding: 13px 20px; border-radius: 11px; font-weight: 600; font-size: 15.5px; letter-spacing: -.01em;
+    color: var(--feather); text-decoration: none; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.12); transition: background .15s, border-color .15s; }
+  .ghostBtn:hover { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.22); }
+  .meta { font-size: 13.5px; color: #80849A; }
+
+  /* hero */
+  .hero2 { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); gap: 48px; align-items: center; padding: 28px 0 8px; }
+  .heroText .lede { margin: 18px 0 28px; max-width: 44ch; }
+  .ctaRow { display: flex; gap: 12px; flex-wrap: wrap; }
+  .heroText .meta { margin-top: 16px; }
+  .heroArt { display: grid; place-items: center; }
+  .heroArt .duck { width: min(300px, 100%); margin: 0; border-radius: 28%; box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 40px 90px rgba(0,0,0,.55), 0 0 80px rgba(250, 204, 21, .12); animation: rise .8s cubic-bezier(.2, .8, .2, 1) both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } }
+
+  /* panels */
+  .glass, .feat { border-radius: 16px; }
+  .three { margin-top: 56px; }
+  .three > * { padding: 22px 24px; }
+  .three b { font-size: 15.5px; font-weight: 600; letter-spacing: -.01em; margin-bottom: 4px; }
+  .three p, .band p, .grid p, .steps p { font-size: 14px; color: #8D91A5; }
+  .band > * { padding: 22px 24px; }
+  .feat { padding: 26px 28px; }
+  .ticks li { font-size: 15px; padding-left: 26px; }
+  .ticks li::before { top: 5px; width: 16px; height: 16px; border-radius: 50%; background: rgba(250, 204, 21, .12) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FACC15' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center / 10px no-repeat; }
+  .ticks small { font-size: 13.5px; color: #8D91A5; margin-top: 2px; }
+  .grid > * { padding: 24px; }
+  .grid svg { width: 18px; height: 18px; box-sizing: content-box; padding: 9px; margin-bottom: 14px; border-radius: 10px; background: rgba(250, 204, 21, .08); border: 1px solid rgba(250, 204, 21, .18); }
+  .grid h3 { margin-bottom: 4px; }
+  .chip { font-size: 12.5px; font-weight: 500; border-radius: 6px; padding: 3px 9px; background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.09); color: #C9CBD6; }
+  .chip.on { background: rgba(250, 204, 21, .08); border-color: rgba(250, 204, 21, .24); color: #F4DE8A; }
+  .plays, .homeNew { margin-top: 16px; }
+  .rel header b { font-size: 18px; font-weight: 700; letter-spacing: -.02em; }
+  .rel .newest { font-size: 11.5px; font-weight: 600; border-radius: 5px; }
+  .rel li { font-size: 14.5px; color: #C9CBD6; max-width: 78ch; }
+  summary { font-size: 15.5px; font-weight: 500; padding: 17px 22px; }
+  summary::after { font-size: 20px; font-weight: 400; color: #8D91A5; }
+  details > div { font-size: 14.5px; }
+  .dlCard { padding: 44px 34px; }
+  .dlCard .duck { width: 88px; border-radius: 24%; box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 20px 50px rgba(0,0,0,.5); }
+  .steps li::before { width: 26px; height: 26px; border-radius: 50%; font-size: 13px; font-weight: 600; background: rgba(255,255,255,.06); color: var(--feather); border: 1px solid rgba(255,255,255,.12); }
+  .vtable { font-size: 14.5px; }
+  .vtable td:first-child { font-weight: 600; }
+
+  /* footer */
+  footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--line); text-align: left; color: #6B6F84; font-size: 12.5px; }
+  .footRow { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
+  .footBrand { display: inline-flex; align-items: center; gap: 8px; color: var(--feather); font-weight: 600; font-size: 14px; }
+  .footBrand img { width: 20px; height: 20px; border-radius: 5px; }
+  footer nav { display: flex; gap: 20px; flex-wrap: wrap; }
+  footer nav a { color: #A3A6B5; text-decoration: none; font-size: 13.5px; }
+  footer nav a:hover { color: var(--feather); }
+
+  @media (max-width: 900px) {
+    .hero2 { grid-template-columns: 1fr; gap: 28px; padding-top: 8px; }
+    .heroArt { order: -1; justify-items: start; }
+    .heroArt .duck { width: 96px; }
+    .side { border-radius: 0 0 14px 14px; }
+    .brand { border-bottom: 0; margin: 0; padding: 0 8px 0 0; }
+    .tab { margin-top: 0; }
+    .tab[aria-current="page"] { box-shadow: inset 0 -2px 0 var(--yolk); }
+  }
+  @media (prefers-reduced-motion: reduce) { .heroArt .duck { animation: none; } }
+
+  /* ================= top bar layout ================= */
+  .side, .sideNote { display: none; }
+  .topbar { position: sticky; top: 0; z-index: 5; background: rgba(11, 13, 20, .72); border-bottom: 1px solid var(--line);
+    backdrop-filter: blur(16px) saturate(1.3); -webkit-backdrop-filter: blur(16px) saturate(1.3); }
+  .topIn { max-width: 1160px; margin: 0 auto; height: 64px; padding: 0 24px; display: flex; align-items: center; gap: 24px; }
+  .topbar .brand { padding: 0; margin: 0; border: 0; }
+  .topnav { display: flex; gap: 4px; margin: 0 auto; }
+  .topnav .tab { padding: 8px 14px; margin: 0; font-size: 14.5px; font-weight: 500; border-radius: 9px; border: 0; color: #A3A6B5; box-shadow: none; }
+  .topnav .tab:hover { color: var(--feather); background: rgba(255,255,255,.05); }
+  .topnav .tab[aria-current="page"] { color: var(--feather); background: rgba(255,255,255,.07); box-shadow: none; }
+  .topbar .sideGet { padding: 9px 16px; font-size: 14px; gap: 7px; }
+  main { margin-left: 0; padding: 0 24px 56px; }
+  .page { max-width: 1160px; }
+  #features, #download { padding-top: 56px; }
+
+  /* hero */
+  .hero3 { text-align: center; padding: 88px 0 0; }
+  .hero3 h1 { font-size: clamp(44px, 7.2vw, 88px); letter-spacing: -.045em; line-height: .98; }
+  .hero3 .lede { margin: 22px auto 30px; max-width: 46ch; font-size: 18px; }
+  .hero3 .ctaRow { justify-content: center; }
+  .hero3 .meta { margin-top: 14px; }
+  .islandDuck { position: absolute; left: 50%; top: 21%; width: 15%; transform: translateX(-50%); border-radius: 26%;
+    box-shadow: 0 0 0 1px rgba(255,255,255,.1), 0 24px 50px rgba(0,0,0,.55), 0 0 60px rgba(250, 204, 21, .25); animation: bob 5s ease-in-out infinite; }
+  @keyframes bob { 50% { transform: translate(-50%, -8px); } }
+
+  /* facts strip */
+  .facts { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin: 8px 0 0; }
+  .facts > div { padding: 26px 20px; text-align: center; }
+  .facts > div + div { border-left: 1px solid var(--line); }
+  .facts b { display: block; font-size: 19px; font-weight: 700; letter-spacing: -.02em; }
+  .facts span { color: #8D91A5; font-size: 13.5px; }
+
+  /* only in Duckky Client */
+  .onlyHere { margin-top: 0; }
+  .onlyHere .pageHead h2 { font-size: clamp(30px, 3.6vw, 44px); }
+  .onlyGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .onlyGrid article { padding: 26px 28px; border-radius: 16px; border: 1px solid rgba(250, 204, 21, .16);
+    background: linear-gradient(180deg, rgba(250, 204, 21, .055), rgba(17, 20, 31, .74) 55%); }
+  .onlyGrid h3 { font-size: 17px; margin-bottom: 6px; }
+  .onlyGrid p { color: #9A9EB0; font-size: 14.5px; }
+  .allHead { margin: 64px 0 22px; }
+
+  /* footer */
+  footer { max-width: 1160px; margin: 96px auto 0; }
+  .footCols { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 32px; margin-bottom: 28px; }
+  .footAbout p { color: #80849A; font-size: 13.5px; margin-top: 10px; max-width: 36ch; }
+  footer nav { display: flex; flex-direction: column; gap: 9px; }
+  footer nav b { color: var(--feather); font-size: 13.5px; font-weight: 600; margin-bottom: 2px; }
+  .legal { padding-top: 18px; border-top: 1px solid var(--line); }
+
+  @media (max-width: 900px) {
+    .topIn { padding: 0 14px; gap: 10px; height: 58px; }
+    .topbar .brand b { display: none; }
+    .topnav { margin: 0; }
+    .topnav .tab { padding: 7px 10px; font-size: 14px; }
+    .topbar .sideGet { margin-left: auto; }
+    main { padding: 0 16px 48px; }
+    .hero3 { padding-top: 48px; }
+    .facts { grid-template-columns: 1fr 1fr; }
+    .facts > div:nth-child(3) { border-left: 0; }
+    .facts > div:nth-child(n+3) { border-top: 1px solid var(--line); }
+    .onlyGrid { grid-template-columns: 1fr; }
+    .footCols { grid-template-columns: 1fr 1fr; }
+    .footAbout { grid-column: 1 / -1; }
+  }
+  @media (max-width: 420px) { .topnav .plain { display: none; } }
+  
+
+  /* ================= only in Duckky Client: cards that show the feature ================= */
+  .bento { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .bento article { display: flex; flex-direction: column; padding: 14px 14px 22px; border-radius: 18px; border: 1px solid var(--line);
+    background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(17, 20, 31, .78) 40%); transition: border-color .2s; }
+  .bento article:hover { border-color: rgba(250, 204, 21, .28); }
+  .bento article.big { grid-column: span 2; }
+  .bento h3 { font-size: 17px; margin: 18px 8px 6px; }
+  .bento p { color: #9A9EB0; font-size: 14.5px; margin: 0 8px; }
+  .mini { position: relative; height: 168px; border-radius: 12px; overflow: hidden; display: flex; align-items: center; justify-content: center; gap: 14px; padding: 16px;
+    background: radial-gradient(120% 90% at 50% 0%, rgba(250, 204, 21, .10), transparent 60%), #0A0C12; border: 1px solid rgba(255,255,255,.06);
+    font-size: 12.5px; line-height: 1.4; color: #C9CBD6; }
+  .big .mini { height: 200px; justify-content: flex-start; }
+  .mini b { color: var(--feather); font-weight: 600; }
+  .mini span, .mini small, .mini em { color: #8D91A5; font-style: normal; }
+  .mBtns { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .mBtn { display: inline-block; padding: 5px 10px; border-radius: 7px; background: var(--yolk); color: #17130A !important; font-weight: 600; font-size: 11.5px; }
+  .mBtn.ghost { background: rgba(255,255,255,.06); color: #C9CBD6 !important; border: 1px solid rgba(255,255,255,.1); }
+  .mOk { display: inline-grid; place-items: center; width: 16px; height: 16px; border-radius: 50%; background: rgba(74, 222, 128, .14); color: #4ADE80 !important; flex: none; }
+  .mOk svg { width: 10px; height: 10px; }
+  /* crash helper */
+  .mCrash { flex: 1.3; max-width: 360px; padding: 12px; border-radius: 12px; background: #131622; border: 1px solid rgba(255,255,255,.08); box-shadow: 0 16px 40px rgba(0,0,0,.45); }
+  .mHead { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .mWarn { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 6px; background: rgba(248,113,113,.15); color: #F87171 !important; font-weight: 800; font-size: 12px; }
+  .mFind { padding: 10px 12px; border-radius: 9px; background: rgba(255,255,255,.03); border-left: 3px solid #F87171; display: flex; flex-direction: column; gap: 2px; }
+  .mHunt { flex: 1; max-width: 220px; display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 12px; background: #131622; border: 1px solid rgba(255,255,255,.08); }
+  .mHunt > span { color: var(--feather) !important; font-weight: 600; }
+  .mSteps { display: flex; gap: 5px; }
+  .mSteps i { flex: 1; height: 6px; border-radius: 3px; background: rgba(255,255,255,.08); }
+  .mSteps i.on { background: var(--yolk); }
+  /* freeze toast */
+  .mToast { display: flex; gap: 10px; align-items: flex-start; max-width: 270px; padding: 12px; border-radius: 12px; background: #131622; border: 1px solid rgba(255,255,255,.08); box-shadow: 0 16px 40px rgba(0,0,0,.45); }
+  .mToast div, .mBlock div { display: flex; flex-direction: column; gap: 2px; }
+  .mIc { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 8px; background: rgba(250, 204, 21, .12); color: var(--yolk) !important; flex: none; }
+  .mIc svg, .mShield svg, .mPh svg, .mUndo svg { width: 16px; height: 16px; }
+  /* in-game call bar */
+  .mini:has(.mCall) { flex-direction: column; }
+  .mCall { display: flex; align-items: center; gap: 7px; padding: 6px 11px; border-radius: 8px; background: rgba(10, 12, 18, .85); border: 1px solid rgba(255,255,255,.12); font-family: ui-monospace, monospace; }
+  .mPh { color: #4ADE80 !important; display: grid; }
+  .mPh svg { width: 13px; height: 13px; }
+  .mDot { width: 9px; height: 9px; border-radius: 50%; background: #3B82F6; box-shadow: 0 0 0 2px rgba(59,130,246,.3); }
+  .mVers { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; max-width: 330px; }
+  .mVers span { padding: 2px 8px; border-radius: 6px; background: rgba(250, 204, 21, .08); border: 1px solid rgba(250, 204, 21, .22); color: #F4DE8A !important; font-size: 11.5px; font-weight: 600; }
+  /* lists */
+  .mList { display: flex; flex-direction: column; gap: 8px; min-width: 220px; }
+  .mTitle { color: var(--feather); font-weight: 600; margin-bottom: 2px; }
+  .mLine { display: flex; align-items: center; gap: 8px; color: var(--feather); }
+  .mLine em { margin-left: auto; padding-left: 10px; font-size: 11.5px; }
+  .mLine.muted { color: #8D91A5; }
+  .mUndo { display: inline-grid; place-items: center; width: 16px; height: 16px; color: #FDBA74 !important; }
+  .mUndo svg { width: 13px; height: 13px; }
+  /* blocked */
+  .mBlock { display: flex; gap: 10px; align-items: flex-start; max-width: 280px; padding: 12px; border-radius: 12px; background: #131622; border: 1px solid rgba(248,113,113,.25); }
+  .mShield { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 8px; background: rgba(248,113,113,.14); color: #F87171 !important; flex: none; }
+  /* settings share */
+  .mShare { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+  .mBubble { display: flex; flex-direction: column; gap: 2px; padding: 11px 13px; border-radius: 12px 12px 12px 4px; background: #1A1E2C; border: 1px solid rgba(255,255,255,.08); }
+  /* mod row */
+  .mMod { position: relative; display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; background: #131622; border: 1px solid rgba(255,255,255,.08); min-width: 240px; }
+  .mMod div { display: flex; flex-direction: column; }
+  .mMod b { color: var(--yolk) !important; }
+  .mBox { width: 26px; height: 26px; border-radius: 7px; background: #22252D url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 5l6 3.2v7.6L12 19l-6-3.2V8.2z M6 8.2l6 3.3 6-3.3M12 11.5V19' fill='none' stroke='%235b6170' stroke-width='1.4' stroke-linejoin='round'/%3E%3C/svg%3E") center / 20px no-repeat; }
+  .mTip { position: absolute; right: 10px; bottom: -30px; padding: 4px 8px; border-radius: 6px; background: var(--feather); color: #17130A !important; font-weight: 600; font-size: 11px; }
+  .mTip::before { content: ""; position: absolute; left: 14px; top: -4px; width: 8px; height: 8px; background: var(--feather); transform: rotate(45deg); }
+  @media (max-width: 1000px) { .bento { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 640px) {
+    .bento { grid-template-columns: 1fr; }
+    .bento article.big { grid-column: auto; }
+    .big .mini { height: auto; flex-direction: column; align-items: stretch; }
+    .mHunt, .mCrash { max-width: none; }
+  }
+
+  /* download: one card per system */
+  .dlHead { text-align: center; } .dlHead .lede { margin: 8px auto 0; }
+  .osCards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .osCard { padding: 30px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+  .osCard .osIc { width: 30px; height: 30px; color: var(--feather); margin-bottom: 8px; }
+  .osCard p { color: #8D91A5; font-size: 14px; margin-bottom: 16px; }
+  .osCard small { color: #6B6F84; font-size: 12.5px; margin-top: 10px; }
+  @media (max-width: 640px) { .osCards { grid-template-columns: 1fr; } }
+
+
+  /* three highlights under the headline */
+  .hl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 1000px; margin: 64px auto 56px; text-align: left; }
+  .hl a { display: block; padding: 26px; border-radius: 16px; color: inherit; text-decoration: none; background: var(--glass); border: 1px solid var(--line);
+    backdrop-filter: blur(14px) saturate(1.3); -webkit-backdrop-filter: blur(14px) saturate(1.3); transition: border-color .2s, transform .2s; }
+  .hl a:hover { border-color: rgba(250, 204, 21, .3); transform: translateY(-2px); }
+  .hlIc { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 11px; margin-bottom: 16px; color: var(--yolk);
+    background: rgba(250, 204, 21, .08); border: 1px solid rgba(250, 204, 21, .2); }
+  .hlIc svg { width: 20px; height: 20px; }
+  .hl b { display: block; font-size: 17px; font-weight: 600; letter-spacing: -.01em; margin-bottom: 6px; }
+  .hl p { color: #8D91A5; font-size: 14.5px; }
+  @media (max-width: 760px) { .hl { grid-template-columns: 1fr; margin: 44px auto 40px; } }
+  @media (prefers-reduced-motion: reduce) { .hl a { transition: none; } }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topIn">
+    <a class="brand" href="#home"><img src="icon.png" alt=""><b>Duckky Client</b></a>
+    <nav class="topnav" aria-label="Pages">
+      <a class="tab" href="#home">Home</a>
+      <a class="tab" href="#features">Features</a>
+      <a class="tab plain" href="#friends">Social</a>
+      <a class="tab plain" href="#performance">FPS boost</a>
+    </nav>
+    <a class="sideGet dl" href="#download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Download</a>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ HOME ============ -->
+<section class="page" id="home" aria-label="Home">
+  <div class="hero3">
+    <h1>Every version. Every mod.<br>All your friends.</h1>
+    <p class="lede">Better than other clients, with improved features and the best FPS boost. Plus your friends in every game.</p>
+    <div class="ctaRow">
+      <a class="get dlMain" href="#download">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>
+        <span>Download for Windows</span>
+      </a>
+      <a class="ghostBtn dlAlt" href="#download">Download for Linux</a>
+    </div>
+    <p class="meta" data-ver>Windows 10 and 11, and Linux. It keeps itself up to date.</p>
+    <div class="hl">
+      <a href="#only"><span class="hlIc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8 16 5v4.4l-4 2.2-4-2.2V5z"/><path d="M7.5 11.6 11.5 13.8v4.4l-4 2.2-4-2.2v-4.4z"/><path d="M16.5 11.6l4 2.2v4.4l-4 2.2-4-2.2v-4.4z"/></svg></span><b>Mods in one click</b><p>Mods, modpacks, shaders and resource packs, checked to work together.</p></a>
+      <a href="#friends"><span class="hlIc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-6 6.5-6s5.9 2.4 6.5 6"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.3c2 .8 3.2 2.9 3.5 5.7"/></svg></span><b>Your friends, in game</b><p>See what they're playing, chat, call and join their worlds.</p></a>
+      <a href="#performance"><span class="hlIc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"/></svg></span><b>The best FPS boost</b><p>It finds what slows your game down and fixes it in one click.</p></a>
+    </div>
+  </div>
+  <section class="facts" aria-label="At a glance">
+    <div><b>1.8 to the newest</b><span>Every Minecraft release</span></div>
+    <div><b>4 mod loaders</b><span>Fabric, Quilt, Forge, NeoForge</span></div>
+    <div><b>Modrinth + CurseForge</b><span>Mods and modpacks in one search</span></div>
+    <div><b>Friends in modpacks</b><span>From 1.7.10 to 1.21.1</span></div>
+  </section>
+</section>
+
+<!-- ============ FEATURES ============ -->
+<section class="page" id="features" aria-label="Features" hidden>
+  <section class="fsec onlyHere" id="only" aria-label="Only in Duckky Client">
+    <div class="pageHead"><h2>Only in Duckky Client</h2><p class="lede">Built for the things that usually go wrong - and for playing with friends wherever you are.</p></div>
+    <div class="bento">
+      <article class="big">
+        <div class="mini" aria-hidden="true">
+          <div class="mCrash">
+            <div class="mHead"><span class="mWarn">!</span><b>Here's why Minecraft crashed</b></div>
+            <div class="mFind"><b>Lantern Lights needs Fabric API</b><span>It can't start without it, and it isn't in this version.</span><div class="mBtns"><span class="mBtn">Add Fabric API</span><span class="mBtn ghost">Turn off Lantern Lights</span></div></div>
+          </div>
+          <div class="mHunt"><span>Finding the broken mod</span><div class="mSteps"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div><small>Test 3 of 5 - 12 mods left</small></div>
+        </div>
+        <h3>A crash helper that fixes it</h3>
+        <p>It names the mod that crashed the game and fixes it with one button. Can't tell which one? It switches mods off half at a time and finds it for you.</p>
+      </article>
+      <article>
+        <div class="mini" aria-hidden="true">
+          <div class="mToast"><span class="mIc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><b>Your world stopped responding</b><span>It's stuck in Lantern Lights. Save and Quit, then open the world again.</span></div></div>
+        </div>
+        <h3>Knows when your world freezes</h3>
+        <p>Blocks don't drop, mobs stand still? Within 30 seconds it tells you which mod your world is stuck in.</p>
+      </article>
+      <article>
+        <div class="mini" aria-hidden="true">
+          <div class="mCall"><span class="mPh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></span><b>In a call</b><span class="mDot"></span><span>PondSkipper talking</span></div>
+          <div class="mVers"><span>1.7.10</span><span>1.8.9</span><span>1.12.2</span><span>1.16.5</span><span>1.20.1</span><span>1.21.1</span></div>
+        </div>
+        <h3>Friends inside any modpack</h3>
+        <p>Chats, calls and invites right in the game - in modpacks on Fabric, Forge and NeoForge, even ones with their own title screen.</p>
+      </article>
+      <article>
+        <div class="mini" aria-hidden="true">
+          <div class="mList">
+            <div class="mLine"><span class="mOk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12.5l4 4 8-9"/></svg></span>Added Embeddium<em>faster renderer</em></div>
+            <div class="mLine"><span class="mOk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12.5l4 4 8-9"/></svg></span>Added Entity Culling<em>hides what you can't see</em></div>
+            <div class="mLine muted"><span class="mUndo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5M4 9h10a6 6 0 0 1 0 12h-2"/></svg></span>Pack crashed - taken back out</div>
+          </div>
+        </div>
+        <h3>Speed-up mods that clean up after themselves</h3>
+        <p>Modpacks missing a faster renderer or memory savers get them. If a pack doesn't like them, they come back out by themselves.</p>
+      </article>
+      <article>
+        <div class="mini" aria-hidden="true">
+          <div class="mBlock"><span class="mShield"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6z"/><path d="M9.5 9.5l5 5M14.5 9.5l-5 5"/></svg></span><div><b>Blocked a dangerous mod</b><span>sneaky-booster.jar tried to read your sign-in. It was moved out before the game started.</span></div></div>
+        </div>
+        <h3>Account stealers stopped before you play</h3>
+        <p>Mods from anywhere but Modrinth and CurseForge are checked for code that steals accounts, and moved out if they look like it.</p>
+      </article>
+      <article>
+        <div class="mini" aria-hidden="true">
+          <div class="mShare"><div class="mBubble"><b>Quackers's settings</b><span>Key binds, Controls, Sound</span><div class="mBtns"><span class="mBtn">Import</span></div></div><small>Undo import puts yours back</small></div>
+        </div>
+        <h3>Send a friend your settings</h3>
+        <p>Share your key binds and controls in a chat. They pick what to take - and can undo it in one click.</p>
+      </article>
+      <article>
+        <div class="mini" aria-hidden="true">
+          <div class="mList">
+            <div class="mTitle">New version: 1.21.1</div>
+            <div class="mLine"><span class="mOk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12.5l4 4 8-9"/></svg></span>Key binds</div>
+            <div class="mLine"><span class="mOk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12.5l4 4 8-9"/></svg></span>Video and sound</div>
+            <div class="mLine"><span class="mOk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12.5l4 4 8-9"/></svg></span>Servers</div>
+          </div>
+        </div>
+        <h3>Your settings in every new version</h3>
+        <p>Make a version and your key binds, video, sound and servers come with it. Modpacks keep their own window size.</p>
+      </article>
+      <article>
+        <div class="mini" aria-hidden="true">
+          <div class="mMod"><span class="mBox"></span><div><b>Sound Physics Remastered</b><span>1.20.1-1.5.1</span></div><span class="mTip">See its page</span></div>
+        </div>
+        <h3>Look up any mod you have</h3>
+        <p>Click a mod in a version - even one a modpack brought - and its page opens, found from the file itself.</p>
+      </article>
+    </div>
+  </section>
+  <div class="pageHead allHead"><h2>Everything else</h2></div>
+  <div class="glass grid">
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8 16 5v4.4l-4 2.2-4-2.2V5z"/><path d="M7.5 11.6 11.5 13.8v4.4l-4 2.2-4-2.2v-4.4z"/><path d="M16.5 11.6l4 2.2v4.4l-4 2.2-4-2.2v-4.4z"/></svg><h3>Every version</h3><p>Any release from 1.8 to the newest, on Fabric, Quilt, Forge or NeoForge. Each one keeps its own mods, worlds and settings.</p></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg><h3>Mods and modpacks</h3><p>Search Modrinth and CurseForge, install a whole modpack as its own version, and click any mod to read about it.</p></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg><h3>Chats and calls</h3><p>Message friends and groups, call them, and send them invites - from the launcher or right inside the game.</p></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg><h3>Play together</h3><p>Open your singleplayer world to friends over the internet, or join the server they're on in one click.</p></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"/></svg><h3>FPS boost</h3><p>Java tuned for your PC and speed-up mods added where a version is missing them.</p></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l10 18H2zM12 10v5M12 18h.01"/></svg><h3>Crash helper</h3><p>When the game crashes or freezes, it says which mod did it and fixes it with one button.</p></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-3.8 3.6-6 7-6s6.2 2.2 7 6"/></svg><h3>Skins and capes</h3><p>A 3D skin library, a skin editor, your capes, and any player's skin copied by name.</p></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 15l5-5 4 4 3-3 6 6"/></svg><h3>Shaders and packs</h3><p>Resource packs and shaders per version, previewed and switched on with a click.</p></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6z"/><path d="m9 12 2 2 4-4"/></svg><h3>Account safety check</h3><p>Mods that didn't come from Modrinth or CurseForge are checked for account stealers before you play.</p></div>
+  </div>
+
+
+
+<!-- ============ FRIENDS ============ -->
+<section class="fsec" id="friends" aria-label="Social">
+  <div class="pageHead">
+    <h2>Social: your friends, in every game</h2>
+    <p class="lede">Add friends by their Minecraft name. See what they're playing, talk to them and get into the same world.</p>
+  </div>
+  <div class="feat">
+    <div class="words">
+      <ul class="ticks">
+        <li>Chats and groups<small>Messages, pictures and files, with friends or a whole group.</small></li>
+        <li>Calls<small>Voice calls with one friend or a group, with mute and deafen - and a call bar in game.</small></li>
+        <li>Invite to your world<small>Open your singleplayer world to friends over the internet. They join with one click.</small></li>
+        <li>In modpacks too<small>A Friends button on the title and pause screens in modpacks from 1.7.10 to 1.21.1.</small></li>
+      </ul>
+    </div>
+  </div>
+  <section class="glass band" aria-label="More">
+    <div><h3>See what they play</h3><p>Who's online, which version or server they're on, and a button to join them.</p></div>
+    <div><h3>Share settings</h3><p>Send a friend your key binds and controls. They take what they want and can undo it.</p></div>
+    <div><h3>Your profile</h3><p>A banner, a bio and the mods you play with, for your friends to see.</p></div>
+  </section>
+</section>
+
+<!-- ============ PERFORMANCE ============ -->
+<section class="fsec" id="performance" aria-label="Performance">
+  <div class="pageHead">
+    <h2>FPS boosting</h2>
+    <p class="lede">It looks at your PC and your mods, and sets the game up to run as smoothly as it can.</p>
+  </div>
+  <section class="glass band" aria-label="How">
+    <div><h3>Tuned for your PC</h3><p>Memory and Java settings picked for your processor and RAM, with the faster graphics card used.</p></div>
+    <div><h3>Speed-up mods</h3><p>Versions and modpacks missing them get a faster renderer and memory savers - never next to ones they already have.</p></div>
+    <div><h3>Starts faster</h3><p>The slow parts of starting a version are prepared ahead of time.</p></div>
+  </section>
+  <div class="feat flip">
+    <div class="words">
+      <h3>When something breaks, it says why</h3>
+      <p>No more reading crash logs. You get what went wrong in plain words, and a button that fixes it.</p>
+      <ul class="ticks">
+        <li>Names the mod that crashed the game</li>
+        <li>Can't tell? It finds the broken mod for you, a few tries at a time</li>
+        <li>Notices when your world freezes and says what it's stuck on</li>
+        <li>Speed-up mods it added come back out by themselves if a pack doesn't like them</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</section>
+
+<!-- ============ DOWNLOAD ============ -->
+<section class="page" id="download" aria-label="Download" hidden>
+  <div class="pageHead dlHead"><h2>Download Duckky Client</h2><p class="lede">Better than other clients, with improved features and the best FPS boost. Plus your friends in every game.</p></div>
+  <div class="osCards">
+    <article class="glass osCard" id="os-windows">
+      <svg class="osIc" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.5l7.5-1v7H3zM11.5 4.4L21 3v8.5h-9.5zM3 12.5h7.5v7L3 18.5zM11.5 12.5H21V21l-9.5-1.4z"/></svg>
+      <h3>Windows</h3><p>Windows 10 and 11, 64-bit</p>
+      <a class="get" id="getWin" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Download for Windows</a>
+      <small>DuckkyClient-Setup.exe</small>
+    </article>
+    <article class="glass osCard" id="os-linux">
+      <svg class="osIc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M7 9l3 3-3 3M12.5 15h4.5"/></svg>
+      <h3>Linux</h3><p>Ubuntu, Fedora, Arch, Mint and most others, 64-bit</p>
+      <a class="get" id="getLinux" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Download for Linux</a>
+      <small>DuckkyClient-linux.AppImage - one file, nothing to install</small>
+    </article>
+  </div>
+  <ol class="glass steps" aria-label="Getting started">
+    <li><h3>Open it</h3><p>Windows: run DuckkyClient-Setup.exe. Linux: open the AppImage - if it doesn't start, tick "Allow executing as program" in its Properties.</p></li>
+    <li><h3>Sign in</h3><p>Sign in with the Microsoft account that owns Minecraft: Java Edition.</p></li>
+    <li><h3>Press Launch</h3><p>Java, Minecraft and the mods download by themselves on the first start.</p></li>
+  </ol>
+  <div class="glass need" style="overflow:hidden">
+    <table class="vtable">
+      <tbody>
+        <tr><td>System</td><td>Windows 10 or 11, or a 64-bit Linux</td></tr>
+        <tr><td>Memory</td><td>4 GB or more (8 GB or more for big modpacks)</td></tr>
+        <tr><td>Space</td><td>2 GB, plus what your versions and mods use</td></tr>
+        <tr><td>Account</td><td>A Microsoft account that owns Minecraft: Java Edition</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  <div class="footCols">
+    <div class="footAbout"><span class="footBrand"><img src="icon.png" alt="">Duckky Client</span><p>A Minecraft launcher with every version, your mods and your friends in one place.</p></div>
+    <nav aria-label="Product"><b>Product</b><a href="#features">Features</a><a href="#only">Only in Duckky Client</a><a href="#friends">Social</a><a href="#performance">FPS boosting</a><a href="#download">Download</a></nav>
+    <nav aria-label="More"><b>More</b><a href="#download">System requirements</a><a href="https://github.com/Duckkyinc/Duckky-Client/releases">Releases</a></nav>
+  </div>
+  <p class="legal">Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.</p>
+</footer>
+</main>
+
+<script>
+  // Where the Download button points: the setup on the GitHub releases page - people get the file straight away.
+  var REPO = 'Duckkyinc/Duckky-Client';
+  var BASE = 'https://github.com/' + REPO + '/releases/latest/download/';
+  var FILES = { windows: BASE + 'DuckkyClient-Setup.exe', linux: BASE + 'DuckkyClient-linux.AppImage' };
+  document.getElementById('getWin').href = FILES.windows;
+  document.getElementById('getLinux').href = FILES.linux;
+  // (on Linux the big button gives the Linux file, and the other one Windows)
+  var onLinux = /Linux/i.test(navigator.userAgent) && !/Android/i.test(navigator.userAgent);
+  var main = document.querySelector('.dlMain'), alt = document.querySelector('.dlAlt');
+  main.href = onLinux ? FILES.linux : FILES.windows;
+  main.querySelector('span').textContent = onLinux ? 'Download for Linux' : 'Download for Windows';
+  alt.href = onLinux ? FILES.windows : FILES.linux;
+  alt.textContent = onLinux ? 'Download for Windows' : 'Download for Linux';
+  if (onLinux) document.querySelector('.osCards').prepend(document.getElementById('os-linux'));
+
+  // ---- the side tabs: each tab is a page; the address keeps it (#friends), so links and Back work ----
+  var pages = [].slice.call(document.querySelectorAll('.page'));
+  var tabs = [].slice.call(document.querySelectorAll('.topnav .tab:not(.plain)'));
+  function show() {
+    var id = (location.hash || '#home').slice(1);
+    var target = document.getElementById(id);
+    var page = target && (target.classList.contains('page') ? target : target.closest('.page'));
+    if (!page) { page = document.getElementById('home'); target = page; }
+    pages.forEach(function (p) { p.hidden = p !== page; });
+    tabs.forEach(function (t) { if (t.getAttribute('href') === '#' + page.id) t.setAttribute('aria-current', 'page'); else t.removeAttribute('aria-current'); });
+    var cur = tabs.find(function (t) { return t.getAttribute('aria-current'); });
+    if (target === page) window.scrollTo(0, 0); else target.scrollIntoView({ block: 'start' });
+    document.title = page.id === 'home' ? 'Duckky Client' : (cur ? cur.textContent.trim() : 'Download') + ' - Duckky Client';
+  }
+  window.addEventListener('hashchange', show);
+  show();
+
+  // ---- the newest version, next to the Download buttons ----
+  fetch('https://api.github.com/repos/' + REPO + '/releases/latest').then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (r) {
+    var v = String(r.tag_name || '').replace(/^v/, '');
+    if (!/^\d+(\.\d+)+$/.test(v)) return;
+    document.querySelectorAll('.meta[data-ver]').forEach(function (m) { m.textContent = 'Version ' + v + ' for Windows and Linux. It keeps itself up to date.'; });
+  }).catch(function () {});
+
+
+</script>
+</body>
+</html>

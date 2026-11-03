@@ -624,18 +624,22 @@
   .joinDc span { color: #8D91A5; font-size: 14px; }
 
   /* features page */
-  .featHead { text-align: center; padding: 24px 0 8px; }
-  .featHead h1 { font-size: clamp(40px, 6vw, 72px); font-weight: 800; letter-spacing: -.02em; text-transform: uppercase; }
-  .featHead .lede { margin: 14px auto 24px; }
-  .jump { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
-  .jump a { padding: 8px 14px; border-radius: 999px; font-size: 13.5px; font-weight: 600; color: var(--feather); text-decoration: none; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.12); }
-  .jump a:hover { border-color: rgba(250, 204, 21, .5); }
-  #features .rows { margin-top: 80px; }
+  #features { max-width: none; }
+  #features > *:not(.featHead) { max-width: 1160px; margin-left: auto; margin-right: auto; }
+  .featHead { position: relative; margin: -64px -24px 0; text-align: center; overflow: hidden; isolation: isolate; }
+  .featHead .spaceBg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; }
+  .featHead::after { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1; background: linear-gradient(180deg, transparent 60%, var(--night)); }
+  .featIn { position: relative; z-index: 2; padding: 150px 24px 120px; }
+  .featHead h1 { font-size: clamp(40px, 6vw, 72px); font-weight: 800; letter-spacing: -.02em; text-transform: uppercase; text-shadow: 0 6px 40px rgba(0,0,0,.6); }
+  .featHead .lede { margin: 14px auto 0; color: #D6D7DE; }
+  #features .rows { margin-top: 40px; }
   .row { scroll-margin-top: 96px; }
   #features .onlyHere { margin-top: 140px; }
   @media (max-width: 900px) {
     .heroFull { margin: -58px -16px 0; min-height: auto; }
     .heroIn { padding: 104px 16px 80px; }
+    .featHead { margin: -58px -16px 0; }
+    .featIn { padding: 110px 16px 80px; }
     .homeMore { grid-template-columns: 1fr; }
     #features .onlyHere { margin-top: 88px; }
   }
@@ -703,9 +707,14 @@
 <!-- ============ FEATURES ============ -->
 <section class="page" id="features" aria-label="Features" hidden>
   <div class="featHead">
-    <h1>Our features</h1>
-    <p class="lede">Everything you need to play every version with your mods and your friends - fast.</p>
-    <div class="jump"><a href="#performance">Boosted FPS</a><a href="#friends">Social</a><a href="#versions">Every version</a><a href="#crashes">Crash helper</a></div>
+    <canvas class="spaceBg" id="featBg" aria-hidden="true"></canvas>
+    <div class="featIn">
+      <h1>Our features</h1>
+      <p class="lede">Everything you need to play every version with your mods and your friends - fast.</p>
+      <div class="heroChips">
+        <a href="#friends"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c.7-3.4 3-5.4 6-5.4s5.3 2 6 5.4"/><path d="M16 4.6a3.2 3.2 0 0 1 0 6.4M21 20c-.4-2.4-1.6-4-3.3-4.9"/></svg>Friends in any modpack</a><a href="#only"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>Voice calls in game</a><a href="#crashes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg>Fixes crashes for you</a><a href="#performance"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"/></svg>Auto FPS boost</a><a href="#only"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6z"/><path d="m9 12 2 2 4-4"/></svg>Blocks account stealers</a>
+      </div>
+    </div>
   </div>
   <section class="rows" aria-label="Highlights">
     <div class="row" id="performance">
@@ -988,6 +997,7 @@
   (function () {
     var c = document.getElementById('heroBg'); if (!c || !window.DuckBG) return;
     DuckBG.mount(c, 'space');
+    var f = document.getElementById('featBg'); if (f) DuckBG.mount(f, 'space');
     if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches && DuckBG.setMode) DuckBG.setMode('paused');
   })();
 

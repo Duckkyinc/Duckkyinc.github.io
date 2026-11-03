@@ -661,6 +661,34 @@
   .grid.four { grid-template-columns: repeat(4, 1fr); }
   .grid.four > *:nth-child(4) { border-top: 0; border-left: 1px solid var(--line); }
   @media (max-width: 1000px) { .grid.four { grid-template-columns: repeat(2, 1fr); } .grid.four > *:nth-child(3) { border-top: 1px solid var(--line); border-left: 0; } .grid.four > *:nth-child(4) { border-top: 1px solid var(--line); } }
+
+  /* the cape maker, drawn (Features > Make your own cape) */
+  .ccMaker { display: flex; gap: 18px; align-items: center; }
+  .ccPic { position: relative; width: 230px; height: 170px; border-radius: 12px; overflow: hidden; background: linear-gradient(180deg, #312e81, #7c3aed 55%, #f472b6); border: 1px solid var(--line); flex: none; }
+  .ccPic .ccSun, .ccFront .ccSun { position: absolute; width: 44%; aspect-ratio: 1; border-radius: 50%; left: 46%; top: 12%; background: radial-gradient(circle, #fde68a, #f59e0b 70%); opacity: .9; }
+  .ccHill { position: absolute; left: -10%; right: -10%; border-radius: 50% 50% 0 0; }
+  .ccHill.a { height: 46%; bottom: -12%; background: #1e1b4b; }
+  .ccHill.b { height: 34%; bottom: -14%; left: 30%; background: #0f0c29; }
+  .ccDuck { position: absolute; left: 34%; bottom: 14%; width: 26%; }
+  .ccDuck svg { display: block; width: 100%; height: auto; }
+  .ccBox { position: absolute; left: 31%; top: 9%; width: 32%; height: 82%; border: 2px solid #facc15; border-radius: 2px; box-shadow: 0 0 0 999px rgba(0,0,0,.45); }
+  .ccBox i { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: #facc15; }
+  .ccBox i:nth-child(1) { left: -6px; top: -6px; } .ccBox i:nth-child(2) { right: -6px; top: -6px; } .ccBox i:nth-child(3) { left: -6px; bottom: -6px; } .ccBox i:nth-child(4) { right: -6px; bottom: -6px; }
+  .ccTag { position: absolute; left: 8px; top: 8px; padding: 2px 7px; border-radius: 6px; background: rgba(0,0,0,.6); color: #fff !important; font-size: 10.5px; font-weight: 700; }
+  .ccSide { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .ccCape { padding: 4px; border-radius: 4px; background: #facc15; transform: perspective(300px) rotateY(-14deg); box-shadow: 0 16px 34px rgba(0,0,0,.5); }
+  .ccFront { position: relative; display: block; width: 62px; height: 99px; overflow: hidden; background: linear-gradient(180deg, #312e81, #7c3aed 55%, #f472b6); image-rendering: pixelated; }
+  .ccFront .ccSun { left: 40%; width: 80%; top: 6%; }
+  .ccFront .ccDuck { left: 10%; width: 80%; bottom: 10%; }
+  .ccFront .ccHill.b { left: 10%; }
+  .ccSeg { display: flex; gap: 2px; padding: 2px; border-radius: 7px; background: rgba(0,0,0,.35); border: 1px solid var(--line); }
+  .ccSeg span { padding: 3px 7px; border-radius: 5px; font-size: 10px; font-weight: 600; color: #8d91a5 !important; }
+  .ccSeg span.on { background: rgba(250,204,21,.18); color: #facc15 !important; }
+  .ccSw { display: flex; gap: 4px; }
+  .ccSw i { width: 14px; height: 14px; border-radius: 4px; border: 1px solid rgba(255,255,255,.18); }
+  .ccSw i.on { outline: 2px solid #facc15; outline-offset: 1px; }
+  .ccSave { padding: 5px 12px; border-radius: 8px; background: #facc15; color: #1a1406 !important; font-size: 11px; font-weight: 700; }
+  @media (max-width: 900px) { .ccPic { width: 170px; height: 130px; } .ccMaker { gap: 12px; } }
 </style>
 </head>
 <body>
@@ -695,7 +723,7 @@
       </div>
       <p class="meta" data-ver>Windows 10 and 11, and Linux. It keeps itself up to date.</p>
       <div class="heroChips">
-        <a href="#friends"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c.7-3.4 3-5.4 6-5.4s5.3 2 6 5.4"/><path d="M16 4.6a3.2 3.2 0 0 1 0 6.4M21 20c-.4-2.4-1.6-4-3.3-4.9"/></svg>Friends in any modpack</a><a href="#calls"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>Voice calls in game</a><a href="#crashes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg>Fixes crashes for you</a><a href="#performance"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"/></svg>Auto FPS boost</a><a href="#safety"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6z"/><path d="m9 12 2 2 4-4"/></svg>Blocks account stealers</a>
+        <a href="#friends"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c.7-3.4 3-5.4 6-5.4s5.3 2 6 5.4"/><path d="M16 4.6a3.2 3.2 0 0 1 0 6.4M21 20c-.4-2.4-1.6-4-3.3-4.9"/></svg>Friends in any modpack</a><a href="#calls"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>Voice calls in game</a><a href="#capes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h10l1 18-6-3-6 3z"/><path d="M12 7v6"/></svg>Make your own cape</a><a href="#crashes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg>Fixes crashes for you</a><a href="#performance"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"/></svg>Auto FPS boost</a><a href="#safety"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6z"/><path d="m9 12 2 2 4-4"/></svg>Blocks account stealers</a>
       </div>
     </div>
   </div>
@@ -727,7 +755,7 @@
       <h1>Our features</h1>
       <p class="lede">Everything you need to play every version with your mods and your friends - fast.</p>
       <div class="heroChips">
-        <a href="#friends"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c.7-3.4 3-5.4 6-5.4s5.3 2 6 5.4"/><path d="M16 4.6a3.2 3.2 0 0 1 0 6.4M21 20c-.4-2.4-1.6-4-3.3-4.9"/></svg>Friends in any modpack</a><a href="#calls"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>Voice calls in game</a><a href="#crashes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg>Fixes crashes for you</a><a href="#performance"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"/></svg>Auto FPS boost</a><a href="#safety"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6z"/><path d="m9 12 2 2 4-4"/></svg>Blocks account stealers</a>
+        <a href="#friends"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c.7-3.4 3-5.4 6-5.4s5.3 2 6 5.4"/><path d="M16 4.6a3.2 3.2 0 0 1 0 6.4M21 20c-.4-2.4-1.6-4-3.3-4.9"/></svg>Friends in any modpack</a><a href="#calls"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>Voice calls in game</a><a href="#capes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h10l1 18-6-3-6 3z"/><path d="M12 7v6"/></svg>Make your own cape</a><a href="#crashes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg>Fixes crashes for you</a><a href="#performance"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"/></svg>Auto FPS boost</a><a href="#safety"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6z"/><path d="m9 12 2 2 4-4"/></svg>Blocks account stealers</a>
       </div>
     </div>
   </div>
@@ -792,7 +820,29 @@
           </div>
       </div>
     </div>
-    <div class="row flip" id="versions">
+    <div class="row flip" id="capes">
+      <div class="rowText">
+        <h2>Make your own cape</h2>
+        <p>Turn any picture or GIF into a cape. Drop it in or paste a GIPHY link, drag the box over the part you want, pick the detail and a color for the edges. GIFs move - and every Duckky player sees it on you in game.</p>
+      </div>
+      <div class="rowArt mini" aria-hidden="true">
+        <div class="ccMaker">
+          <div class="ccPic">
+            <i class="ccSun"></i><i class="ccHill a"></i><i class="ccHill b"></i>
+            <span class="ccDuck"><svg viewBox="0 0 16 16" shape-rendering="crispEdges"><rect x="5" y="2" width="5" height="4" fill="#FACC15"/><rect x="10" y="4" width="2" height="1" fill="#F59E0B"/><rect x="8" y="3" width="1" height="1" fill="#111"/><rect x="3" y="6" width="9" height="5" fill="#FACC15"/><rect x="4" y="7" width="4" height="3" fill="#EAB308"/><rect x="5" y="11" width="1" height="2" fill="#F59E0B"/><rect x="9" y="11" width="1" height="2" fill="#F59E0B"/></svg></span>
+            <span class="ccBox"><i></i><i></i><i></i><i></i></span>
+            <span class="ccTag">GIF</span>
+          </div>
+          <div class="ccSide">
+            <div class="ccCape"><span class="ccFront"><i class="ccSun"></i><i class="ccHill a"></i><i class="ccHill b"></i><span class="ccDuck"><svg viewBox="0 0 16 16" shape-rendering="crispEdges"><rect x="5" y="2" width="5" height="4" fill="#FACC15"/><rect x="10" y="4" width="2" height="1" fill="#F59E0B"/><rect x="8" y="3" width="1" height="1" fill="#111"/><rect x="3" y="6" width="9" height="5" fill="#FACC15"/><rect x="4" y="7" width="4" height="3" fill="#EAB308"/><rect x="5" y="11" width="1" height="2" fill="#F59E0B"/><rect x="9" y="11" width="1" height="2" fill="#F59E0B"/></svg></span></span></div>
+            <div class="ccSeg"><span>Pixel</span><span>Low</span><span>Normal</span><span class="on">HD</span></div>
+            <div class="ccSw"><i style="background:#16161a"></i><i style="background:#fff"></i><i class="on" style="background:#facc15"></i><i style="background:#ef4444"></i><i style="background:#3b82f6"></i><i style="background:#a855f7"></i></div>
+            <span class="ccSave">Save cape</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" id="versions">
       <div class="rowText">
         <h2>Every version, every mod</h2>
         <p>Any Minecraft release from 1.8 to the newest, on Fabric, Quilt, Forge or NeoForge. Search Modrinth and CurseForge in one place and install whole modpacks in a click.</p>
@@ -804,7 +854,7 @@
         </div>
       </div>
     </div>
-    <div class="row" id="crashes">
+    <div class="row flip" id="crashes">
       <div class="rowText">
         <h2>When it crashes, it fixes it</h2>
         <p>Instead of a crash log you get the mod that did it, in plain words, and a button that fixes it. Can't tell which one? It switches mods off half at a time and finds the broken one for you.</p>
@@ -819,7 +869,7 @@
         </div>
       </div>
     </div>
-    <div class="row flip" id="safety">
+    <div class="row" id="safety">
       <div class="rowText">
         <h2>Account stealers stopped before you play</h2>
         <p>Mods from anywhere but Modrinth and CurseForge are checked for code that steals accounts, and moved out before the game starts.</p>
@@ -828,7 +878,7 @@
         <div class="mBlock"><span class="mShield"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6z"/><path d="M9.5 9.5l5 5M14.5 9.5l-5 5"/></svg></span><div><b>Blocked a dangerous mod</b><span>sneaky-booster.jar tried to read your sign-in. It was moved out before the game started.</span></div></div>
       </div>
     </div>
-    <div class="row" id="freeze">
+    <div class="row flip" id="freeze">
       <div class="rowText">
         <h2>Knows when your world freezes</h2>
         <p>Blocks don't drop and mobs stand still? Within 30 seconds it tells you which mod your world is stuck in, so you only reopen the world - not the game.</p>
@@ -837,7 +887,7 @@
         <div class="mToast"><span class="mIc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><b>Your world stopped responding</b><span>It's stuck in Lantern Lights. Save and Quit, then open the world again.</span></div></div>
       </div>
     </div>
-    <div class="row flip" id="settings">
+    <div class="row" id="settings">
       <div class="rowText">
         <h2>Your settings go with you</h2>
         <p>Every new version gets your key binds, video, sound and servers. Send a friend your settings in a chat - they pick what to take and can undo it in one click.</p>
@@ -854,7 +904,7 @@
         </div>
       </div>
     </div>
-    <div class="row" id="lookup">
+    <div class="row flip" id="lookup">
       <div class="rowText">
         <h2>Look up any mod you have</h2>
         <p>Click any mod in a version - even one a modpack brought - and its page opens, found from the file itself.</p>

@@ -6,7 +6,7 @@
 const fs = require('fs');
 const crypto = require('crypto');
 
-const SECRET = process.env.TEBEX_SECRET || '';
+const SECRET = String(process.env.TEBEX_SECRET || '').trim().replace(/^tebex\s+secret\s+/i, '').trim(); // (works with or without the "tebex secret" words in front)
 const PACKAGE = (process.env.PLUS_PACKAGE || 'Duckky Plus').toLowerCase();
 const OUT = 'plus.json';
 const fp = (uuid) => crypto.createHash('sha256').update('duckky-plus|' + String(uuid).replace(/-/g, '').toLowerCase()).digest('hex');

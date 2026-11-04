@@ -486,8 +486,9 @@
   @media (max-width: 640px) { .osCards { grid-template-columns: 1fr; } }
 
   /* Duckky Plus */
-  .plusGold { background: linear-gradient(100deg, #ffd84d 0%, #ffd84d 36%, #fff3b8 44%, #ffffff 50%, #fff3b8 56%, #ffd84d 64%, #ffd84d 100%); background-size: 250% 100%; background-repeat: repeat-x; -webkit-background-clip: text; background-clip: text; color: transparent; animation: plusShine 2.4s linear infinite; }
-  @keyframes plusShine { from { background-position: 166.6667% 0; } to { background-position: 0% 0; } }
+  .plusGold { background: linear-gradient(105deg, #ffd84d 0%, #ffd84d 35%, #ffe68f 50%, #ffd84d 65%, #ffd84d 100%); background-size: 250% 100%; background-repeat: repeat-x; -webkit-background-clip: text; background-clip: text; color: transparent; animation: plusShine 3.4s ease-in-out infinite, plusGlow 3.4s ease-in-out infinite; }
+  @keyframes plusShine { 0% { background-position: 130% 0; } 60%, 100% { background-position: -30% 0; } }
+  @keyframes plusGlow { 0%, 100% { filter: drop-shadow(0 0 2px rgba(255, 216, 77, .4)); } 50% { filter: drop-shadow(0 0 6px rgba(255, 216, 77, .75)) drop-shadow(0 0 14px rgba(255, 190, 50, .35)); } }
   @media (prefers-reduced-motion: reduce) { .plusGold { animation: none; background-position: 50% 0; } }
   .plusBox { max-width: 720px; margin: 0 auto; padding: 32px; display: flex; flex-direction: column; gap: 18px; }
   .plusTop { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
@@ -966,7 +967,7 @@
     <ul class="plusList">
       <li><h4>Plus Badge mod</h4><p>An in-game mod to color the duck next to your name, and your name itself. Everyone on Duckky sees it.</p></li>
       <li><h4>Custom capes</h4><p>Draw your own capes or use your pictures and GIFs, and wear capes your friends send you.</p></li>
-      <li><h4>Gold name and PLUS tag</h4><p>Your name shows in animated gold in Social, with a PLUS tag on your profile.</p></li>
+      <li><h4>Animated name and PLUS tag</h4><p>Your name shimmers and glows in Social - gold, or any color you pick - with a PLUS tag on your profile.</p></li>
       <li><h4>Animated profile picture</h4><p>Use a GIF as your profile picture - it moves for everyone on Duckky.</p></li>
       <li><h4>Chat bubble color</h4><p>Pick the color of your messages in Social. Your friends see it too.</p></li>
     </ul>

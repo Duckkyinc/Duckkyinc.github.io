@@ -1,0 +1,34 @@
+# Duckky Plus: every 5 minutes, who bought it on Tebex -> plus.json (fingerprints only). See .github/plus/sync.js
+name: Duckky Plus
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency:
+  group: plus
+  cancel-in-progress: false
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Who has Plus
+        env:
+          TEBEX_SECRET: ${{ secrets.TEBEX_SECRET }}
+          PLUS_PACKAGE: ${{ vars.PLUS_PACKAGE }}
+        run: node .github/plus/sync.js
+      - name: Publish
+        run: |
+          if [ -n "$(git status --porcelain plus.json)" ]; then
+            git config user.name "Duckky Client"
+            git config user.email "noreply@duckkyinc.github.io"
+            git add plus.json
+            git commit -m "Duckky Plus: update who has it"
+            git push
+          fi

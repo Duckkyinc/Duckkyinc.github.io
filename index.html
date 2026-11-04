@@ -485,6 +485,23 @@
   .osCard small { color: #6B6F84; font-size: 12.5px; margin-top: 10px; }
   @media (max-width: 640px) { .osCards { grid-template-columns: 1fr; } }
 
+  /* Duckky Plus */
+  .plusGold { background: linear-gradient(100deg, #e9a913 0%, #ffd84d 30%, #fff6c9 45%, #ffd84d 60%, #e9a913 100%); background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: plusShine 3.2s linear infinite; }
+  @keyframes plusShine { from { background-position: 110% 0; } to { background-position: -110% 0; } }
+  @media (prefers-reduced-motion: reduce) { .plusGold { animation: none; background-position: 50% 0; } }
+  .plusBox { max-width: 720px; margin: 0 auto; padding: 32px; display: flex; flex-direction: column; gap: 18px; }
+  .plusTop { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .plusTop h3 { font-size: 24px; }
+  .plusCost { margin-left: auto; font-size: 30px; font-weight: 800; color: #ffd84d; }
+  .plusCost small { font-size: 14px; font-weight: 600; color: #8D91A5; margin-left: 4px; }
+  .plusList { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .plusList li { padding: 14px 16px; border-radius: 14px; background: rgba(255,255,255,.03); }
+  .plusList h4 { font-size: 15.5px; margin-bottom: 3px; }
+  .plusList p { color: #8D91A5; font-size: 14px; }
+  .plusBox .get { align-self: flex-start; }
+  .plusBox .get[aria-disabled="true"] { opacity: .55; pointer-events: none; }
+  .plusNote { color: #6B6F84; font-size: 13px; }
+
 
   /* three highlights under the headline */
   .hl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 1000px; margin: 64px auto 56px; text-align: left; }
@@ -700,6 +717,7 @@
     <nav class="topnav" aria-label="Pages">
       <a class="tab" href="#home">Home</a>
       <a class="tab" href="#features">Features</a>
+      <a class="tab" href="#plus">Plus</a>
     </nav>
     <a class="sideGet dl" href="#download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Download</a>
   </div>
@@ -940,6 +958,21 @@
 </section>
 
 <!-- ============ DOWNLOAD ============ -->
+<!-- ============ DUCKKY PLUS ============ -->
+<section class="page" id="plus" aria-label="Duckky Plus" hidden>
+  <div class="pageHead dlHead"><h2>Duckky <span class="plusGold">Plus</span></h2><p class="lede">A few extras for your Duckky Client, and a way to support it. Everything else stays the same for everyone.</p></div>
+  <div class="glass plusBox">
+    <div class="plusTop"><h3>What you get</h3><span class="plusCost">$4.99<small>one time</small></span></div>
+    <ul class="plusList">
+      <li><h4>Plus Badge mod</h4><p>An in-game mod to pick the color of the duck next to your name. Everyone on Duckky sees it.</p></li>
+      <li><h4>Custom capes</h4><p>Draw your own capes or use your pictures and GIFs, and wear capes your friends send you.</p></li>
+      <li><h4>Gold name and PLUS tag</h4><p>Your name shows in animated gold in Social, with a PLUS tag on your profile.</p></li>
+    </ul>
+    <a class="get" id="plusBuy" href="#" aria-disabled="true">Store opening soon</a>
+    <p class="plusNote">At checkout, type the Minecraft name you play on. Plus unlocks on that account in the launcher, usually within a few minutes. More Plus features may be added over time.</p>
+  </div>
+</section>
+
 <section class="page" id="download" aria-label="Download" hidden>
   <div class="pageHead dlHead"><h2>Download Duckky Client</h2><p class="lede">Better than other clients, with improved features and the best FPS boost. Plus your friends in every game.</p></div>
   <div class="osCards">
@@ -987,6 +1020,9 @@
 <script>
   // Where the Download button points: the setup on the GitHub releases page - people get the file straight away.
   var REPO = 'Duckkyinc/Duckky-Client';
+  // (Duckky Plus: the Tebex store's address - the Buy button stays "opening soon" until it's set)
+  var PLUS_STORE = '';
+  (function () { var b = document.getElementById('plusBuy'); if (b && /^https:\/\//.test(PLUS_STORE)) { b.href = PLUS_STORE; b.removeAttribute('aria-disabled'); b.textContent = 'Get Duckky Plus'; b.target = '_blank'; b.rel = 'noopener'; } })();
   var BASE = 'https://github.com/' + REPO + '/releases/latest/download/';
   var FILES = { windows: BASE + 'DuckkyClient-Setup.exe', linux: BASE + 'DuckkyClient-linux.AppImage' };
   document.getElementById('getWin').href = FILES.windows;

@@ -1,0 +1,2 @@
+# Duckky Plus given by hand: one Minecraft account id per line (the owner, testers)
+ef149da2e38948d3808a943167da39e3 # DuckkyonQuack

@@ -1422,6 +1422,19 @@
   .dcIcon { width: 16px; height: 16px; color: #FACC15; display: inline-grid; }
   @keyframes bobY { 50% { transform: translateY(-4px); } }
   @media (max-width: 900px) { .rowArt.stage { height: auto; min-height: 320px; padding: 22px 14px; } }
+  /* every yellow word and badge: the same gold shine and soft glow as "Plus" */
+  .hlFun, .qMore, .newsItem a, .pbFr b, .more, .kicker { background: linear-gradient(105deg, #ffd84d 0%, #ffd84d 35%, #fff0b3 50%, #ffd84d 65%, #ffd84d 100%); background-size: 250% 100%; background-repeat: repeat-x;
+    -webkit-background-clip: text; background-clip: text; color: transparent; animation: plusShine 3.4s ease-in-out infinite, plusGlow 3.4s ease-in-out infinite; }
+  .kicker { border-color: rgba(255, 216, 77, .35); box-shadow: 0 0 14px rgba(255, 216, 77, .12), inset 0 0 12px rgba(255, 216, 77, .06); }
+  .qMore::after { color: #ffd84d; }
+  .pbPeriods em, .coolNew, .rel .newest { color: #2a1d00 !important; background: linear-gradient(105deg, #f5c518 0%, #ffd84d 35%, #fff4c2 50%, #ffd84d 65%, #f5c518 100%); background-size: 250% 100%;
+    animation: plusShine 3.4s ease-in-out infinite, badgeGlow 3.4s ease-in-out infinite; }
+  @keyframes badgeGlow { 0%, 100% { box-shadow: 0 0 0 1px rgba(255, 216, 77, .35), 0 2px 8px rgba(255, 216, 77, .25); } 50% { box-shadow: 0 0 0 1px rgba(255, 216, 77, .6), 0 0 14px rgba(255, 216, 77, .55), 0 0 26px rgba(255, 190, 50, .25); } }
+  @media (prefers-reduced-motion: reduce) { .hlFun, .qMore, .newsItem a, .pbFr b, .more, .kicker, .pbPeriods em, .coolNew, .rel .newest { animation: none; background-position: 50% 0; } }
+  .coolCard > .ic, .plusList li > .ic, .qIc .ic, .heroChips .ic, .hint .ic, .dcIcon { animation: plusGlow 3.4s ease-in-out infinite; }
+  .pbPeriods button.on small, .get[aria-disabled="true"], .pbFr .ghostBtn[aria-disabled="true"] { background-image: linear-gradient(105deg, #ffd84d 0%, #ffd84d 35%, #fff0b3 50%, #ffd84d 65%, #ffd84d 100%); background-size: 250% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: plusShine 3.4s ease-in-out infinite; }
+  .get[aria-disabled="true"], .pbFr .ghostBtn[aria-disabled="true"] { background-color: rgba(250, 204, 21, .07); -webkit-background-clip: text, padding-box; background-clip: text, padding-box; }
+  @media (prefers-reduced-motion: reduce) { .coolCard > .ic, .plusList li > .ic, .qIc .ic, .heroChips .ic, .hint .ic, .dcIcon, .pbPeriods button.on small, .get[aria-disabled="true"], .pbFr .ghostBtn[aria-disabled="true"] { animation: none; } }
 </style>
 </head>
 <body>

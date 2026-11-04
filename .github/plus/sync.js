@@ -20,6 +20,13 @@ async function page(n) {
 (async () => {
   const have = new Set(), gone = new Set();
   if (!SECRET) console.log('No TEBEX_SECRET yet - add it in the repo settings (Settings > Secrets and variables > Actions). Only extra.txt is used.');
+  // (says hello the way the Tebex plugin does - so the store shows as connected; and checks the key works)
+  if (SECRET) {
+    const r = await fetch('https://plugin.tebex.io/information', { headers: { 'X-Tebex-Secret': SECRET, Accept: 'application/json' } });
+    if (!r.ok) throw new Error('Tebex said ' + r.status + ' - is TEBEX_SECRET the right key?');
+    const info = await r.json().catch(() => ({}));
+    console.log('Connected to the Tebex store' + (info.account && info.account.name ? ': ' + info.account.name : ''));
+  }
   let n = 1, last = SECRET ? 1 : 0;
   while (n <= last) {
     const j = await page(n);

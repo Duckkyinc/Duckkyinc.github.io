@@ -948,7 +948,7 @@
   @media (max-width: 900px) { .hostBox { transform: none; } }
 
   /* only here */
-  .cool { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .cool { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; align-items: start; }
   .coolCard { position: relative; text-align: left; padding: 22px 20px; border-radius: 16px; background: var(--glass); border: 1px solid var(--line);
     display: flex; flex-direction: column; gap: 8px; transition: border-color .25s, transform .25s cubic-bezier(.2, .8, .2, 1), background .25s; }
   .coolCard:hover { border-color: rgba(250, 204, 21, .3); transform: translateY(-3px); }
@@ -1113,6 +1113,311 @@
     .sList { border-right: 0; border-bottom: 1px solid rgba(255,255,255,.07); }
     .topnav .tab[data-sec="home"] { display: none; }
   }
+  /* ================= the examples: little windows like the launcher's own ================= */
+  .rowArt.stage { position: relative; height: 400px; border-radius: 22px; display: flex; align-items: center; justify-content: center; padding: 28px; overflow: hidden;
+    background: radial-gradient(70% 60% at 50% 0%, rgba(250, 204, 21, .13), transparent 70%), radial-gradient(60% 50% at 100% 100%, rgba(129, 140, 248, .10), transparent 70%), rgba(10, 12, 19, .7);
+    border: 1px solid rgba(255,255,255,.07); isolation: isolate; font-size: 12.5px; line-height: 1.4; color: #C9CBD6; }
+  .rowArt.stage::before { content: ""; position: absolute; inset: 0; z-index: -1; background-image: radial-gradient(rgba(255,255,255,.07) 1px, transparent 1.2px); background-size: 18px 18px;
+    mask-image: radial-gradient(ellipse at 50% 40%, #000 20%, transparent 75%); }
+  .rowArt.stage.peek::after { content: ""; position: absolute; right: 20px; bottom: -14px; width: 58px; height: 58px; border-radius: 16px; background: url(icon.png) center / cover;
+    transform: rotate(-12deg); box-shadow: 0 10px 24px rgba(0,0,0,.45); transition: transform .4s cubic-bezier(.3, 1.6, .5, 1); }
+  .row:hover .rowArt.stage.peek::after { transform: rotate(-4deg) translateY(-10px); }
+  .rowArt b { color: var(--feather); font-weight: 600; }
+  .rowArt small { color: #8D91A5; }
+  .win { position: relative; width: 100%; max-width: 430px; border-radius: 14px; background: linear-gradient(180deg, #181b25, #13151d); border: 1px solid rgba(255,255,255,.09);
+    box-shadow: 0 1px 0 rgba(255,255,255,.05) inset, 0 24px 60px rgba(0,0,0,.55), 0 0 0 1px rgba(0,0,0,.3); overflow: hidden; transition: transform .4s cubic-bezier(.2, .8, .2, 1), box-shadow .4s; }
+  .row:hover .win { transform: translateY(-4px); box-shadow: 0 1px 0 rgba(255,255,255,.05) inset, 0 32px 70px rgba(0,0,0,.6), 0 0 0 1px rgba(250, 204, 21, .12); }
+  .winBar { display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; border-bottom: 1px solid rgba(255,255,255,.06); background: rgba(255,255,255,.02); font-size: 12.5px; }
+  .winBar img { width: 18px; height: 18px; border-radius: 5px; }
+  .winBar b { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .winCtl { display: flex; gap: 10px; }
+  .winCtl i { width: 9px; height: 9px; position: relative; opacity: .45; }
+  .winCtl i:nth-child(1)::before { content: ""; position: absolute; left: 0; right: 0; top: 4px; height: 1.5px; background: #fff; }
+  .winCtl i:nth-child(2) { border: 1.5px solid #fff; border-radius: 1px; }
+  .winCtl i:nth-child(3)::before, .winCtl i:nth-child(3)::after { content: ""; position: absolute; left: -1px; right: -1px; top: 4px; height: 1.5px; background: #fff; transform: rotate(45deg); }
+  .winCtl i:nth-child(3)::after { transform: rotate(-45deg); }
+  .winBody { padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+  .fIc { flex: none; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; font-weight: 800; font-size: 13px; color: #fff;
+    background: linear-gradient(145deg, color-mix(in srgb, var(--c) 85%, #fff), var(--c)); box-shadow: inset 0 1px 0 rgba(255,255,255,.3), 0 4px 10px color-mix(in srgb, var(--c) 30%, transparent); }
+  .mBtn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 7px 14px; border-radius: 9px; font-weight: 700; font-size: 12px; color: #1C1503 !important;
+    background: linear-gradient(180deg, #FFE36B, #FACC15 55%, #F3B90B); box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 4px 12px rgba(250, 204, 21, .2); }
+  .mBtn.ghost { background: rgba(255,255,255,.06); color: #D9DBE3 !important; box-shadow: inset 0 0 0 1px rgba(255,255,255,.1); }
+  .mBtn:disabled { opacity: .45; cursor: default; }
+
+  /* FPS */
+  .fpsTop { display: flex; align-items: center; gap: 12px; padding: 4px 2px 6px; }
+  .fpsRing { position: relative; width: 46px; height: 46px; flex: none; }
+  .fpsRing svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .fpsRing circle { fill: none; stroke-width: 4.5; }
+  .fpsRing .t { stroke: rgba(255,255,255,.08); }
+  .fpsRing .f { stroke: var(--yolk); stroke-linecap: round; stroke-dasharray: 113.1; stroke-dashoffset: 0; transition: stroke-dashoffset .5s cubic-bezier(.2, .8, .2, 1); filter: drop-shadow(0 0 4px rgba(250,204,21,.5)); }
+  .fpsRing span { position: absolute; inset: 0; display: grid; place-items: center; font-size: 11px; font-weight: 800; color: var(--feather); }
+  .fpsHead { display: flex; flex-direction: column; }
+  .fpsHead b { font-size: 14px; }
+  .fpsList { display: flex; flex-direction: column; gap: 6px; }
+  .fItem { display: flex; align-items: center; gap: 10px; padding: 7px 9px; border-radius: 11px; background: rgba(255,255,255,.03); transition: opacity .35s, transform .35s, background .3s; }
+  .fItem > div { flex: 1; display: flex; flex-direction: column; }
+  .fOk { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: rgba(74, 222, 128, .15); color: #4ADE80; transition: transform .3s cubic-bezier(.3, 1.6, .5, 1); }
+  .fOk .ic { width: 11px; height: 11px; }
+  .fpsList.run .fItem { opacity: .35; }
+  .fpsList.run .fItem .fOk { transform: scale(0); }
+  .fpsList.run .fItem.now { opacity: 1; background: rgba(250, 204, 21, .06); }
+  .fpsList.run .fItem.in { opacity: 1; }
+  .fpsList.run .fItem.in .fOk { transform: none; }
+  .fPlay { align-self: stretch; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border-radius: 10px; font-weight: 800; font-size: 13.5px; color: #fff;
+    background: linear-gradient(180deg, #4ADE80, #16A34A); box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 6px 16px rgba(34, 197, 94, .25); transition: filter .2s, transform .15s, opacity .3s; }
+  .fPlay .ic { width: 13px; height: 13px; }
+  .fPlay:hover { filter: brightness(1.08); } .fPlay:active { transform: scale(.98); }
+  .fPlay:disabled { opacity: .35; filter: grayscale(1); cursor: default; }
+
+  /* chat */
+  .wChat { max-width: 520px; }
+  .wChat .sApp { height: 286px; max-width: none; border: 0; border-radius: 0; background: none; box-shadow: none; grid-template-columns: .9fr 1.1fr; }
+  .wChat .sList { padding: 10px 8px; background: rgba(0,0,0,.12); }
+  .wChat .sRow { gap: 9px; padding: 7px 8px; border-radius: 10px; }
+  .wChat .sAv { width: 30px; height: 30px; }
+  .wChat .sAv svg { border-radius: 8px; }
+  .sAv.sm { width: 20px; height: 20px; flex: none; }
+  .wChat .sHeadBar { padding: 9px 12px; }
+  .wChat .sB { border-radius: 12px; font-size: 12px; padding: 7px 10px; }
+  .wChat .sB.them { background: #22252f; border-bottom-left-radius: 4px; }
+  .wChat .sB.me { background: linear-gradient(180deg, rgba(250,204,21,.28), rgba(250,204,21,.18)); border-bottom-right-radius: 4px; color: #FFF6CF; }
+  .wChat .sB.me small { color: #D9C98A; }
+  .sBtn { display: inline-flex; align-items: center; gap: 5px; }
+  .sBtn .ic { width: 11px; height: 11px; }
+  .wChat .sInput { border-color: rgba(255,255,255,.1); background: rgba(255,255,255,.03); transition: border-color .2s; }
+  .wChat .sInput:focus-within { border-color: rgba(250, 204, 21, .5); }
+  .wChat .sSend { display: grid; place-items: center; width: 26px; height: 22px; padding: 0; }
+  .wChat .sSend .ic { width: 12px; height: 12px; }
+
+  /* call */
+  .wCall { max-width: 400px; border-color: rgba(74, 222, 128, .3); transition: border-color .3s, transform .4s, box-shadow .4s; }
+  .wCall.left { border-color: rgba(255,255,255,.1); }
+  .cLive { width: 8px; height: 8px; border-radius: 50%; background: #4ADE80; box-shadow: 0 0 0 3px rgba(74, 222, 128, .2); animation: soonDot 1.6s infinite; }
+  .wCall.left .cLive { background: #6B6F84; box-shadow: none; animation: none; }
+  .wCall .cTime { font-family: ui-monospace, monospace; color: #4ADE80; font-size: 11.5px; }
+  .wCall.left .cTime { color: #6B6F84; }
+  .wCall .cTiles { display: grid; grid-template-columns: repeat(var(--n, 3), 1fr); gap: 8px; padding: 14px 14px 4px; margin: 0; }
+  .wCall .cTile { padding: 14px 6px 10px; border-radius: 12px; background: rgba(255,255,255,.035); gap: 7px; animation: pop .35s cubic-bezier(.2, .8, .2, 1); }
+  .wCall .cTile.bye { animation: tileOut .35s forwards; }
+  @keyframes tileOut { to { opacity: 0; transform: scale(.8); } }
+  .wCall .cFace { width: 48px; height: 48px; border-radius: 14px; }
+  .wCall .cTile.talk .cFace { box-shadow: 0 0 0 2px #4ADE80, 0 0 0 6px rgba(74, 222, 128, .18), 0 0 20px rgba(74, 222, 128, .45); animation: talk 1s ease-in-out infinite; }
+  @keyframes talk { 50% { box-shadow: 0 0 0 2px #4ADE80, 0 0 0 9px rgba(74, 222, 128, .08), 0 0 26px rgba(74, 222, 128, .5); } }
+  .wCall .cTile b { font-size: 11.5px; }
+  .wCall .cMuted { top: 6px; right: 6px; }
+  .wCall .cGone { grid-column: 1 / -1; padding: 22px 0 16px; text-align: center; color: #8D91A5; }
+  .wCall .cBtns { padding: 12px 14px 14px; gap: 8px; }
+  .wCall .cB { padding: 8px 14px; border-radius: 10px; font-size: 12px; background: rgba(255,255,255,.06); }
+  .wCall .cB:hover { background: rgba(255,255,255,.1); }
+  .wCall .cB.red { background: linear-gradient(180deg, #F0646A, #E5484D); }
+  .wCall .cB.join { background: linear-gradient(180deg, #4ADE80, #16A34A); color: #fff !important; }
+  .wCall .cB:disabled { opacity: .35; cursor: default; }
+
+  /* cape */
+  .wCape { max-width: 470px; }
+  .cpBody { display: flex; gap: 16px; align-items: center; padding: 16px; }
+  .cpPic { position: relative; flex: 1; aspect-ratio: 8 / 5; border-radius: 10px; overflow: hidden; background-size: 100% 100%; touch-action: none; user-select: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+  .cpBox { position: absolute; top: 0; left: 0; border: 2px solid var(--yolk); border-radius: 3px; cursor: grab; box-shadow: 0 0 0 999px rgba(0,0,0,.5), 0 0 16px rgba(250, 204, 21, .35); }
+  .cpBox:active { cursor: grabbing; }
+  .cpBox i { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: var(--yolk); box-shadow: 0 0 0 2px #0b0d14; }
+  .cpBox i:nth-child(1) { left: -6px; top: -6px; } .cpBox i:nth-child(2) { right: -6px; top: -6px; } .cpBox i:nth-child(3) { left: -6px; bottom: -6px; } .cpBox i:nth-child(4) { right: -6px; bottom: -6px; }
+  .cpBox span { position: absolute; left: 50%; bottom: -26px; transform: translateX(-50%); white-space: nowrap; padding: 2px 8px; border-radius: 6px; background: var(--yolk); color: #1C1503; font-weight: 700; font-size: 10.5px; pointer-events: none; transition: opacity .3s; }
+  .cpPic.used .cpBox span { opacity: 0; }
+  .cpSide { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .cpCape { position: relative; padding: 5px; border-radius: 5px; background: var(--edge, #facc15); transform: perspective(320px) rotateY(-16deg); transform-origin: 50% 0;
+    box-shadow: 0 18px 36px rgba(0,0,0,.55); transition: background .3s; animation: sway 4s ease-in-out infinite; }
+  .cpCape canvas { display: block; width: 72px; height: 115px; image-rendering: pixelated; border-radius: 1px; }
+  .cpShine { position: absolute; inset: 5px; background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.25) 50%, transparent 65%); background-size: 250% 100%; animation: capeShine 3s linear infinite; pointer-events: none; }
+  @keyframes capeShine { from { background-position: 150% 0; } to { background-position: -100% 0; } }
+  .ccSeg { background: rgba(0,0,0,.3); }
+  .ccSave { padding: 7px 14px; border-radius: 9px; font-size: 12px; background: linear-gradient(180deg, #FFE36B, #FACC15 55%, #F3B90B); box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 4px 12px rgba(250, 204, 21, .2); color: #1a1406; font-weight: 700; }
+  .ccSave.done { background: linear-gradient(180deg, #4ADE80, #16A34A); color: #fff; }
+  @media (max-width: 560px) { .cpBody { flex-direction: column; } .cpPic { width: 100%; } }
+
+  /* versions */
+  .wVer { max-width: 420px; }
+  .vLbl { font-size: 11px; font-weight: 700; letter-spacing: .03em; color: #8D91A5; margin-bottom: -4px; }
+  .vList { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .vList button, .vLoad button { display: flex; align-items: center; justify-content: center; gap: 7px; padding: 9px 4px; border-radius: 10px; font-weight: 700; font-size: 12.5px; color: var(--feather);
+    background: rgba(255,255,255,.035); border: 1px solid rgba(255,255,255,.07); transition: border-color .15s, background .15s, transform .12s; }
+  .vList button::before { content: ""; width: 12px; height: 12px; border-radius: 3px; background: linear-gradient(180deg, #5fbf3f 0 35%, #8a5a33 35%); box-shadow: inset 0 0 0 1px rgba(0,0,0,.25); }
+  .vList button:hover, .vLoad button:hover { border-color: rgba(255,255,255,.18); }
+  .vList button:active, .vLoad button:active { transform: scale(.96); }
+  .vList button.on, .vLoad button.on { border-color: rgba(250, 204, 21, .65); background: rgba(250, 204, 21, .1); color: #FDE68A; }
+  .vLoad { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .vLoad button::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+  .vLoad button.no { opacity: .35; }
+  .vFoot { display: flex; align-items: center; gap: 10px; margin-top: 2px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,.06); }
+  .vFoot .mVerOut { flex: 1; text-align: left; font-size: 12px; }
+  .vMake { padding: 8px 16px; border-radius: 9px; font-weight: 800; font-size: 12px; color: #1C1503; background: linear-gradient(180deg, #FFE36B, #FACC15 55%, #F3B90B); box-shadow: inset 0 1px 0 rgba(255,255,255,.6); }
+  .vMake:disabled { opacity: .35; cursor: default; }
+
+  /* crash */
+  .stackW { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 420px; }
+  .wCrash { border-color: rgba(248, 113, 113, .3); transition: border-color .3s; }
+  .wCrash.fixed { border-color: rgba(74, 222, 128, .35); }
+  .crHead { display: flex; align-items: center; gap: 10px; padding: 14px 14px 0; }
+  .crIc { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: rgba(248, 113, 113, .14); color: #F87171; font-weight: 900; font-size: 16px; flex: none; }
+  .wCrash.fixed .crIc { background: rgba(74, 222, 128, .14); color: #4ADE80; }
+  .crIc .ic { width: 16px; height: 16px; }
+  .crHead div { display: flex; flex-direction: column; }
+  .crHead b { font-size: 14px; }
+  .crFind { margin: 12px 14px 14px; padding: 12px; border-radius: 11px; background: rgba(255,255,255,.035); display: flex; gap: 10px; }
+  .crFind > div { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+  .crFind .mBtns { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .wHunt { display: flex; align-items: center; gap: 12px; padding: 12px 14px; text-align: left; color: inherit; font: inherit; font-size: 12.5px; cursor: pointer; }
+  .wHunt:hover { border-color: rgba(250, 204, 21, .35); }
+  .wHunt > div { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+  .hIc { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: rgba(250, 204, 21, .12); color: var(--yolk); flex: none; }
+  .hIc .ic { width: 16px; height: 16px; }
+  .wHunt .mSteps { display: flex; gap: 4px; margin-top: 5px; }
+  .wHunt .mSteps i { flex: 1; height: 5px; border-radius: 3px; background: rgba(255,255,255,.08); transition: background .3s; }
+  .wHunt .mSteps i.on { background: var(--yolk); }
+  .wHunt .mSteps.found i { background: #4ADE80; }
+
+  /* safety */
+  .wSafe { max-width: 410px; }
+  .sfRow { display: flex; align-items: center; gap: 10px; padding: 8px 9px; border-radius: 11px; background: rgba(255,255,255,.03); position: relative; overflow: hidden; }
+  .sfRow > div { flex: 1; display: flex; flex-direction: column; }
+  .sfOk { padding: 2px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 800; color: #4ADE80; background: rgba(74, 222, 128, .12); }
+  .sfBad { display: none; }
+  .wSafe.scan .sfBad, .wSafe.done .sfBad { display: flex; animation: pop .3s cubic-bezier(.2, .8, .2, 1); }
+  .wSafe.scan .sfBad .sfOk { color: #FDE68A; background: rgba(250, 204, 21, .12); }
+  .sfBar { position: absolute; left: 0; bottom: 0; height: 2px; width: 0; background: var(--yolk); }
+  .wSafe.scan .sfBar { animation: fill 1.3s linear forwards; }
+  .wSafe.done .sfBad { background: rgba(248, 113, 113, .08); box-shadow: inset 0 0 0 1px rgba(248, 113, 113, .3); }
+  .wSafe.done .sfBad b { text-decoration: line-through; color: #FCA5A5; }
+  .wSafe.done .sfBad .sfOk { color: #F87171; background: rgba(248, 113, 113, .14); }
+  .wSafe.done .sfBad .fIc { --c: #ef4444 !important; }
+  .sfAdd { display: flex; align-items: center; justify-content: center; gap: 7px; padding: 9px; border-radius: 11px; border: 1px dashed rgba(255,255,255,.18); color: #C9CBD6; font-weight: 600; font-size: 12px; transition: border-color .2s, color .2s; }
+  .sfAdd:hover { border-color: rgba(250, 204, 21, .5); color: #FDE68A; }
+  .sfAdd .ic { width: 13px; height: 13px; }
+  .wSafe.scan .sfAdd, .wSafe.done .sfAdd { display: none; }
+  .sfNote { display: none; gap: 10px; padding: 10px 12px; border-radius: 11px; background: rgba(248, 113, 113, .08); }
+  .sfNote div { display: flex; flex-direction: column; gap: 2px; }
+  .wSafe.done .sfNote { display: flex; animation: pop .35s .1s cubic-bezier(.2, .8, .2, 1) both; }
+  .sfAgain { align-self: center; font-size: 11.5px; color: #8D91A5; text-decoration: underline; }
+
+  /* the world that freezes */
+  .wWorld { max-width: 440px; }
+  .mcWorld { position: relative; height: 210px; overflow: hidden; background: linear-gradient(180deg, #5b8def 0%, #8ab4f8 55%, #cfe3ff 100%); }
+  .mcWorld i { position: absolute; }
+  .mcSun { width: 34px; height: 34px; right: 46px; top: 22px; background: #fff3b0; box-shadow: 0 0 0 6px rgba(255, 243, 176, .35), 0 0 40px rgba(255, 236, 140, .8); }
+  .mcCloud { height: 14px; width: 70px; background: #fff; box-shadow: 18px -10px 0 -2px #fff, 40px 0 0 #fff; opacity: .9; animation: cloud 26s linear infinite; }
+  .mcCloud.a { top: 30px; left: -90px; } .mcCloud.b { top: 62px; left: -90px; animation-delay: -13s; transform: scale(.7); }
+  @keyframes cloud { to { left: 110%; } }
+  .mcHill { left: -10%; right: 40%; bottom: 52px; height: 60px; background: #3f8f2f; border-radius: 50% 50% 0 0 / 100% 100% 0 0; opacity: .55; }
+  .mcTree { left: 64%; bottom: 58px; width: 30px; height: 30px; background: #2f7a25; box-shadow: inset 0 0 0 4px #3a8e2d, 0 30px 0 -11px #6b4423; }
+  .mcGround { position: absolute; left: 0; right: 0; bottom: 0; height: 58px; background:
+    linear-gradient(180deg, #5fbf3f 0 12px, #4c9e31 12px 16px, transparent 16px),
+    repeating-linear-gradient(90deg, #8a5a33 0 14px, #7a4e2b 14px 28px, #93623a 28px 42px);
+    box-shadow: inset 0 16px 0 0 transparent; }
+  .mcChick { bottom: 58px; left: 8%; width: 22px; height: 20px; background: #fff; border-radius: 4px 6px 2px 2px; animation: chick 7s ease-in-out infinite alternate; }
+  .mcChick::before { content: ""; position: absolute; right: -6px; top: 5px; width: 6px; height: 4px; background: #f59e0b; }
+  .mcChick::after { content: ""; position: absolute; left: 5px; bottom: -6px; width: 3px; height: 6px; background: #f59e0b; box-shadow: 8px 0 0 #f59e0b; }
+  @keyframes chick { 0% { left: 8%; } 45% { left: 40%; } 55% { left: 40%; transform: translateY(-4px); } 100% { left: 52%; } }
+  .mcItem { left: 28%; bottom: 66px; width: 13px; height: 13px; background: linear-gradient(180deg, #5fbf3f 0 35%, #8a5a33 35%); box-shadow: 0 0 0 1px rgba(0,0,0,.2); animation: bobY 2.2s ease-in-out infinite, spin 4s linear infinite; }
+  @keyframes spin { to { rotate: 360deg; } }
+  .mcClock { position: absolute; left: 10px; top: 10px; padding: 3px 8px; border-radius: 7px; background: rgba(0,0,0,.45); color: #fff !important; font: 700 11px ui-monospace, monospace; backdrop-filter: blur(4px); }
+  .mcFrost { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .6s; background: radial-gradient(120% 90% at 50% 50%, transparent 45%, rgba(186, 230, 253, .55)), linear-gradient(180deg, rgba(147, 197, 253, .25), rgba(147, 197, 253, .1)); }
+  .mcWorld.frozen i, .mcWorld.frozen .mcChick { animation-play-state: paused; }
+  .mcWorld.frozen .mcFrost { opacity: 1; }
+  .mcWorld.frozen .mcClock { background: rgba(14, 116, 144, .7); }
+  .mcToast { position: absolute; left: 12px; right: 12px; bottom: 12px; display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 12px; background: rgba(17, 20, 31, .92);
+    border: 1px solid rgba(250, 204, 21, .35); box-shadow: 0 12px 30px rgba(0,0,0,.5); transform: translateY(130%); transition: transform .45s cubic-bezier(.2, 1.2, .3, 1); }
+  .mcToast img { width: 26px; height: 26px; border-radius: 7px; flex: none; }
+  .mcToast div { display: flex; flex-direction: column; gap: 2px; }
+  .mcWorld.told .mcToast { transform: none; }
+  .wFoot { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 12px; }
+  .wHot { display: inline-flex; align-items: center; gap: 6px; color: #8D91A5; font-size: 12px; }
+  .wHot .ic { width: 13px; height: 13px; color: #7dd3fc; }
+
+  /* settings share */
+  .wSet { max-width: 380px; }
+  .setMsg { align-self: flex-start; max-width: 85%; padding: 8px 11px; border-radius: 12px 12px 12px 4px; background: #22252f; font-size: 12px; color: #ECEDF2; }
+  .setCard { padding: 12px; border-radius: 12px; background: linear-gradient(180deg, rgba(250,204,21,.07), rgba(255,255,255,.02)); border: 1px solid rgba(250, 204, 21, .22); display: flex; flex-direction: column; gap: 10px; }
+  .setHead { display: flex; gap: 10px; align-items: center; }
+  .setHead div { display: flex; flex-direction: column; }
+  .setIc { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 9px; background: rgba(250, 204, 21, .14); color: var(--yolk); }
+  .setIc .ic { width: 16px; height: 16px; }
+  .setPicks { display: flex; flex-wrap: wrap; gap: 6px; }
+  .setPicks button { padding: 5px 10px; border-radius: 8px; font-size: 11.5px; font-weight: 600; color: #A3A6B5; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); transition: all .15s; }
+  .setPicks button.on { color: #FDE68A; border-color: rgba(250, 204, 21, .45); background: rgba(250, 204, 21, .1); }
+  .setPicks button.on::before { content: "\2713  "; }
+  .setGo { padding: 9px; border-radius: 10px; font-weight: 800; font-size: 12.5px; color: #1C1503; background: linear-gradient(180deg, #FFE36B, #FACC15 55%, #F3B90B); box-shadow: inset 0 1px 0 rgba(255,255,255,.6); transition: filter .15s; }
+  .setGo.undo { background: rgba(255,255,255,.07); color: #D9DBE3; box-shadow: inset 0 0 0 1px rgba(255,255,255,.12); }
+  .setNote { text-align: center; font-size: 11.5px; }
+  .setNote.ok { color: #4ADE80 !important; }
+
+  /* mod lookup */
+  .wLook { max-width: 440px; }
+  .lkBody { position: relative; min-height: 236px; overflow: hidden; }
+  .lkList { display: flex; flex-direction: column; gap: 6px; transition: transform .45s cubic-bezier(.2, .8, .2, 1), opacity .3s; }
+  .lkRow { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 11px; background: rgba(255,255,255,.03); text-align: left; cursor: pointer; transition: background .15s, box-shadow .15s; }
+  .lkRow:hover { background: rgba(250, 204, 21, .07); box-shadow: inset 0 0 0 1px rgba(250, 204, 21, .3); }
+  .lkRow > div { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  .lkRow b { color: var(--feather) !important; }
+  .lkTog { width: 28px; height: 16px; border-radius: 999px; background: #4ADE80; position: relative; flex: none; transition: background .2s; }
+  .lkTog::after { content: ""; position: absolute; top: 2px; left: 14px; width: 12px; height: 12px; border-radius: 50%; background: #fff; transition: left .2s; }
+  .lkTog.off { background: rgba(255,255,255,.15); } .lkTog.off::after { left: 2px; }
+  .lkHint { align-self: flex-end; padding: 3px 9px; border-radius: 7px; background: var(--yolk); color: #1C1503; font-weight: 700; font-size: 11px; animation: bobY 2.4s ease-in-out infinite; }
+  .lkPage { position: absolute; inset: 14px; display: flex; flex-direction: column; border-radius: 12px; overflow: hidden; background: #1a1d28; border: 1px solid rgba(255,255,255,.08);
+    transform: translateX(110%); transition: transform .45s cubic-bezier(.2, .8, .2, 1); }
+  .wLook.open .lkPage { transform: none; }
+  .wLook.open .lkList { transform: translateX(-30%); opacity: 0; }
+  .lkBan { height: 54px; background: linear-gradient(135deg, var(--c), color-mix(in srgb, var(--c) 40%, #0b0d14)); position: relative; }
+  .lkBack { position: absolute; left: 8px; top: 8px; padding: 3px 9px; border-radius: 7px; background: rgba(0,0,0,.4); color: #fff; font-size: 11px; font-weight: 700; }
+  .lkIn { padding: 0 12px 12px; display: flex; flex-direction: column; gap: 6px; }
+  .lkIn .fIc { width: 42px; height: 42px; margin-top: -20px; border: 3px solid #1a1d28; font-size: 16px; }
+  .lkIn b { font-size: 14px; }
+  .lkTags { display: flex; gap: 5px; flex-wrap: wrap; }
+  .lkTags span { padding: 2px 8px; border-radius: 6px; background: rgba(255,255,255,.06); font-size: 10.5px; font-weight: 600; color: #C9CBD6; }
+
+  /* hosting */
+  .wHost { max-width: 400px; }
+  .hDot { width: 9px; height: 9px; border-radius: 50%; background: #6B6F84; transition: background .3s, box-shadow .3s; }
+  .wHost.on .hDot { background: #4ADE80; box-shadow: 0 0 0 3px rgba(74, 222, 128, .25); }
+  .wHost.starting .hDot { background: var(--yolk); animation: blink .6s infinite; }
+  .hVer { font-size: 11px; color: #8D91A5; }
+  .hPeople { display: flex; gap: 8px; min-height: 52px; align-items: center; padding: 8px 10px; border-radius: 11px; background: rgba(255,255,255,.03); }
+  .hPeople .hEmpty { color: #6B6F84; font-size: 12px; }
+  .hP { display: flex; flex-direction: column; align-items: center; gap: 3px; animation: pop .4s cubic-bezier(.3, 1.6, .5, 1); }
+  .hP span { width: 30px; height: 30px; border-radius: 9px; overflow: hidden; display: block; }
+  .hP span svg { width: 100%; height: 100%; display: block; }
+  .hP small { font-size: 10px; }
+  .hCon { height: 86px; padding: 8px 10px; border-radius: 11px; background: #0b0d13; font: 11px/1.55 ui-monospace, monospace; color: #8D91A5; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
+  .hCon span { animation: pop .2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hCon .g { color: #4ADE80; } .hCon .y { color: #FDE68A; }
+  .hBtns { display: flex; align-items: center; gap: 8px; }
+  .hCount { margin-left: auto; font-weight: 700; color: var(--feather); font-size: 12px; }
+
+  /* the fun stuff heading */
+  .hlFun { background: linear-gradient(100deg, #FDE68A, #FACC15 40%, #FDE68A 60%, #F59E0B); background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: funShine 5s linear infinite; }
+  @keyframes funShine { from { background-position: 120% 0; } to { background-position: -100% 0; } }
+  @media (prefers-reduced-motion: reduce) { .hlFun, .cpCape, .cpShine, .mcCloud, .mcChick, .mcItem { animation: none; } }
+
+  /* the Discord chat */
+  .dcArt { gap: 2px; padding: 14px 6px 10px; background: #313338; }
+  .dcHead { display: flex; align-items: center; gap: 6px; padding: 0 12px 10px; margin-bottom: 4px; border-bottom: 1px solid rgba(0,0,0,.25); color: #F2F3F5; font-weight: 600; font-size: 13px; }
+  .dcHead span { color: #80848E; font-size: 18px; font-weight: 400; }
+  .dcMsg { display: flex; gap: 12px; padding: 5px 12px; border-radius: 4px; animation: none; opacity: 0; transform: translateY(8px); transition: opacity .35s, transform .35s, background .15s; }
+  .dcMsg:hover { background: rgba(0,0,0,.08); }
+  .dcBox.in .dcMsg { opacity: 1; transform: none; }
+  .dcMsg > div { min-width: 0; }
+  .dcAv { flex: none; width: 36px; height: 36px; border-radius: 50%; }
+  .dcAv.rice { background: radial-gradient(circle at 50% 38%, #fff 0 34%, transparent 35%), radial-gradient(circle at 50% 100%, #fff 0 46%, transparent 47%), #1e1f22; box-shadow: inset 0 0 0 2px #2b2d31; }
+  .dcAv.dk { background: url(icon.png) center / cover, #FACC15; }
+  .dcName { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; font-size: 14px; }
+  .dcName b { font-weight: 600; }
+  .dcName b.y { color: #FACC15; } .dcName b.w { color: #F2F3F5; }
+  .dcRole { display: inline-flex; align-items: center; gap: 3px; padding: 0 5px; height: 17px; border-radius: 4px; background: #1e1f22; color: #DBDEE1; font-size: 11px; font-weight: 600; }
+  .dcTime { color: #949BA4; font-size: 11.5px; }
+  .dcMsg p { color: #DBDEE1; font-size: 14px; margin-top: 1px; }
+  .dcAt { padding: 0 3px; border-radius: 3px; background: rgba(88, 101, 242, .3); color: #C9CDFB; font-weight: 500; }
+  .dcIcon { width: 16px; height: 16px; color: #FACC15; display: inline-grid; }
+  @keyframes bobY { 50% { transform: translateY(-4px); } }
+  @media (max-width: 900px) { .rowArt.stage { height: auto; min-height: 320px; padding: 22px 14px; } }
 </style>
 </head>
 <body>
@@ -1180,14 +1485,22 @@
         <p>Duckky Client tunes Java for your PC and adds speed-up mods to any version or modpack that's missing them - a faster renderer, memory savers and more. If a modpack doesn't like one, it takes it back out by itself.</p>
         <button class="tryBtn" data-act="fps"><i class="ic" data-i="play"></i>Get a version ready</button>
       </div>
-      <div class="rowArt mini">
-        <div class="mList big" id="fpsList">
-          <div class="mTitle">Getting Horror Pack ready</div>
-          <div class="mLine"><span class="mOk"><i class="ic" data-i="check"></i></span>Java tuned for your PC<em>8 threads, 6 GB</em></div>
-          <div class="mLine"><span class="mOk"><i class="ic" data-i="check"></i></span>Added Embeddium<em>faster renderer</em></div>
-          <div class="mLine"><span class="mOk"><i class="ic" data-i="check"></i></span>Added Entity Culling<em>hides what you can't see</em></div>
-          <div class="mLine"><span class="mOk"><i class="ic" data-i="check"></i></span>Added FerriteCore<em>less memory</em></div>
-          <div class="mDone">Ready to play</div>
+      <div class="rowArt stage peek">
+        <div class="win wFps">
+          <div class="winBar"><img src="icon.png" alt=""><b>Horror Pack</b><span class="winCtl"><i></i><i></i><i></i></span></div>
+          <div class="winBody">
+            <div class="fpsTop">
+              <div class="fpsRing"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="18" class="t"/><circle cx="22" cy="22" r="18" class="f" id="fpsArc"/></svg><span id="fpsPct">4/4</span></div>
+              <div class="fpsHead"><b id="fpsTitle">Ready to play</b><small id="fpsStep">Everything's set up for your PC</small></div>
+            </div>
+            <div class="fpsList" id="fpsList">
+              <div class="fItem"><span class="fIc" style="--c:#f97316">J</span><div><b>Java tuned for your PC</b><small>8 threads, 6 GB of memory</small></div><span class="fOk"><i class="ic" data-i="check"></i></span></div>
+              <div class="fItem"><span class="fIc" style="--c:#a855f7">E</span><div><b>Embeddium</b><small>A faster renderer</small></div><span class="fOk"><i class="ic" data-i="check"></i></span></div>
+              <div class="fItem"><span class="fIc" style="--c:#22c55e">C</span><div><b>Entity Culling</b><small>Skips what you can't see</small></div><span class="fOk"><i class="ic" data-i="check"></i></span></div>
+              <div class="fItem"><span class="fIc" style="--c:#3b82f6">F</span><div><b>FerriteCore</b><small>Uses less memory</small></div><span class="fOk"><i class="ic" data-i="check"></i></span></div>
+            </div>
+            <button class="fPlay" id="fpsPlay"><i class="ic" data-i="play"></i>Play</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1199,17 +1512,20 @@
         <p>See who's online and what they're playing, chat and call, and invite them into your world. It works inside modpacks too, from 1.7.10 to 1.21.1.</p>
         <p class="hint"><i class="ic" data-i="pointer"></i>Click a chat, type a message and send it.</p>
       </div>
-      <div class="rowArt mini">
-        <div class="sApp">
-          <div class="sList">
-            <input class="sSearch" id="chatSearch" placeholder="Search chats" aria-label="Search chats">
-            <div class="sGroup">Friends</div>
-            <div id="chatRows"></div>
-          </div>
-          <div class="sChat">
-            <div class="sHeadBar"><span class="sAv" id="chatAv"></span><div><b id="chatName"></b><small id="chatSub"></small></div><button class="sBtn" id="chatCall">Call</button></div>
-            <div class="sMsgs" id="chatMsgs"></div>
-            <form class="sInput" id="chatForm"><input id="chatText" maxlength="120" autocomplete="off" aria-label="Message"><button class="sSend">Send</button></form>
+      <div class="rowArt stage">
+        <div class="win wChat">
+          <div class="winBar"><img src="icon.png" alt=""><b>Social</b><span class="winCtl"><i></i><i></i><i></i></span></div>
+          <div class="sApp">
+            <div class="sList">
+              <input class="sSearch" id="chatSearch" placeholder="Search chats" aria-label="Search chats">
+              <div class="sGroup">Friends</div>
+              <div id="chatRows"></div>
+            </div>
+            <div class="sChat">
+              <div class="sHeadBar"><span class="sAv" id="chatAv"></span><div><b id="chatName"></b><small id="chatSub"></small></div><button class="sBtn" id="chatCall"><i class="ic" data-i="phone"></i><span>Call</span></button></div>
+              <div class="sMsgs" id="chatMsgs"></div>
+              <form class="sInput" id="chatForm"><input id="chatText" maxlength="120" autocomplete="off" aria-label="Message"><button class="sSend" aria-label="Send"><i class="ic" data-i="send"></i></button></form>
+            </div>
           </div>
         </div>
       </div>
@@ -1222,9 +1538,9 @@
         <p>Call your friends from the launcher or in game and keep talking while you play - mute, deafen and see who's talking, even inside modpacks. Turn on Proximity Voice and hear Duckky players near you get louder as they walk up.</p>
         <p class="hint"><i class="ic" data-i="pointer"></i>Try Mute, Deafen and Leave.</p>
       </div>
-      <div class="rowArt mini">
-        <div class="cBox" id="callBox">
-          <div class="cTop"><span class="cPh"><i class="ic" data-i="phone"></i></span><b id="callTitle">Call with PondSkipper</b><span class="cTime" id="callTime">4:12</span></div>
+      <div class="rowArt stage">
+        <div class="win wCall" id="callBox">
+          <div class="winBar"><span class="cLive"></span><b id="callTitle">Call with PondSkipper</b><span class="cTime" id="callTime">4:12</span></div>
           <div class="cTiles" id="callTiles"></div>
           <div class="cBtns"><button class="cB" data-call="mute"><i class="ic" data-i="mic"></i><span>Mute</span></button><button class="cB" data-call="deaf"><i class="ic" data-i="head"></i><span>Deafen</span></button><button class="cB red" data-call="leave"><i class="ic" data-i="phoneoff"></i><span>Leave</span></button></div>
         </div>
@@ -1236,21 +1552,19 @@
       <div class="rowText">
         <h2>Make your own cape</h2>
         <p>Turn any picture or GIF into a cape - or draw your own in pixel art, with frames to make it move. Pick a color for the edges, and send it to a friend to wear in one click. Every Duckky player sees it on you in game.</p>
-        <p class="hint"><i class="ic" data-i="pointer"></i>Pick a quality and a color, then save it.</p>
+        <p class="hint"><i class="ic" data-i="pointer"></i>Drag the box around the picture (scroll to resize it) - the cape follows.</p>
       </div>
-      <div class="rowArt mini">
-        <div class="ccMaker" id="capeMaker">
-          <div class="ccPic">
-            <i class="ccSun"></i><i class="ccHill a"></i><i class="ccHill b"></i>
-            <span class="ccDuck" data-art="duck"></span>
-            <span class="ccBox"><i></i><i></i><i></i><i></i></span>
-            <span class="ccTag">GIF</span>
-          </div>
-          <div class="ccSide">
-            <div class="ccCape"><span class="ccFront"><i class="ccSun"></i><i class="ccHill a"></i><i class="ccHill b"></i><span class="ccDuck" data-art="duck"></span></span></div>
-            <div class="ccSeg" role="group" aria-label="Quality"><button>Pixel</button><button>Low</button><button>Normal</button><button class="on">HD</button></div>
-            <div class="ccSw" role="group" aria-label="Edge color"><button style="background:#16161a" aria-label="Black"></button><button style="background:#fff" aria-label="White"></button><button class="on" style="background:#facc15" aria-label="Yellow"></button><button style="background:#ef4444" aria-label="Red"></button><button style="background:#3b82f6" aria-label="Blue"></button><button style="background:#a855f7" aria-label="Purple"></button></div>
-            <button class="ccSave">Save cape</button>
+      <div class="rowArt stage peek">
+        <div class="win wCape" id="capeMaker">
+          <div class="winBar"><img src="icon.png" alt=""><b>Make your own cape</b><span class="winCtl"><i></i><i></i><i></i></span></div>
+          <div class="cpBody">
+            <div class="cpPic" id="cpPic"><div class="cpBox" id="cpBox"><i></i><i></i><i></i><i></i><span>Drag me</span></div></div>
+            <div class="cpSide">
+              <div class="cpCape" id="cpCape"><canvas id="cpCanvas" width="160" height="256"></canvas><i class="cpShine"></i></div>
+              <div class="ccSeg" role="group" aria-label="Quality"><button>Pixel</button><button>Low</button><button>Normal</button><button class="on">HD</button></div>
+              <div class="ccSw" role="group" aria-label="Edge color"><button style="background:#16161a" aria-label="Black"></button><button style="background:#fff" aria-label="White"></button><button class="on" style="background:#facc15" aria-label="Yellow"></button><button style="background:#ef4444" aria-label="Red"></button><button style="background:#3b82f6" aria-label="Blue"></button><button style="background:#a855f7" aria-label="Purple"></button></div>
+              <button class="ccSave">Save cape</button>
+            </div>
           </div>
         </div>
       </div>
@@ -1263,11 +1577,16 @@
         <p>Any Minecraft release from 1.8 to the newest, on Fabric, Quilt, Forge or NeoForge. Search Modrinth and CurseForge in one place, install whole modpacks in a click, or drop in your own mod files.</p>
         <p class="hint"><i class="ic" data-i="pointer"></i>Pick a version and a loader.</p>
       </div>
-      <div class="rowArt mini">
-        <div class="mGrid" id="verGrid">
-          <button class="on">1.21.11</button><button>1.21.1</button><button>1.20.6</button><button>1.20.1</button><button>1.19.4</button><button>1.18.2</button><button>1.16.5</button><button>1.12.2</button><button>1.8.9</button>
-          <div class="mLoaders"><button class="chip on">Fabric</button><button class="chip">Quilt</button><button class="chip">Forge</button><button class="chip">NeoForge</button></div>
-          <div class="mVerOut" id="verOut"></div>
+      <div class="rowArt stage">
+        <div class="win wVer">
+          <div class="winBar"><img src="icon.png" alt=""><b>New version</b><span class="winCtl"><i></i><i></i><i></i></span></div>
+          <div class="winBody" id="verGrid">
+            <small class="vLbl">Minecraft</small>
+            <div class="vList"><button class="on">1.21.11</button><button>1.21.1</button><button>1.20.6</button><button>1.20.1</button><button>1.19.4</button><button>1.18.2</button><button>1.16.5</button><button>1.12.2</button><button>1.8.9</button></div>
+            <small class="vLbl">Loader</small>
+            <div class="vLoad"><button class="on" style="--c:#dbd0b4">Fabric</button><button style="--c:#c084fc">Quilt</button><button style="--c:#94a3b8">Forge</button><button style="--c:#f97316">NeoForge</button></div>
+            <div class="vFoot"><span class="mVerOut" id="verOut"></span><button class="vMake" id="verMake">Create</button></div>
+          </div>
         </div>
       </div>
     </div>
@@ -1279,13 +1598,10 @@
         <p>Instead of a crash log you get the mod that did it, in plain words, and a button that fixes it. Can't tell which one? It switches mods off half at a time and finds the broken one for you.</p>
         <p class="hint"><i class="ic" data-i="pointer"></i>Press a fix, or let it find the broken mod.</p>
       </div>
-      <div class="rowArt mini">
-        <div class="stack">
-          <div class="mCrash" id="crashCard">
-            <div class="mHead"><span class="mWarn">!</span><b>Here's why Minecraft crashed</b></div>
-            <div class="mFind"><b>Lantern Lights needs Fabric API</b><span>It can't start without it, and it isn't in this version.</span><div class="mBtns"><button class="mBtn" data-fix="add">Add Fabric API</button><button class="mBtn ghost" data-fix="off">Turn off Lantern Lights</button></div></div>
-          </div>
-          <button class="mHunt" id="huntBox"><span>Finding the broken mod</span><div class="mSteps"><i></i><i></i><i></i><i></i><i></i></div><small id="huntTxt">Press to start</small></button>
+      <div class="rowArt stage">
+        <div class="stackW">
+          <div class="win wCrash" id="crashCard"></div>
+          <button class="win wHunt" id="huntBox"><span class="hIc"><i class="ic" data-i="search"></i></span><div><b>Find the broken mod for me</b><small id="huntTxt">Press to start</small><div class="mSteps"><i></i><i></i><i></i><i></i><i></i></div></div></button>
         </div>
       </div>
     </div>
@@ -1297,11 +1613,16 @@
         <p>Mods from anywhere but Modrinth and CurseForge are checked for code that steals accounts, and moved out before the game starts.</p>
         <p class="hint"><i class="ic" data-i="pointer"></i>Add a mod from a random site.</p>
       </div>
-      <div class="rowArt mini">
-        <div class="safeBox">
-          <button class="mFile" id="safeAdd"><i class="ic" data-i="box"></i>sneaky-booster.jar<small>from a download site</small></button>
-          <div class="mScan" id="safeScan"><i></i><span>Checking it...</span></div>
-          <div class="mBlock" id="safeBlock"><span class="mShield"><i class="ic" data-i="shield"></i></span><div><b>Blocked a dangerous mod</b><span>sneaky-booster.jar tried to read your sign-in. It was moved out before the game started.</span></div></div>
+      <div class="rowArt stage">
+        <div class="win wSafe" id="safeBox">
+          <div class="winBar"><img src="icon.png" alt=""><b>Checking your mods</b><span class="winCtl"><i></i><i></i><i></i></span></div>
+          <div class="winBody">
+            <div class="sfRow"><span class="fIc" style="--c:#22c55e">S</span><div><b>Sodium</b><small>from Modrinth</small></div><span class="sfOk">Safe</span></div>
+            <div class="sfRow"><span class="fIc" style="--c:#eab308">L</span><div><b>Lantern Lights</b><small>from CurseForge</small></div><span class="sfOk">Safe</span></div>
+            <div class="sfRow sfBad" id="safeRow"><span class="fIc" style="--c:#64748b">?</span><div><b>sneaky-booster.jar</b><small id="safeWhat">from a download site</small><i class="sfBar"></i></div><span class="sfOk" id="safeTag">Checking...</span></div>
+            <button class="sfAdd" id="safeAdd"><i class="ic" data-i="plus"></i>Add sneaky-booster.jar</button>
+            <div class="sfNote" id="safeNote"><span class="mShield"><i class="ic" data-i="shield"></i></span><div><b>Blocked a dangerous mod</b><span>It tried to read your sign-in, so it was moved out before the game started.</span></div></div>
+          </div>
         </div>
       </div>
     </div>
@@ -1313,11 +1634,18 @@
         <p>Blocks don't drop and mobs stand still? Within 30 seconds it tells you which mod your world is stuck in, so you only reopen the world - not the game.</p>
         <p class="hint"><i class="ic" data-i="pointer"></i>Freeze the world and watch.</p>
       </div>
-      <div class="rowArt mini">
-        <div class="freezeBox">
-          <div class="mWorld" id="frWorld"><i class="b1"></i><i class="b2"></i><i class="mob"></i><span id="frClock">Running</span></div>
-          <button class="mBtn" id="frBtn">Freeze the world</button>
-          <div class="mToast" id="frToast"><span class="mIc"><i class="ic" data-i="snow"></i></span><div><b>Your world stopped responding</b><span>It's stuck in Lantern Lights. Save and Quit, then open the world again.</span></div></div>
+      <div class="rowArt stage">
+        <div class="win wWorld">
+          <div class="mcWorld" id="frWorld">
+            <i class="mcSun"></i><i class="mcCloud a"></i><i class="mcCloud b"></i>
+            <i class="mcHill"></i><i class="mcTree"></i>
+            <i class="mcChick"></i><i class="mcItem"></i>
+            <div class="mcGround"></div>
+            <span class="mcClock" id="frClock">Running</span>
+            <div class="mcFrost"></div>
+            <div class="mcToast" id="frToast"><img src="icon.png" alt=""><div><b>Your world stopped responding</b><span>It's stuck in Lantern Lights. Save and Quit, then open the world again.</span></div></div>
+          </div>
+          <div class="wFoot"><span class="wHot"><i class="ic" data-i="snow"></i>My world - Survival</span><button class="mBtn" id="frBtn">Freeze the world</button></div>
         </div>
       </div>
     </div>
@@ -1329,15 +1657,18 @@
         <p>Every new version gets your key binds, video, sound and servers. Send a friend your settings in a chat - they pick what to take and can undo it in one click.</p>
         <p class="hint"><i class="ic" data-i="pointer"></i>Import Quackers's settings, then undo it.</p>
       </div>
-      <div class="rowArt mini">
-        <div class="stack">
-          <div class="mList">
-            <div class="mTitle">New version: 1.21.1</div>
-            <div class="mLine"><span class="mOk"><i class="ic" data-i="check"></i></span>Key binds</div>
-            <div class="mLine"><span class="mOk"><i class="ic" data-i="check"></i></span>Video and sound</div>
-            <div class="mLine"><span class="mOk"><i class="ic" data-i="check"></i></span>Servers</div>
+      <div class="rowArt stage">
+        <div class="win wSet">
+          <div class="winBar"><span class="sAv sm" id="setAv"></span><b>Quackers</b><span class="winCtl"><i></i><i></i><i></i></span></div>
+          <div class="winBody">
+            <div class="setMsg">here are my settings, they're way better lol</div>
+            <div class="setCard">
+              <div class="setHead"><span class="setIc"><i class="ic" data-i="sliders"></i></span><div><b>Quackers's settings</b><small>Pick what you want to take</small></div></div>
+              <div class="setPicks" id="setPicks"><button class="on">Key binds</button><button class="on">Controls</button><button class="on">Sound</button><button>Video</button></div>
+              <button class="setGo" id="setBtn">Import</button>
+            </div>
+            <small class="setNote" id="setNote">Undo import puts yours back</small>
           </div>
-          <div class="mShare"><div class="mBubble"><b>Quackers's settings</b><span>Key binds, Controls, Sound</span><div class="mBtns"><button class="mBtn" id="setBtn">Import</button></div></div><small id="setNote">Undo import puts yours back</small></div>
         </div>
       </div>
     </div>
@@ -1347,12 +1678,15 @@
       <div class="rowText">
         <h2>Look up any mod you have</h2>
         <p>Click any mod in a version - even one a modpack brought - and its page opens, found from the file itself.</p>
-        <p class="hint"><i class="ic" data-i="pointer"></i>Click the mod.</p>
+        <p class="hint"><i class="ic" data-i="pointer"></i>Click a mod.</p>
       </div>
-      <div class="rowArt mini">
-        <div class="lookBox">
-          <button class="mMod" id="lookMod"><span class="mBox"></span><div><b>Sound Physics Remastered</b><span>1.20.1-1.5.1</span></div><span class="mTip">See its page</span></button>
-          <div class="mPage" id="lookPage"><b>Sound Physics Remastered</b><span>Sounds echo in caves and get muffled behind walls, like in real life.</span><div class="mBtns"><span class="mBtn ghost">Client</span><span class="mBtn ghost">Fabric, Forge</span><span class="mBtn ghost">Up to date</span></div></div>
+      <div class="rowArt stage">
+        <div class="win wLook" id="lookBox">
+          <div class="winBar"><img src="icon.png" alt=""><b>Horror Pack - Mods</b><span class="winCtl"><i></i><i></i><i></i></span></div>
+          <div class="winBody lkBody">
+            <div class="lkList" id="lkList"></div>
+            <div class="lkPage" id="lkPage"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -1364,12 +1698,14 @@
         <p>Make a Minecraft server in a few clicks - pick a version, start it, and send friends the address. Or open your singleplayer world to friends over the internet, from any version or modpack.</p>
         <p class="hint"><i class="ic" data-i="pointer"></i>Start the server.</p>
       </div>
-      <div class="rowArt mini">
-        <div class="hostBox" id="hostBox">
-          <div class="hTop"><span class="hDot"></span><b>Duck Pond SMP</b><span class="hVer">1.21.11 Fabric</span></div>
-          <div class="hRow"><span>Players</span><b id="hostPl">0 / 10</b></div>
-          <div class="hRow"><span>Address</span><b id="hostAd">-</b></div>
-          <button class="mBtn" id="hostBtn">Start</button>
+      <div class="rowArt stage peek">
+        <div class="win wHost" id="hostBox">
+          <div class="winBar"><span class="hDot"></span><b>Duck Pond SMP</b><span class="hVer">1.21.11 Fabric</span></div>
+          <div class="winBody">
+            <div class="hPeople" id="hostPeople"><span class="hEmpty">Nobody here yet</span></div>
+            <div class="hCon" id="hostCon"><span>Server is off</span></div>
+            <div class="hBtns"><button class="mBtn" id="hostBtn">Start</button><button class="mBtn ghost" id="hostCopy" disabled>Copy address</button><span class="hCount" id="hostPl">0 / 10</span></div>
+          </div>
         </div>
       </div>
     </div>
@@ -1377,8 +1713,8 @@
 
   <!-- only here -->
   <div class="secHead sub rv" id="cool">
-    <h2>Only in Duckky Client</h2>
-    <p class="lede">The fun stuff you won't find anywhere else. Click one to see more.</p>
+    <h2>The <span class="hlFun">fun stuff</span></h2>
+    <p class="lede">Little extras that make playing more fun. Click one to see more.</p>
   </div>
   <div class="cool rv" id="coolGrid"></div>
 
@@ -1455,9 +1791,9 @@
     <div class="dcText">
       <span class="dcLogo"><i class="ic" data-i="discord"></i></span>
       <h2>Come hang out on Discord</h2>
-      <p class="lede">The Duckky Client community lives here. Join and you're in on everything first.</p>
+      <p class="lede">The Duckky Client community lives here. Come say hi, get help and find people to play with.</p>
       <ul class="dcList">
-        <li><i class="ic" data-i="bell"></i><div><b>Updates first</b><span>Big updates and sneak peeks of what's next, the moment they're out.</span></div></li>
+        <li><i class="ic" data-i="chat"></i><div><b>Just hang out</b><span>Talk with other Duckky players about anything - Minecraft or not.</span></div></li>
         <li><i class="ic" data-i="help"></i><div><b>Help, fast</b><span>Stuck or crashing? Ask and get an answer from the team and other players.</span></div></li>
         <li><i class="ic" data-i="users"></i><div><b>People to play with</b><span>Find friends for your next world, modpack or server.</span></div></li>
         <li><i class="ic" data-i="bulb"></i><div><b>Shape the client</b><span>Suggest features and tell us what to make next.</span></div></li>
@@ -1465,11 +1801,12 @@
       <a class="dcGo" href="https://discord.gg/h8Bd3A9Pex" target="_blank" rel="noopener"><i class="ic" data-i="discord"></i>Join the Discord<i class="ic" data-i="ext"></i></a>
     </div>
     <div class="dcArt" aria-hidden="true">
-      <div class="dcChan"><span>#</span>announcements</div>
-      <div class="dcMsg"><span class="dcAv"></span><div><b>Duckky Client <em>TEAM</em></b><p>A big update is out - check the News tab!</p></div></div>
-      <div class="dcChan"><span>#</span>looking-to-play</div>
-      <div class="dcMsg"><span class="dcAv b"></span><div><b>Quackers</b><p>anyone up for a horror pack tonight?</p></div></div>
-      <div class="dcMsg"><span class="dcAv c"></span><div><b>MallardMax</b><p>me! send the world invite</p></div></div>
+      <div class="dcHead"><span>#</span>general</div>
+      <div class="dcMsg"><span class="dcAv rice"></span><div><div class="dcName"><b class="w">riceguy</b><span class="dcRole"><svg class="dcIcon" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.2"><path d="M14.5 17.5 3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"/></svg>Member</span><span class="dcTime">9/30/2026 7:42 PM</span></div><p><span class="dcAt">@Duckky</span> YOUR BACK?</p></div></div>
+      <div class="dcMsg"><span class="dcAv dk"></span><div><div class="dcName"><b class="y">Duckky</b><span class="dcRole"><svg class="dcIcon" viewBox="0 0 24 24" fill="#4ade80"><path d="M5 21c0-9 6-15 16-16-1 10-7 16-16 16z"/></svg>Duck</span><svg class="dcIcon" viewBox="0 0 24 24" fill="none" stroke="#FACC15" stroke-width="2.2"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><span class="dcTime">9/30/2026 7:42 PM</span></div><p>yes</p></div></div>
+      <div class="dcMsg"><span class="dcAv rice"></span><div><div class="dcName"><b class="w">riceguy</b><span class="dcRole"><svg class="dcIcon" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.2"><path d="M14.5 17.5 3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"/></svg>Member</span><span class="dcTime">9/30/2026 7:42 PM</span></div><p>AYEEE</p></div></div>
+      <div class="dcMsg"><span class="dcAv dk"></span><div><div class="dcName"><b class="y">Duckky</b><span class="dcRole"><svg class="dcIcon" viewBox="0 0 24 24" fill="#4ade80"><path d="M5 21c0-9 6-15 16-16-1 10-7 16-16 16z"/></svg>Duck</span><svg class="dcIcon" viewBox="0 0 24 24" fill="none" stroke="#FACC15" stroke-width="2.2"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><span class="dcTime">9/30/2026 7:42 PM</span></div><p>better than ever</p></div></div>
+      <div class="dcMsg"><span class="dcAv rice"></span><div><div class="dcName"><b class="w">riceguy</b><span class="dcRole"><svg class="dcIcon" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.2"><path d="M14.5 17.5 3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"/></svg>Member</span><span class="dcTime">9/30/2026 7:42 PM</span></div><p>YEAHHH</p></div></div>
     </div>
   </div>
 </section>
@@ -1572,7 +1909,7 @@ var I = {
   wrench: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/>', bolt: '<path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"/>',
   shield: '<path d="M12 3 5 6v5c0 4.5 3 8.4 7 10 4-1.6 7-5.5 7-10V6z"/><path d="m9 12 2 2 4-4"/>', box: '<path d="M12 3 20 7.5v9L12 21l-8-4.5v-9z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/>',
   server: '<rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/>',
-  play: '<path d="M7 4.5v15l12-7.5z"/>', pointer: '<path d="M9 3v11l3-3 2.5 5.5 2-1L14 10h4z"/>', check: '<path d="M5 12.5 10 17l9-10"/>',
+  play: '<path d="M7 4.5v15l12-7.5z"/>', send: '<path d="m4 12 16-8-6 16-2.5-6.5z"/>', plus: '<path d="M12 5v14M5 12h14"/>', search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>', sliders: '<path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/>', pointer: '<path d="M9 3v11l3-3 2.5 5.5 2-1L14 10h4z"/>', check: '<path d="M5 12.5 10 17l9-10"/>',
   phone: '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
   phoneoff: '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2M3 3l18 18"/>',
   head: '<path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/>',
@@ -1669,6 +2006,8 @@ function spy() {
   placePill(tab);
   dlBtn.classList.toggle('here', now.id === 'download');
   document.title = now.id === 'home' ? 'Duckky Client' : name + ' - Duckky Client';
+  // (the address follows along - #plus, #news... - so a copied link opens where you are)
+  try { var want = now.id === 'home' ? location.pathname + location.search : '#' + now.id; if ((now.id === 'home' ? '' : '#' + now.id) !== location.hash) history.replaceState(null, '', want); } catch (e) {}
 }
 var spyQ = false;
 addEventListener('scroll', function () { if (!spyQ) { spyQ = true; requestAnimationFrame(function () { spyQ = false; spy(); }); } }, { passive: true });
@@ -1697,13 +2036,22 @@ document.querySelector('.heroLogo').addEventListener('click', function () { var 
 
 // ---------------- FPS: getting a version ready ----------------
 (function () {
-  var list = $('fpsList'), btn = document.querySelector('[data-act="fps"]'), timers = [];
-  btn.addEventListener('click', function () {
+  var list = $('fpsList'), items = [].slice.call(list.querySelectorAll('.fItem')), timers = [];
+  var arc = $('fpsArc'), C = 113.1;
+  var steps = ['Tuning Java for your PC...', 'Adding a faster renderer...', 'Skipping what you can\'t see...', 'Saving memory...'];
+  function set(n) { arc.style.strokeDashoffset = String(C * (1 - n / items.length)); $('fpsPct').textContent = n + '/' + items.length; }
+  function run() {
     timers.forEach(clearTimeout); timers = [];
-    var lines = [].slice.call(list.querySelectorAll('.mLine, .mDone'));
-    list.classList.add('run'); lines.forEach(function (l) { l.classList.remove('in'); });
-    lines.forEach(function (l, k) { timers.push(setTimeout(function () { l.classList.add('in'); }, 400 + k * 520)); });
-  });
+    list.classList.add('run'); items.forEach(function (x) { x.classList.remove('in', 'now'); });
+    $('fpsPlay').disabled = true; $('fpsTitle').textContent = 'Getting it ready'; set(0);
+    items.forEach(function (x, k) {
+      timers.push(setTimeout(function () { x.classList.add('now'); $('fpsStep').textContent = steps[k]; }, 250 + k * 700));
+      timers.push(setTimeout(function () { x.classList.remove('now'); x.classList.add('in'); set(k + 1); }, 250 + k * 700 + 520));
+    });
+    timers.push(setTimeout(function () { $('fpsPlay').disabled = false; $('fpsTitle').textContent = 'Ready to play'; $('fpsStep').textContent = 'Everything\'s set up for your PC'; }, 250 + items.length * 700));
+  }
+  document.querySelector('[data-act="fps"]').addEventListener('click', run);
+  $('fpsPlay').addEventListener('click', function () { toast('Starting Horror Pack...'); });
 })();
 
 // ---------------- chat ----------------
@@ -1730,13 +2078,13 @@ document.querySelector('.heroLogo').addEventListener('click', function () { var 
     $('chatName').textContent = c.n;
     var sb = $('chatSub'); sb.textContent = c.st; sb.className = c.off ? 'off' : '';
     $('chatText').placeholder = 'Message ' + c.n;
-    $('chatCall').textContent = calling === sel ? 'In call' : 'Call';
+    $('chatCall').querySelector('span').textContent = calling === sel ? 'In call' : 'Call';
     $('chatCall').classList.toggle('live', calling === sel);
     var box = $('chatMsgs');
     box.innerHTML = c.m.map(function (x) { return x[0] === 'inv' ? '<div class="sInv"><b>' + esc(x[1]) + '</b><small>' + esc(x[2]) + '</small></div>' : x[0] === 'typing' ? '<div class="sTyping"><i></i><i></i><i></i></div>' : '<div class="sB ' + x[0] + '">' + esc(x[1]) + '<small>' + x[2] + '</small></div>'; }).join('');
     box.scrollTop = box.scrollHeight;
   }
-  function time() { var d = new Date(); return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }); }
+  function time() { return new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }); }
   $('chatRows').addEventListener('click', function (e) { var r = e.target.closest('.sRow'); if (!r) return; sel = +r.getAttribute('data-k'); CH[sel].un = 0; rows(); msgs(); });
   $('chatSearch').addEventListener('input', rows);
   $('chatForm').addEventListener('submit', function (e) {
@@ -1763,88 +2111,133 @@ document.querySelector('.heroLogo').addEventListener('click', function () { var 
 // ---------------- call ----------------
 (function () {
   var box = $('callBox'), sec = 252, muted = false, deaf = false, left = false, talker = 1;
-  var people = [{ n: 'You', f: 0 }, { n: 'PondSkipper', f: 1 }, { n: 'Quackers', f: 2, mute: true }];
-  function tiles() {
-    $('callTiles').innerHTML = people.map(function (p, k) {
-      var m = (k === 0 && muted) || p.mute, talk = !left && k === talker && !m && !(deaf && k !== 0);
-      return '<div class="cTile' + (talk ? ' talk' : '') + '"><span class="cFace">' + headSvg(HEADS.faces[p.f]) + '</span><b>' + p.n + '</b>' + (m ? '<span class="cMuted">Muted</span>' : '') + '</div>';
-    }).join('');
+  var people = [{ n: 'You', f: 0, me: true }, { n: 'PondSkipper', f: 1 }, { n: 'Quackers', f: 2, mute: true }];
+  function tiles(leaving) {
+    var shown = people.filter(function (p) { return !(left && p.me) || leaving; });
+    var t = $('callTiles'); t.style.setProperty('--n', shown.length);
+    t.innerHTML = shown.map(function (p) {
+      var k = people.indexOf(p), m = (p.me && muted) || p.mute, talk = !left && k === talker && !m && !(deaf && !p.me);
+      return '<div class="cTile' + (talk ? ' talk' : '') + (leaving && p.me ? ' bye' : '') + '"><span class="cFace">' + headSvg(HEADS.faces[p.f]) + '</span><b>' + p.n + '</b>' + (m ? '<span class="cMuted">Muted</span>' : '') + '</div>';
+    }).join('') + (left && !leaving ? '<div class="cGone">You left - they\'re still talking</div>' : '');
   }
   setInterval(function () {
-    if (left) return;
     sec++; $('callTime').textContent = Math.floor(sec / 60) + ':' + String(sec % 60).padStart(2, '0');
-    if (sec % 2 === 0) { var opts = [1]; if (!muted) opts.push(0); talker = opts[Math.floor(Math.random() * opts.length)]; if (Math.random() < .25) talker = -1; tiles(); }
+    if (sec % 2 === 0) { var opts = [1]; if (!muted && !left) opts.push(0); talker = opts[Math.floor(Math.random() * opts.length)]; if (Math.random() < .25) talker = -1; if (!box.querySelector('.bye')) tiles(); }
   }, 1000);
   box.addEventListener('click', function (e) {
-    var b = e.target.closest('[data-call]'); if (!b) return;
+    var b = e.target.closest('[data-call]'); if (!b || b.disabled) return;
     var a = b.getAttribute('data-call');
     if (a === 'mute') { muted = !muted; b.classList.toggle('on', muted); b.querySelector('span').textContent = muted ? 'Unmute' : 'Mute'; }
     if (a === 'deaf') { deaf = !deaf; b.classList.toggle('on', deaf); b.querySelector('span').textContent = deaf ? 'Undeafen' : 'Deafen'; if (deaf && !muted) box.querySelector('[data-call="mute"]').click(); }
     if (a === 'leave') {
       left = !left; box.classList.toggle('left', left);
       b.querySelector('span').textContent = left ? 'Rejoin' : 'Leave';
-      b.classList.toggle('red', !left);
-      $('callTitle').textContent = left ? 'You left the call' : 'Call with PondSkipper';
-      if (!left) toast('Back in the call');
+      b.classList.toggle('red', !left); b.classList.toggle('join', left);
+      [].forEach.call(box.querySelectorAll('[data-call="mute"], [data-call="deaf"]'), function (x) { x.disabled = left; });
+      $('callTitle').textContent = left ? 'Call with PondSkipper - you left' : 'Call with PondSkipper';
+      if (left) { tiles(true); setTimeout(function () { tiles(); }, 360); return; }
+      toast('Back in the call');
     }
     tiles();
   });
   tiles();
 })();
 
-// ---------------- cape maker ----------------
+// ---------------- cape maker: drag the box, the cape shows that part ----------------
 (function () {
-  var mk = $('capeMaker');
+  var pic = $('cpPic'), box = $('cpBox'), cv = $('cpCanvas'), cx = cv.getContext('2d'), mk = $('capeMaker');
+  var SCENE = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" width="640" height="400">'
+    + '<defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1e1b4b"/><stop offset=".45" stop-color="#6d28d9"/><stop offset=".8" stop-color="#ec4899"/><stop offset="1" stop-color="#fb923c"/></linearGradient>'
+    + '<radialGradient id="g"><stop offset="0" stop-color="#fef3c7"/><stop offset=".55" stop-color="#fbbf24"/><stop offset="1" stop-color="#f97316" stop-opacity="0"/></radialGradient></defs>'
+    + '<rect width="320" height="200" fill="url(#s)"/>'
+    + '<g fill="#fff" opacity=".8"><circle cx="22" cy="18" r="1.2"/><circle cx="60" cy="40" r=".9"/><circle cx="110" cy="14" r="1.1"/><circle cx="160" cy="30" r=".8"/><circle cx="250" cy="20" r="1.2"/><circle cx="296" cy="46" r=".9"/><circle cx="200" cy="10" r=".8"/></g>'
+    + '<circle cx="214" cy="108" r="62" fill="url(#g)"/><circle cx="214" cy="108" r="34" fill="#fde68a"/>'
+    + '<path d="M0 150 Q60 118 130 140 T260 132 T320 128 V200 H0Z" fill="#4c1d95"/><path d="M0 170 Q80 146 160 166 T320 156 V200 H0Z" fill="#2e1065"/>'
+    + '<g transform="translate(96 112) scale(4)" shape-rendering="crispEdges"><rect x="5" y="2" width="5" height="4" fill="#FACC15"/><rect x="10" y="4" width="2" height="1" fill="#F59E0B"/><rect x="6" y="3" width="5" height="1" fill="#111"/><rect x="3" y="6" width="9" height="5" fill="#FACC15"/><rect x="4" y="7" width="4" height="3" fill="#EAB308"/><rect x="5" y="11" width="1" height="2" fill="#F59E0B"/><rect x="9" y="11" width="1" height="2" fill="#F59E0B"/></g>'
+    + '</svg>');
+  pic.style.backgroundImage = 'url("' + SCENE + '")';
+  var img = new Image(), ready = false; img.onload = function () { ready = true; draw(); }; img.src = SCENE;
+  var Q = { pixel: [10, 16], low: [20, 32], normal: [60, 96], hd: [160, 256] }, q = 'hd';
+  var bx = .3, by = .05, bh = .9; // (the box: left / top / height, as parts of the picture)
+  var tiny = document.createElement('canvas');
+  function boxW() { return bh * pic.clientHeight * 10 / 16 / pic.clientWidth; }
+  function clamp() { bh = Math.min(1, Math.max(.35, bh)); var w = boxW(); bx = Math.min(1 - w, Math.max(0, bx)); by = Math.min(1 - bh, Math.max(0, by)); }
+  function place() { clamp(); box.style.left = bx * 100 + '%'; box.style.top = by * 100 + '%'; box.style.height = bh * 100 + '%'; box.style.width = boxW() * 100 + '%'; draw(); }
+  function draw() {
+    if (!ready) return;
+    var r = Q[q]; tiny.width = r[0]; tiny.height = r[1];
+    var t = tiny.getContext('2d'); t.imageSmoothingEnabled = q !== 'pixel'; t.imageSmoothingQuality = 'high';
+    t.drawImage(img, bx * img.width, by * img.height, boxW() * img.width, bh * img.height, 0, 0, r[0], r[1]);
+    cx.imageSmoothingEnabled = false; cx.clearRect(0, 0, 160, 256); cx.drawImage(tiny, 0, 0, 160, 256);
+  }
+  var drag = null;
+  box.addEventListener('pointerdown', function (e) { e.preventDefault(); drag = { x: e.clientX, y: e.clientY, bx: bx, by: by }; box.setPointerCapture(e.pointerId); pic.classList.add('used'); });
+  box.addEventListener('pointermove', function (e) { if (!drag) return; bx = drag.bx + (e.clientX - drag.x) / pic.clientWidth; by = drag.by + (e.clientY - drag.y) / pic.clientHeight; place(); });
+  box.addEventListener('pointerup', function () { drag = null; });
+  box.addEventListener('pointercancel', function () { drag = null; });
+  pic.addEventListener('wheel', function (e) { e.preventDefault(); var c = by + bh / 2, cxm = bx + boxW() / 2; bh *= e.deltaY > 0 ? 1.07 : .93; clamp(); by = c - bh / 2; bx = cxm - boxW() / 2; place(); pic.classList.add('used'); }, { passive: false });
+  addEventListener('resize', place);
   mk.querySelector('.ccSeg').addEventListener('click', function (e) {
     var b = e.target.closest('button'); if (!b) return;
     [].forEach.call(this.children, function (x) { x.classList.toggle('on', x === b); });
-    mk.classList.remove('q-pixel', 'q-low', 'q-normal');
-    var q = b.textContent.toLowerCase(); if (q !== 'hd') mk.classList.add('q-' + q);
+    q = b.textContent.toLowerCase(); draw();
   });
   mk.querySelector('.ccSw').addEventListener('click', function (e) {
     var b = e.target.closest('button'); if (!b) return;
     [].forEach.call(this.children, function (x) { x.classList.toggle('on', x === b); });
-    mk.querySelector('.ccCape').style.setProperty('--edge', b.style.background);
+    $('cpCape').style.setProperty('--edge', b.style.background);
   });
   var save = mk.querySelector('.ccSave'), st;
   save.addEventListener('click', function () { save.textContent = 'Saved!'; save.classList.add('done'); toast('Cape saved - every Duckky player sees it on you'); clearTimeout(st); st = setTimeout(function () { save.textContent = 'Save cape'; save.classList.remove('done'); }, 2200); });
+  requestAnimationFrame(place);
 })();
 
 // ---------------- versions ----------------
 (function () {
   var g = $('verGrid'), ver = '1.21.11', ld = 'Fabric';
-  function n(v) { var p = v.split('.'); return +p[1]; }
-  function ok(v, l) { var m = n(v); if (l === 'Forge') return true; if (l === 'NeoForge') return m >= 20 && v !== '1.20' ; return m >= 14; }
+  function n(v) { return +v.split('.')[1]; }
+  function ok(v, l) { var m = n(v); if (l === 'Forge') return true; if (l === 'NeoForge') return m >= 20; return m >= 14; }
   function out() {
-    [].forEach.call(g.querySelectorAll('.chip'), function (c) { c.classList.toggle('no', !ok(ver, c.textContent)); });
+    [].forEach.call(g.querySelectorAll('.vLoad button'), function (c) { c.classList.toggle('no', !ok(ver, c.textContent)); });
     var o = $('verOut'), good = ok(ver, ld);
     o.className = 'mVerOut' + (good ? '' : ' bad');
-    o.innerHTML = good ? 'Minecraft ' + ver + ' with ' + ld + ' - <b>ready to play</b>' : ld + " isn't made for " + ver + ' - <b>pick another one</b>';
+    o.innerHTML = good ? esc(ver) + ' with ' + ld + ' - <b>ready</b>' : ld + " isn't made for " + esc(ver);
+    $('verMake').disabled = !good;
   }
   g.addEventListener('click', function (e) {
-    var b = e.target.closest('button'); if (!b) return;
-    if (b.classList.contains('chip')) { ld = b.textContent; [].forEach.call(g.querySelectorAll('.chip'), function (x) { x.classList.toggle('on', x === b); }); }
-    else { ver = b.textContent; [].forEach.call(g.querySelectorAll(':scope > button'), function (x) { x.classList.toggle('on', x === b); }); }
+    var b = e.target.closest('button'); if (!b || b.id === 'verMake') return;
+    if (b.parentNode.classList.contains('vLoad')) ld = b.textContent; else ver = b.textContent;
+    [].forEach.call(b.parentNode.children, function (x) { x.classList.toggle('on', x === b); });
     out();
   });
+  $('verMake').addEventListener('click', function () { toast('Made ' + ver + ' ' + ld + ' - it downloads when you press Play'); });
   out();
 })();
 
 // ---------------- crashes ----------------
 (function () {
-  var card = $('crashCard'), orig = card.innerHTML;
+  var card = $('crashCard');
+  function broken() {
+    card.classList.remove('fixed');
+    card.innerHTML = '<div class="crHead"><span class="crIc">!</span><div><b>Here\'s why Minecraft crashed</b><small>Horror Pack - a moment ago</small></div></div>'
+      + '<div class="crFind"><span class="fIc" style="--c:#eab308">L</span><div><b>Lantern Lights needs Fabric API</b><small>It can\'t start without it, and it isn\'t in this version.</small><div class="mBtns"><button class="mBtn" data-fix="add">Add Fabric API</button><button class="mBtn ghost" data-fix="off">Turn off Lantern Lights</button></div></div></div>';
+  }
   card.addEventListener('click', function (e) {
     var b = e.target.closest('[data-fix], [data-again]'); if (!b) return;
-    if (b.hasAttribute('data-again')) { card.innerHTML = orig; card.classList.remove('fixed'); return; }
+    if (b.hasAttribute('data-again')) { broken(); return; }
     var add = b.getAttribute('data-fix') === 'add';
     card.classList.add('fixed');
-    card.innerHTML = '<div class="mHead"><span class="mWarn">' + icon('check').replace('<svg', '<svg width="12" height="12"') + '</span><b>Fixed - starting Minecraft</b></div><div class="mFind"><b>' + (add ? 'Added Fabric API' : 'Turned off Lantern Lights') + '</b><span>' + (add ? 'Lantern Lights has what it needs now.' : 'You can turn it back on any time in Mods.') + '</span><div class="mBtns"><button class="mBtn ghost" data-again>Show it again</button></div></div>';
+    card.innerHTML = '<div class="crHead"><span class="crIc">' + icon('check') + '</span><div><b>Fixed - starting Minecraft</b><small>Horror Pack</small></div></div>'
+      + '<div class="crFind"><span class="fIc" style="--c:' + (add ? '#38bdf8' : '#eab308') + '">' + (add ? 'F' : 'L') + '</span><div><b>' + (add ? 'Added Fabric API' : 'Turned off Lantern Lights') + '</b><small>' + (add ? 'Lantern Lights has what it needs now.' : 'You can turn it back on any time in Mods.') + '</small><div class="mBtns"><button class="mBtn ghost" data-again>Show it again</button></div></div></div>';
+    icons(card);
   });
+  broken();
   var hunt = $('huntBox'), steps = hunt.querySelectorAll('.mSteps i'), ht = [], left = [24, 12, 6, 3, 1];
   hunt.addEventListener('click', function () {
     ht.forEach(clearTimeout); ht = [];
     hunt.querySelector('.mSteps').classList.remove('found');
     [].forEach.call(steps, function (s) { s.classList.remove('on'); });
+    $('huntTxt').textContent = 'Starting...';
     for (var k = 0; k < 5; k++) (function (k) { ht.push(setTimeout(function () { steps[k].classList.add('on'); $('huntTxt').textContent = 'Test ' + (k + 1) + ' of 5 - ' + left[k] + (left[k] === 1 ? ' mod' : ' mods') + ' left'; }, 300 + k * 650)); })(k);
     ht.push(setTimeout(function () { hunt.querySelector('.mSteps').classList.add('found'); $('huntTxt').textContent = 'Found it: Lantern Lights - press to try again'; }, 300 + 5 * 650));
   });
@@ -1852,60 +2245,97 @@ document.querySelector('.heroLogo').addEventListener('click', function () { var 
 
 // ---------------- account stealers ----------------
 (function () {
-  var box = document.querySelector('.safeBox'), t;
+  var box = $('safeBox'), t;
+  function again() { box.classList.remove('done', 'scan'); }
   $('safeAdd').addEventListener('click', function () {
     clearTimeout(t);
-    if (box.classList.contains('done')) { box.classList.remove('done', 'scan'); return; }
-    box.classList.add('scan');
-    t = setTimeout(function () { box.classList.remove('scan'); box.classList.add('done'); }, 1400);
+    box.classList.add('scan'); $('safeTag').textContent = 'Checking...'; $('safeWhat').textContent = 'from a download site';
+    t = setTimeout(function () { box.classList.remove('scan'); box.classList.add('done'); $('safeTag').textContent = 'Moved out'; $('safeWhat').textContent = 'tried to read your sign-in'; }, 1400);
   });
+  $('safeNote').addEventListener('click', again);
+  $('safeNote').title = 'Try it again';
 })();
 
 // ---------------- world freeze ----------------
 (function () {
-  var box = document.querySelector('.freezeBox'), w = $('frWorld'), btn = $('frBtn'), iv = null;
+  var w = $('frWorld'), btn = $('frBtn'), iv = null;
   btn.addEventListener('click', function () {
     clearInterval(iv);
-    if (w.classList.contains('frozen')) { w.classList.remove('frozen'); box.classList.remove('told'); $('frClock').textContent = 'Running'; btn.textContent = 'Freeze the world'; return; }
+    if (w.classList.contains('frozen')) { w.classList.remove('frozen', 'told'); $('frClock').textContent = 'Running'; btn.textContent = 'Freeze the world'; return; }
     w.classList.add('frozen'); btn.textContent = 'Unfreeze it';
     var s = 0;
     iv = setInterval(function () {
-      s += 3; $('frClock').textContent = 'Stuck ' + s + 's';
-      if (s >= 30) { clearInterval(iv); box.classList.add('told'); }
-    }, 100);
+      s += 2; $('frClock').textContent = 'Not responding - ' + s + 's';
+      if (s >= 30) { clearInterval(iv); w.classList.add('told'); }
+    }, 90);
   });
 })();
 
 // ---------------- settings ----------------
 (function () {
   var b = $('setBtn'), on = false;
+  $('setAv').innerHTML = headSvg(HEADS.heads[0]);
+  $('setPicks').addEventListener('click', function (e) { var x = e.target.closest('button'); if (x && !on) x.classList.toggle('on'); });
   b.addEventListener('click', function () {
+    var picked = [].slice.call($('setPicks').querySelectorAll('.on')).map(function (x) { return x.textContent; });
+    if (!on && !picked.length) { toast('Pick at least one thing to take'); return; }
     on = !on;
-    b.textContent = on ? 'Undo import' : 'Import';
-    b.classList.toggle('ok', on);
-    $('setNote').textContent = on ? 'Quackers\'s key binds, controls and sound are yours now' : 'Undo import puts yours back';
+    b.textContent = on ? 'Undo import' : 'Import'; b.classList.toggle('undo', on);
+    var n = $('setNote'); n.classList.toggle('ok', on);
+    n.textContent = on ? 'Took ' + picked.join(', ').toLowerCase() + ' - yours are saved' : 'Undo import puts yours back';
     toast(on ? 'Imported Quackers\'s settings' : 'Your own settings are back');
   });
 })();
 
 // ---------------- look up a mod ----------------
-$('lookMod').addEventListener('click', function () { document.querySelector('.lookBox').classList.toggle('open'); });
+(function () {
+  var M = [
+    { n: 'Sound Physics Remastered', v: '1.20.1-1.5.1', c: '#06b6d4', l: 'S', d: 'Sounds echo in caves and get muffled behind walls, like in real life.', t: ['Client', 'Sound', 'Fabric, Forge'] },
+    { n: 'Lantern Lights', v: '2.3.0', c: '#eab308', l: 'L', d: 'Lanterns, torches and campfires light up the area around you as you hold them.', t: ['Client', 'Lighting'] },
+    { n: 'Embeddium', v: '0.3.31', c: '#a855f7', l: 'E', d: 'A faster renderer - more FPS and smoother chunks, with the same look.', t: ['Client', 'Speed', 'Forge'] }
+  ];
+  var box = $('lookBox');
+  $('lkList').innerHTML = M.map(function (m, k) { return '<div class="lkRow" data-k="' + k + '"><span class="fIc" style="--c:' + m.c + '">' + m.l + '</span><div><b>' + esc(m.n) + '</b><small>' + esc(m.v) + '</small></div><button class="lkTog" aria-label="On"></button></div>'; }).join('') + '<span class="lkHint">Click one to see its page</span>';
+  $('lkList').addEventListener('click', function (e) {
+    var tg = e.target.closest('.lkTog'); if (tg) { tg.classList.toggle('off'); e.stopPropagation(); return; }
+    var r = e.target.closest('.lkRow'); if (!r) return;
+    var m = M[+r.getAttribute('data-k')];
+    $('lkPage').innerHTML = '<div class="lkBan" style="--c:' + m.c + '"><button class="lkBack">Back</button></div><div class="lkIn"><span class="fIc" style="--c:' + m.c + '">' + m.l + '</span><b>' + esc(m.n) + '</b><small>' + esc(m.d) + '</small><div class="lkTags">' + m.t.map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') + '</div><button class="mBtn" style="align-self:flex-start;margin-top:4px">Open its page</button></div>';
+    box.classList.add('open');
+  });
+  $('lkPage').addEventListener('click', function (e) { if (e.target.closest('.lkBack')) box.classList.remove('open'); else if (e.target.closest('.mBtn')) toast('Its Modrinth page opens in the launcher'); });
+})();
 
 // ---------------- hosting ----------------
 (function () {
-  var box = $('hostBox'), btn = $('hostBtn'), ts = [];
-  var names = ['Quackers', 'PondSkipper', 'MallardMax'];
+  var box = $('hostBox'), btn = $('hostBtn'), con = $('hostCon'), ts = [], n = 0;
+  var who = [['Quackers', 0], ['PondSkipper', 1], ['MallardMax', 2]];
+  function line(t, c) { var s = document.createElement('span'); s.textContent = t; if (c) s.className = c; con.append(s); while (con.children.length > 5) con.firstChild.remove(); }
+  function reset() { ts.forEach(clearTimeout); ts = []; n = 0; box.classList.remove('on', 'starting'); btn.textContent = 'Start'; $('hostCopy').disabled = true; $('hostPl').textContent = '0 / 10'; $('hostPeople').innerHTML = '<span class="hEmpty">Nobody here yet</span>'; con.innerHTML = '<span>Server is off</span>'; }
   btn.addEventListener('click', function () {
-    ts.forEach(clearTimeout); ts = [];
-    if (box.classList.contains('on') || box.classList.contains('starting')) { box.classList.remove('on', 'starting'); btn.textContent = 'Start'; $('hostPl').textContent = '0 / 10'; $('hostAd').textContent = '-'; return; }
+    if (box.classList.contains('on') || box.classList.contains('starting')) { reset(); toast('Server stopped - the world is saved'); return; }
+    reset(); con.innerHTML = '';
     box.classList.add('starting'); btn.textContent = 'Starting...';
+    line('Starting Minecraft server 1.21.11');
+    ts.push(setTimeout(function () { line('Preparing the world... 100%'); }, 500));
     ts.push(setTimeout(function () {
-      box.classList.remove('starting'); box.classList.add('on'); btn.textContent = 'Stop';
-      $('hostAd').innerHTML = '<a href="#" id="hostCopy">Copy address</a>';
-      $('hostCopy').addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); toast('Address copied - send it to your friends'); });
-      names.forEach(function (n, k) { ts.push(setTimeout(function () { $('hostPl').textContent = (k + 1) + ' / 10'; toast(n + ' joined Duck Pond SMP'); }, 1200 + k * 1500)); });
-    }, 1500));
+      box.classList.remove('starting'); box.classList.add('on'); btn.textContent = 'Stop'; $('hostCopy').disabled = false;
+      line('Done! Your friends can join now', 'g');
+      who.forEach(function (p, k) { ts.push(setTimeout(function () {
+        if (!n) $('hostPeople').innerHTML = '';
+        n++; $('hostPl').textContent = n + ' / 10';
+        var d = document.createElement('div'); d.className = 'hP'; d.innerHTML = '<span>' + headSvg(HEADS.heads[p[1]]) + '</span><small>' + p[0] + '</small>'; $('hostPeople').append(d);
+        line(p[0] + ' joined the game', 'y');
+      }, 1000 + k * 1300)); });
+    }, 1300));
   });
+  $('hostCopy').addEventListener('click', function () { toast('Address copied - send it to your friends'); });
+})();
+
+// ---------------- Discord: the chat plays in when you get to it ----------------
+(function () {
+  var dc = document.querySelector('.dcBox'); if (!dc) return;
+  [].forEach.call(dc.querySelectorAll('.dcMsg'), function (m, k) { m.style.transitionDelay = (300 + k * 450) + 'ms'; });
 })();
 
 // ---------------- the cool stuff ----------------

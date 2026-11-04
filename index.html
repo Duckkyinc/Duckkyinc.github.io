@@ -1069,6 +1069,43 @@
     transition: opacity .25s, transform .3s cubic-bezier(.2, .8, .2, 1); }
   .toast.on { opacity: 1; transform: translate(-50%, 0); }
   footer { margin-top: 140px; }
+  /* Plus: the lengths */
+  .pbPeriods button { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; padding: 14px 16px 13px 40px; text-align: left;
+    background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.015)); border: 1px solid rgba(255,255,255,.09); border-radius: 14px; }
+  .pbPeriods button b { font-size: 15px; font-weight: 700; letter-spacing: -.01em; }
+  .pbPeriods button small { font-size: 12.5px; font-weight: 500; color: #8D91A5; }
+  .pbPeriods button::before { content: ""; position: absolute; left: 14px; top: 17px; width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(255,255,255,.25); transition: border-color .2s, background .2s, box-shadow .2s; }
+  .pbPeriods button:hover { border-color: rgba(250, 204, 21, .3); background: linear-gradient(180deg, rgba(250,204,21,.06), rgba(255,255,255,.015)); }
+  .pbPeriods button.on { border-color: rgba(250, 204, 21, .75); background: linear-gradient(180deg, rgba(250,204,21,.14), rgba(250,204,21,.04)); box-shadow: 0 0 0 3px rgba(250, 204, 21, .12), 0 10px 26px rgba(250, 204, 21, .1); }
+  .pbPeriods button.on::before { border-color: var(--yolk); background: radial-gradient(circle, var(--yolk) 0 4px, transparent 5px); box-shadow: 0 0 10px rgba(250, 204, 21, .5); }
+  .pbPeriods button.on small { color: #E9D9A0; }
+  .pbPeriods em { top: -10px; right: 12px; padding: 2px 8px; border-radius: 999px; font-size: 11px; background: linear-gradient(180deg, #FFE36B, #F3B90B); box-shadow: 0 3px 10px rgba(250, 204, 21, .3); }
+  /* not open yet: its own calm look - not a faded yellow button */
+  .get[aria-disabled="true"] { opacity: 1 !important; pointer-events: none; background: rgba(250, 204, 21, .07); color: #FDE68A; text-shadow: none;
+    border: 1px dashed rgba(250, 204, 21, .4); box-shadow: none; }
+  .get[aria-disabled="true"]::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--yolk); box-shadow: 0 0 0 4px rgba(250, 204, 21, .18); animation: soonDot 1.8s ease-in-out infinite; }
+  @keyframes soonDot { 50% { box-shadow: 0 0 0 7px rgba(250, 204, 21, 0); } }
+  .pbFr .ghostBtn[aria-disabled="true"] { opacity: 1; color: #FDE68A; border: 1px dashed rgba(250, 204, 21, .4); background: rgba(250, 204, 21, .06); }
+  .pbForever { border-radius: 16px; box-shadow: inset 0 1px 0 rgba(255, 230, 140, .08); }
+  /* the yellow buttons: a warm gradient, a light top edge, a soft glow - and a shine that sweeps across now and then */
+  .get, .sideGet { background: linear-gradient(180deg, #FFE36B 0%, #FACC15 52%, #F3B90B 100%); color: #1C1503; border: 1px solid rgba(160, 110, 0, .35);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .65), inset 0 -2px 0 rgba(170, 110, 0, .22), 0 6px 18px rgba(250, 204, 21, .22), 0 1px 2px rgba(0, 0, 0, .4);
+    text-shadow: 0 1px 0 rgba(255, 255, 255, .35); transition: transform .18s cubic-bezier(.2, .8, .2, 1), box-shadow .18s, filter .18s; }
+  .get:hover, .sideGet:hover { background: linear-gradient(180deg, #FFE97F 0%, #FDD835 52%, #F6C21A 100%); transform: translateY(-2px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .75), inset 0 -2px 0 rgba(170, 110, 0, .2), 0 12px 30px rgba(250, 204, 21, .32), 0 2px 4px rgba(0, 0, 0, .4); }
+  .get:active, .sideGet:active { transform: translateY(0) scale(.98); filter: brightness(.97);
+    box-shadow: inset 0 2px 4px rgba(150, 95, 0, .3), 0 3px 10px rgba(250, 204, 21, .2); }
+  .get .ic, .sideGet .ic { filter: drop-shadow(0 1px 0 rgba(255, 255, 255, .35)); }
+  /* the yellow buttons: a soft shine that sweeps across now and then */
+  .get, .sideGet { position: relative; overflow: hidden; isolation: isolate; }
+  .get::after, .sideGet::after { content: ""; position: absolute; top: -20%; bottom: -20%; left: 0; width: 45%; z-index: -1; pointer-events: none;
+    background: linear-gradient(105deg, rgba(255,255,255,0) 15%, rgba(255,255,255,.85) 50%, rgba(255,255,255,0) 85%); mix-blend-mode: soft-light;
+    transform: translateX(-120%) skewX(-12deg); animation: btnShine 3.2s cubic-bezier(.45, 0, .25, 1) infinite; }
+  .sideGet::after { animation-delay: 1.2s; }
+  .get:hover::after, .sideGet:hover::after { animation-duration: 1.4s; }
+  .get[aria-disabled="true"]::after { display: none; }
+  @keyframes btnShine { 0% { transform: translateX(-120%) skewX(-12deg); } 40%, 100% { transform: translateX(330%) skewX(-12deg); } }
+  @media (prefers-reduced-motion: reduce) { .get::after, .sideGet::after { animation: none; display: none; } }
   @media (max-width: 520px) {
     .rowArt.mini:has(.sApp) { height: auto; }
     .sApp { grid-template-columns: 1fr; grid-template-rows: auto 300px; }
@@ -1367,10 +1404,10 @@
     <div class="glass plusBuyBox">
       <div class="pbTop"><div class="pbPrice"><b id="pbCost">$2.99</b> <span id="pbEvery">every month</span></div><button class="pbSwitch" id="pbSwitch"><i class="ic" data-i="swap"></i><span>Switch to one time</span></button></div>
       <div class="pbPeriods" role="radiogroup" aria-label="How long">
-        <button role="radio" data-p="month" class="on">Monthly</button>
-        <button role="radio" data-p="quarter">Quarterly<em>Save 11%</em></button>
-        <button role="radio" data-p="half">Semi-Annually<em>Save 16%</em></button>
-        <button role="radio" data-p="year">Annually<em>Save 30%</em></button>
+        <button role="radio" data-p="month" class="on" aria-checked="true"><b>Monthly</b><small>$2.99 a month</small></button>
+        <button role="radio" data-p="quarter" aria-checked="false"><b>Quarterly</b><small>$7.99 &middot; $2.66 a month</small><em>Save 11%</em></button>
+        <button role="radio" data-p="half" aria-checked="false"><b>Semi-Annually</b><small>$14.99 &middot; $2.50 a month</small><em>Save 16%</em></button>
+        <button role="radio" data-p="year" aria-checked="false"><b>Annually</b><small>$24.99 &middot; $2.08 a month</small><em>Save 30%</em></button>
       </div>
       <a class="get pbGo" id="pbGo" href="#" aria-disabled="true">Store opening soon</a>
       <p class="pbSmall" id="pbSmall">Renews every month. Cancel any time.</p>

@@ -740,8 +740,6 @@
     transition: transform .4s cubic-bezier(.2, .8, .2, 1), width .4s cubic-bezier(.2, .8, .2, 1), opacity .25s; }
   .topbar .sideGet .ic { width: 16px; height: 16px; }
   .topbar .sideGet.here { box-shadow: 0 0 0 3px rgba(250, 204, 21, .28), 0 8px 24px rgba(250, 204, 21, .2); }
-  .scrollBar { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; pointer-events: none; }
-  .scrollBar i { display: block; height: 100%; width: 100%; transform-origin: 0 50%; transform: scaleX(0); background: linear-gradient(90deg, rgba(250,204,21,0), var(--yolk)); }
   @media (max-width: 900px) {
     .where { display: none; }
     .topnav { overflow-x: auto; scrollbar-width: none; }
@@ -1467,7 +1465,6 @@
     </nav>
     <a class="sideGet dl" href="#download" data-sec="download"><i class="ic" data-i="download"></i>Download</a>
   </div>
-  <div class="scrollBar" aria-hidden="true"><i></i></div>
 </header>
 
 <main>
@@ -2025,8 +2022,6 @@ function spy() {
   var line = innerHeight * .35, now = secs[0];
   secs.forEach(function (s) { if (s.getBoundingClientRect().top <= line) now = s; });
   if ((innerHeight + scrollY) >= document.documentElement.scrollHeight - 4) now = secs[secs.length - 1];
-  var bar = document.querySelector('.scrollBar i'), max = document.documentElement.scrollHeight - innerHeight;
-  bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, scrollY / max) : 0) + ')';
   document.querySelector('.topbar').classList.toggle('solid', scrollY > 12);
   if (now === cur) return;
   cur = now;

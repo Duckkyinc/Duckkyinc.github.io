@@ -1159,6 +1159,10 @@
   .fItem > div { flex: 1; display: flex; flex-direction: column; }
   .fOk { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: rgba(74, 222, 128, .15); color: #4ADE80; transition: transform .3s cubic-bezier(.3, 1.6, .5, 1); }
   .fOk .ic { width: 11px; height: 11px; }
+  .fItem .lkTog { margin-left: 2px; }
+  .fItem.off { opacity: .45; }
+  .fItem.off .fOk { transform: scale(0); }
+  .fItem.off small::after { content: ' - off'; color: #F87171; }
   .fpsList.run .fItem { opacity: .35; }
   .fpsList.run .fItem .fOk { transform: scale(0); }
   .fpsList.run .fItem.now { opacity: 1; background: rgba(250, 204, 21, .06); }
@@ -1221,6 +1225,8 @@
   .cpBox { position: absolute; top: 0; left: 0; border: 2px solid var(--yolk); border-radius: 3px; cursor: grab; box-shadow: 0 0 0 999px rgba(0,0,0,.5), 0 0 16px rgba(250, 204, 21, .35); }
   .cpBox:active { cursor: grabbing; }
   .cpBox i { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: var(--yolk); box-shadow: 0 0 0 2px #0b0d14; }
+  .cpBox i { width: 12px; height: 12px; cursor: nwse-resize; transition: transform .15s; } .cpBox i:hover { transform: scale(1.3); }
+  .cpBox i[data-c=tr], .cpBox i[data-c=bl] { cursor: nesw-resize; }
   .cpBox i:nth-child(1) { left: -6px; top: -6px; } .cpBox i:nth-child(2) { right: -6px; top: -6px; } .cpBox i:nth-child(3) { left: -6px; bottom: -6px; } .cpBox i:nth-child(4) { right: -6px; bottom: -6px; }
   .cpBox span { position: absolute; left: 50%; bottom: -26px; transform: translateX(-50%); white-space: nowrap; padding: 2px 8px; border-radius: 6px; background: var(--yolk); color: #1C1503; font-weight: 700; font-size: 10.5px; pointer-events: none; transition: opacity .3s; }
   .cpPic.used .cpBox span { opacity: 0; }
@@ -1301,27 +1307,10 @@
 
   /* the world that freezes */
   .wWorld { max-width: 440px; }
-  .mcWorld { position: relative; height: 210px; overflow: hidden; background: linear-gradient(180deg, #5b8def 0%, #8ab4f8 55%, #cfe3ff 100%); }
-  .mcWorld i { position: absolute; }
-  .mcSun { width: 34px; height: 34px; right: 46px; top: 22px; background: #fff3b0; box-shadow: 0 0 0 6px rgba(255, 243, 176, .35), 0 0 40px rgba(255, 236, 140, .8); }
-  .mcCloud { height: 14px; width: 70px; background: #fff; box-shadow: 18px -10px 0 -2px #fff, 40px 0 0 #fff; opacity: .9; animation: cloud 26s linear infinite; }
-  .mcCloud.a { top: 30px; left: -90px; } .mcCloud.b { top: 62px; left: -90px; animation-delay: -13s; transform: scale(.7); }
-  @keyframes cloud { to { left: 110%; } }
-  .mcHill { left: -10%; right: 40%; bottom: 52px; height: 60px; background: #3f8f2f; border-radius: 50% 50% 0 0 / 100% 100% 0 0; opacity: .55; }
-  .mcTree { left: 64%; bottom: 58px; width: 30px; height: 30px; background: #2f7a25; box-shadow: inset 0 0 0 4px #3a8e2d, 0 30px 0 -11px #6b4423; }
-  .mcGround { position: absolute; left: 0; right: 0; bottom: 0; height: 58px; background:
-    linear-gradient(180deg, #5fbf3f 0 12px, #4c9e31 12px 16px, transparent 16px),
-    repeating-linear-gradient(90deg, #8a5a33 0 14px, #7a4e2b 14px 28px, #93623a 28px 42px);
-    box-shadow: inset 0 16px 0 0 transparent; }
-  .mcChick { bottom: 58px; left: 8%; width: 22px; height: 20px; background: #fff; border-radius: 4px 6px 2px 2px; animation: chick 7s ease-in-out infinite alternate; }
-  .mcChick::before { content: ""; position: absolute; right: -6px; top: 5px; width: 6px; height: 4px; background: #f59e0b; }
-  .mcChick::after { content: ""; position: absolute; left: 5px; bottom: -6px; width: 3px; height: 6px; background: #f59e0b; box-shadow: 8px 0 0 #f59e0b; }
-  @keyframes chick { 0% { left: 8%; } 45% { left: 40%; } 55% { left: 40%; transform: translateY(-4px); } 100% { left: 52%; } }
-  .mcItem { left: 28%; bottom: 66px; width: 13px; height: 13px; background: linear-gradient(180deg, #5fbf3f 0 35%, #8a5a33 35%); box-shadow: 0 0 0 1px rgba(0,0,0,.2); animation: bobY 2.2s ease-in-out infinite, spin 4s linear infinite; }
-  @keyframes spin { to { rotate: 360deg; } }
+  .mcWorld { position: relative; overflow: hidden; background: #0b0d18; }
+  .mcWorld canvas { display: block; width: 100%; aspect-ratio: 220 / 108; image-rendering: pixelated; }
   .mcClock { position: absolute; left: 10px; top: 10px; padding: 3px 8px; border-radius: 7px; background: rgba(0,0,0,.45); color: #fff !important; font: 700 11px ui-monospace, monospace; backdrop-filter: blur(4px); }
   .mcFrost { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .6s; background: radial-gradient(120% 90% at 50% 50%, transparent 45%, rgba(186, 230, 253, .55)), linear-gradient(180deg, rgba(147, 197, 253, .25), rgba(147, 197, 253, .1)); }
-  .mcWorld.frozen i, .mcWorld.frozen .mcChick { animation-play-state: paused; }
   .mcWorld.frozen .mcFrost { opacity: 1; }
   .mcWorld.frozen .mcClock { background: rgba(14, 116, 144, .7); }
   .mcToast { position: absolute; left: 12px; right: 12px; bottom: 12px; display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 12px; background: rgba(17, 20, 31, .92);
@@ -1395,7 +1384,7 @@
   /* the fun stuff heading */
   .hlFun { background: linear-gradient(100deg, #FDE68A, #FACC15 40%, #FDE68A 60%, #F59E0B); background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: funShine 5s linear infinite; }
   @keyframes funShine { from { background-position: 120% 0; } to { background-position: -100% 0; } }
-  @media (prefers-reduced-motion: reduce) { .hlFun, .cpCape, .cpShine, .mcCloud, .mcChick, .mcItem { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { .hlFun, .cpCape, .cpShine { animation: none; } }
 
   /* the Discord chat */
   .dcArt { gap: 2px; padding: 14px 6px 10px; background: #313338; }
@@ -1407,8 +1396,15 @@
   .dcMsg > div { min-width: 0; }
   .dcAv { flex: none; width: 36px; height: 36px; border-radius: 50%; }
   .dcReacts { display: flex; gap: 4px; margin-top: 5px; }
-  .dcReacts span { padding: 1px 7px; border-radius: 8px; background: #2b2d31; border: 1px solid transparent; font-size: 12.5px; color: #B5BAC1; }
-  .dcReacts span.on { background: rgba(88, 101, 242, .15); border-color: #5865F2; color: #DEE0FC; }
+  .dcReacts button { padding: 1px 7px; border-radius: 8px; background: #2b2d31; border: 1px solid transparent; font-size: 12.5px; color: #B5BAC1; transition: background .15s, border-color .15s, transform .15s; }
+  .dcReacts button b { font-weight: 600; color: inherit !important; }
+  .dcReacts button:hover { border-color: #4e5058; background: #34363c; }
+  .dcReacts button.on { background: rgba(88, 101, 242, .15); border-color: #5865F2; color: #DEE0FC; }
+  .dcReacts button.pop { animation: rPop .3s cubic-bezier(.3, 1.6, .5, 1); }
+  @keyframes rPop { 40% { transform: scale(1.2); } }
+  .dcAdd { opacity: 0; } .dcMsg:hover .dcAdd { opacity: 1; }
+  .dcPick { display: flex; gap: 2px; padding: 4px; border-radius: 8px; background: #111214; box-shadow: 0 8px 20px rgba(0,0,0,.5); margin-top: 5px; width: max-content; }
+  .dcPick button { font-size: 16px; padding: 3px 5px; border-radius: 6px; } .dcPick button:hover { background: #2b2d31; }
   .dcAv.wad { background: radial-gradient(circle at 50% 36%, #fde68a 0 30%, transparent 31%), radial-gradient(circle at 50% 100%, #fde68a 0 44%, transparent 45%), linear-gradient(135deg, #38bdf8, #6366f1); }
   .dcAv.rice { background: radial-gradient(circle at 50% 38%, #fff 0 34%, transparent 35%), radial-gradient(circle at 50% 100%, #fff 0 46%, transparent 47%), #1e1f22; box-shadow: inset 0 0 0 2px #2b2d31; }
   .dcAv.dk { background: url(icon.png) center / cover, #FACC15; }
@@ -1442,12 +1438,35 @@
     50% { box-shadow: inset 0 1px 0 rgba(255,255,255,.7), inset 0 -2px 0 rgba(170,110,0,.18), 0 0 0 1px rgba(255, 216, 77, .7), 0 0 18px rgba(255, 216, 77, .5), 0 0 34px rgba(255, 190, 50, .22); } }
   .mBtn:not(.ghost):hover, .ccSave:not(.done):hover, .vMake:hover, .setGo:not(.undo):hover { animation-duration: 1.6s; background: #FFE066 !important; }
   .vMake:disabled { animation: none; opacity: .35; }
-  .tryBtn, .modAll { color: transparent; background-image: linear-gradient(105deg, #ffd84d 0%, #ffd84d 35%, #fff0b3 50%, #ffd84d 65%, #ffd84d 100%); background-size: 250% 100%; -webkit-background-clip: text; background-clip: text;
-    background-color: rgba(250, 204, 21, .08); animation: plusShine 3.4s ease-in-out infinite; box-shadow: 0 0 0 1px rgba(255, 216, 77, .35), 0 0 14px rgba(255, 216, 77, .12); border-color: transparent; }
+  .tryBtn, .modAll { color: #ffd84d; background: rgba(250, 204, 21, .08); text-shadow: 0 0 10px rgba(255, 216, 77, .45); box-shadow: 0 0 0 1px rgba(255, 216, 77, .35), 0 0 14px rgba(255, 216, 77, .12); border-color: transparent; animation: plusGlow 3.4s ease-in-out infinite; }
+  .tryBtn:hover, .modAll:hover { color: #FFE680; background: rgba(250, 204, 21, .16); }
   .tryBtn .ic { color: #ffd84d; }
   @media (prefers-reduced-motion: reduce) { .get, .sideGet, .mBtn, .ccSave, .vMake, .setGo, .modTabs button.on, .wChat .sSend, .lkHint, .cpBox span, .sCnt, .mDone, .tryBtn, .modAll { animation: none !important; } }
   .coolCard { min-height: 168px; }
   @media (max-width: 520px) { .coolCard { min-height: 0; } }
+  /* a call, right inside the chat */
+  .sCallBar[hidden] { display: none !important; }
+  .sCallBar { margin: 8px 10px 0; padding: 9px 10px; border-radius: 12px; background: linear-gradient(180deg, rgba(74, 222, 128, .14), rgba(74, 222, 128, .05)); border: 1px solid rgba(74, 222, 128, .35); display: flex; flex-direction: column; gap: 8px; animation: pop .3s cubic-bezier(.2, .8, .2, 1); }
+  .sCallBar.ring { background: linear-gradient(180deg, rgba(250, 204, 21, .12), rgba(250, 204, 21, .04)); border-color: rgba(250, 204, 21, .35); }
+  .scTop { display: flex; align-items: center; gap: 8px; font-size: 11.5px; }
+  .scTop b { flex: 1; }
+  .scTop .cLive { width: 7px; height: 7px; }
+  .sCallBar.ring .cLive { background: var(--yolk); box-shadow: 0 0 0 3px rgba(250, 204, 21, .2); }
+  .scTime { font: 700 11px ui-monospace, monospace; color: #4ADE80; }
+  .scPeople { display: flex; gap: 8px; }
+  .scP { display: flex; align-items: center; gap: 6px; padding: 4px 8px 4px 4px; border-radius: 9px; background: rgba(0,0,0,.2); font-size: 11px; font-weight: 600; }
+  .scP span { width: 22px; height: 22px; border-radius: 7px; overflow: hidden; display: block; transition: box-shadow .2s; }
+  .scP span svg { width: 100%; height: 100%; display: block; }
+  .scP.talk span { box-shadow: 0 0 0 2px #4ADE80, 0 0 10px rgba(74, 222, 128, .6); }
+  .scP.wait { opacity: .5; } .scP.wait small { color: #FDE68A !important; font-size: 10px; }
+  .scP .m { color: #F87171 !important; font-size: 10px; }
+  .scBtns { display: flex; gap: 6px; }
+  .scBtns button { display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px; border-radius: 8px; font-size: 11px; font-weight: 700; background: rgba(255,255,255,.07); color: #D9DBE3; transition: background .15s; }
+  .scBtns button:hover { background: rgba(255,255,255,.12); }
+  .scBtns button.on { background: rgba(248, 113, 113, .2); color: #F87171; }
+  .scBtns button.end { background: linear-gradient(180deg, #F0646A, #E5484D); color: #fff; margin-left: auto; }
+  .scBtns .ic { width: 11px; height: 11px; }
+  .sBtn.live { background: rgba(74, 222, 128, .16); border-color: rgba(74, 222, 128, .45); color: #4ADE80; }
 </style>
 </head>
 <body>
@@ -1513,6 +1532,7 @@
       <div class="rowText">
         <h2>The best FPS boost</h2>
         <p>Duckky Client tunes Java for your PC and adds speed-up mods to any version or modpack that's missing them - a faster renderer, memory savers and more. If a modpack doesn't like one, it takes it back out by itself.</p>
+        <p class="hint"><i class="ic" data-i="pointer"></i>Don't want one? Switch it off.</p>
         <button class="tryBtn" data-act="fps"><i class="ic" data-i="play"></i>Get a version ready</button>
       </div>
       <div class="rowArt stage">
@@ -1525,9 +1545,9 @@
             </div>
             <div class="fpsList" id="fpsList">
               <div class="fItem"><span class="fIc" style="--c:#f97316">J</span><div><b>Java tuned for your PC</b><small>8 threads, 6 GB of memory</small></div><span class="fOk"><i class="ic" data-i="check"></i></span></div>
-              <div class="fItem"><span class="fIc" style="--c:#a855f7">E</span><div><b>Embeddium</b><small>A faster renderer</small></div><span class="fOk"><i class="ic" data-i="check"></i></span></div>
-              <div class="fItem"><span class="fIc" style="--c:#22c55e">C</span><div><b>Entity Culling</b><small>Skips what you can't see</small></div><span class="fOk"><i class="ic" data-i="check"></i></span></div>
-              <div class="fItem"><span class="fIc" style="--c:#3b82f6">F</span><div><b>FerriteCore</b><small>Uses less memory</small></div><span class="fOk"><i class="ic" data-i="check"></i></span></div>
+              <div class="fItem" data-mod><span class="fIc" style="--c:#a855f7">E</span><div><b>Embeddium</b><small>A faster renderer</small></div><span class="fOk"><i class="ic" data-i="check"></i></span><button class="lkTog" aria-label="Turn Embeddium off"></button></div>
+              <div class="fItem" data-mod><span class="fIc" style="--c:#22c55e">C</span><div><b>Entity Culling</b><small>Skips what you can't see</small></div><span class="fOk"><i class="ic" data-i="check"></i></span><button class="lkTog" aria-label="Turn Entity Culling off"></button></div>
+              <div class="fItem" data-mod><span class="fIc" style="--c:#3b82f6">F</span><div><b>FerriteCore</b><small>Uses less memory</small></div><span class="fOk"><i class="ic" data-i="check"></i></span><button class="lkTog" aria-label="Turn FerriteCore off"></button></div>
             </div>
             <button class="fPlay" id="fpsPlay"><i class="ic" data-i="play"></i>Play</button>
           </div>
@@ -1540,7 +1560,7 @@
       <div class="rowText">
         <h2>Your friends, in every game</h2>
         <p>See who's online and what they're playing, chat and call, and invite them into your world. It works inside modpacks too, from 1.7.10 to 1.21.1.</p>
-        <p class="hint"><i class="ic" data-i="pointer"></i>Click a chat, type a message and send it.</p>
+        <p class="hint"><i class="ic" data-i="pointer"></i>Click a chat, send a message - or press Call.</p>
       </div>
       <div class="rowArt stage">
         <div class="win wChat">
@@ -1553,6 +1573,7 @@
             </div>
             <div class="sChat">
               <div class="sHeadBar"><span class="sAv" id="chatAv"></span><div><b id="chatName"></b><small id="chatSub"></small></div><button class="sBtn" id="chatCall"><i class="ic" data-i="phone"></i><span>Call</span></button></div>
+              <div class="sCallBar" id="chatCallBar" hidden></div>
               <div class="sMsgs" id="chatMsgs"></div>
               <form class="sInput" id="chatForm"><input id="chatText" maxlength="120" autocomplete="off" aria-label="Message"><button class="sSend" aria-label="Send"><i class="ic" data-i="send"></i></button></form>
             </div>
@@ -1582,13 +1603,13 @@
       <div class="rowText">
         <h2>Make your own cape</h2>
         <p>Turn any picture or GIF into a cape - or draw your own in pixel art, with frames to make it move. Pick a color for the edges, and send it to a friend to wear in one click. Every Duckky player sees it on you in game.</p>
-        <p class="hint"><i class="ic" data-i="pointer"></i>Drag the box around the picture (scroll to resize it) - the cape follows.</p>
+        <p class="hint"><i class="ic" data-i="pointer"></i>Drag the box to move it, drag a corner to make it bigger or smaller - the cape follows.</p>
       </div>
       <div class="rowArt stage">
         <div class="win wCape" id="capeMaker">
           <div class="winBar"><img src="icon.png" alt=""><b>Make your own cape</b><span class="winCtl"><i></i><i></i><i></i></span></div>
           <div class="cpBody">
-            <div class="cpPic" id="cpPic"><div class="cpBox" id="cpBox"><i></i><i></i><i></i><i></i><span>Drag me</span></div></div>
+            <div class="cpPic" id="cpPic"><div class="cpBox" id="cpBox"><i data-c="tl"></i><i data-c="tr"></i><i data-c="bl"></i><i data-c="br"></i><span>Drag me</span></div></div>
             <div class="cpSide">
               <div class="cpCape" id="cpCape"><canvas id="cpCanvas" width="160" height="256"></canvas><i class="cpShine"></i></div>
               <div class="ccSeg" role="group" aria-label="Quality"><button>Pixel</button><button>Low</button><button>Normal</button><button class="on">HD</button></div>
@@ -1667,15 +1688,12 @@
       <div class="rowArt stage">
         <div class="win wWorld">
           <div class="mcWorld" id="frWorld">
-            <i class="mcSun"></i><i class="mcCloud a"></i><i class="mcCloud b"></i>
-            <i class="mcHill"></i><i class="mcTree"></i>
-            <i class="mcChick"></i><i class="mcItem"></i>
-            <div class="mcGround"></div>
+            <canvas id="mcCanvas" aria-label="A Minecraft server with players and animals walking around"></canvas>
             <span class="mcClock" id="frClock">Running</span>
             <div class="mcFrost"></div>
             <div class="mcToast" id="frToast"><img src="icon.png" alt=""><div><b>Your world stopped responding</b><span>It's stuck in Lantern Lights. Save and Quit, then open the world again.</span></div></div>
           </div>
-          <div class="wFoot"><span class="wHot"><i class="ic" data-i="snow"></i>My world - Survival</span><button class="mBtn" id="frBtn">Freeze the world</button></div>
+          <div class="wFoot"><span class="wHot"><i class="ic" data-i="snow"></i>Duck SMP - Survival</span><button class="mBtn" id="frBtn">Freeze the world</button></div>
         </div>
       </div>
     </div>
@@ -1830,13 +1848,13 @@
       </ul>
       <a class="dcGo" href="https://discord.gg/h8Bd3A9Pex" target="_blank" rel="noopener"><i class="ic" data-i="discord"></i>Join the Discord<i class="ic" data-i="ext"></i></a>
     </div>
-    <div class="dcArt" aria-hidden="true">
+    <div class="dcArt">
       <div class="dcHead"><span>#</span>general</div>
       <div class="dcMsg"><span class="dcAv wad"></span><div><div class="dcName"><b class="w">Waddles</b><span class="dcRole"><svg class="dcIcon" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.2"><path d="M14.5 17.5 3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"/></svg>Member</span><span class="dcTime">Today at 7:38 PM</span></div><p><span class="dcAt">@Duckky</span> my modpack keeps crashing 😭</p></div></div>
       <div class="dcMsg"><span class="dcAv dk"></span><div><div class="dcName"><b class="y">Duckky</b><span class="dcRole"><svg class="dcIcon" viewBox="0 0 24 24" fill="#4ade80"><path d="M5 21c0-9 6-15 16-16-1 10-7 16-16 16z"/></svg>Duck</span><svg class="dcIcon" viewBox="0 0 24 24" fill="none" stroke="#FACC15" stroke-width="2.2"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><span class="dcTime">Today at 7:39 PM</span></div><p>open it in the launcher - it tells you which mod did it</p></div></div>
       <div class="dcMsg"><span class="dcAv wad"></span><div><div class="dcName"><b class="w">Waddles</b><span class="dcRole"><svg class="dcIcon" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.2"><path d="M14.5 17.5 3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"/></svg>Member</span><span class="dcTime">Today at 7:41 PM</span></div><p>WAIT it just fixed it with one button??</p></div></div>
       <div class="dcMsg"><span class="dcAv dk"></span><div><div class="dcName"><b class="y">Duckky</b><span class="dcRole"><svg class="dcIcon" viewBox="0 0 24 24" fill="#4ade80"><path d="M5 21c0-9 6-15 16-16-1 10-7 16-16 16z"/></svg>Duck</span><svg class="dcIcon" viewBox="0 0 24 24" fill="none" stroke="#FACC15" stroke-width="2.2"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><span class="dcTime">Today at 7:41 PM</span></div><p>yep 😎 no more reading crash logs</p></div></div>
-      <div class="dcMsg"><span class="dcAv wad"></span><div><div class="dcName"><b class="w">Waddles</b><span class="dcRole"><svg class="dcIcon" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.2"><path d="M14.5 17.5 3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"/></svg>Member</span><span class="dcTime">Today at 7:42 PM</span></div><p>ok this client is actually goated</p><div class="dcReacts"><span class="on">🦆 12</span><span>🔥 7</span><span>💯 4</span></div></div></div>
+      <div class="dcMsg"><span class="dcAv wad"></span><div><div class="dcName"><b class="w">Waddles</b><span class="dcRole"><svg class="dcIcon" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.2"><path d="M14.5 17.5 3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"/></svg>Member</span><span class="dcTime">Today at 7:42 PM</span></div><p>ok this client is actually goated</p><div class="dcReacts"><button class="on" data-n="12">🦆 <b>12</b></button><button data-n="7">🔥 <b>7</b></button><button data-n="4">💯 <b>4</b></button><button class="dcAdd" title="Add a reaction">☺+</button></div></div></div>
       <div class="dcMsg"><span class="dcAv dk"></span><div><div class="dcName"><b class="y">Duckky</b><span class="dcRole"><svg class="dcIcon" viewBox="0 0 24 24" fill="#4ade80"><path d="M5 21c0-9 6-15 16-16-1 10-7 16-16 16z"/></svg>Duck</span><svg class="dcIcon" viewBox="0 0 24 24" fill="none" stroke="#FACC15" stroke-width="2.2"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><span class="dcTime">Today at 7:42 PM</span></div><p>come play horror pack with us tonight, i'll send an invite</p></div></div>
     </div>
   </div>
@@ -2070,17 +2088,28 @@ document.querySelector('.heroLogo').addEventListener('click', function () { var 
   var list = $('fpsList'), items = [].slice.call(list.querySelectorAll('.fItem')), timers = [];
   var arc = $('fpsArc'), C = 113.1;
   var steps = ['Tuning Java for your PC...', 'Adding a faster renderer...', 'Skipping what you can\'t see...', 'Saving memory...'];
-  function set(n) { arc.style.strokeDashoffset = String(C * (1 - n / items.length)); $('fpsPct').textContent = n + '/' + items.length; }
+  function on() { return items.filter(function (x) { return !x.classList.contains('off'); }); }
+  function set(n) { var all = on().length; arc.style.strokeDashoffset = String(C * (1 - n / Math.max(1, all))); $('fpsPct').textContent = n + '/' + all; }
+  function done() { var off = items.length - on().length; $('fpsTitle').textContent = 'Ready to play'; $('fpsStep').textContent = off ? off + ' speed-up mod' + (off === 1 ? '' : 's') + ' switched off - your choice' : 'Everything\'s set up for your PC'; set(on().length); }
   function run() {
     timers.forEach(clearTimeout); timers = [];
+    var use = on();
     list.classList.add('run'); items.forEach(function (x) { x.classList.remove('in', 'now'); });
     $('fpsPlay').disabled = true; $('fpsTitle').textContent = 'Getting it ready'; set(0);
-    items.forEach(function (x, k) {
-      timers.push(setTimeout(function () { x.classList.add('now'); $('fpsStep').textContent = steps[k]; }, 250 + k * 700));
+    use.forEach(function (x, k) {
+      var i = items.indexOf(x);
+      timers.push(setTimeout(function () { x.classList.add('now'); $('fpsStep').textContent = steps[i]; }, 250 + k * 700));
       timers.push(setTimeout(function () { x.classList.remove('now'); x.classList.add('in'); set(k + 1); }, 250 + k * 700 + 520));
     });
-    timers.push(setTimeout(function () { $('fpsPlay').disabled = false; $('fpsTitle').textContent = 'Ready to play'; $('fpsStep').textContent = 'Everything\'s set up for your PC'; }, 250 + items.length * 700));
+    timers.push(setTimeout(function () { $('fpsPlay').disabled = false; done(); }, 250 + use.length * 700));
   }
+  list.addEventListener('click', function (e) {
+    var t = e.target.closest('.lkTog'); if (!t) return;
+    var it = t.closest('.fItem'), off = it.classList.toggle('off'); t.classList.toggle('off', off);
+    t.setAttribute('aria-label', (off ? 'Turn on ' : 'Turn off ') + it.querySelector('b').textContent);
+    if (!list.classList.contains('run') || !$('fpsPlay').disabled) { list.classList.remove('run'); done(); }
+    toast(it.querySelector('b').textContent + (off ? ' won\'t be added' : ' will be added'));
+  });
   document.querySelector('[data-act="fps"]').addEventListener('click', run);
   $('fpsPlay').addEventListener('click', function () { toast('Starting Horror Pack...'); });
 })();
@@ -2093,7 +2122,7 @@ document.querySelector('.heroLogo').addEventListener('click', function () { var 
     { n: 'MallardMax', h: 2, st: 'Playing PvP', g: true, at: '8:10 PM', m: [['them', 'gg that last round was close', '8:02 PM'], ['me', 'rematch tomorrow', '8:10 PM']], r: "you're on" },
     { n: 'Feathers', h: 3, st: 'Last seen 2 hours ago', off: true, at: '', m: [['me', 'did the new cape work?', '6:40 PM'], ['them', 'yes!! everyone saw it on me', '6:52 PM']] }
   ];
-  var sel = 1, calling = -1;
+  var sel = 1, calling = -1, cPhase = '', cSec = 0, cMute = false, cTalk = 0, cTimers = [];
   function lastLine(c) { var x = c.m[c.m.length - 1]; return x[0] === 'inv' ? x[1] : (x[0] === 'me' ? 'You: ' : '') + x[1]; }
   function rows() {
     var q = $('chatSearch').value.trim().toLowerCase();
@@ -2109,8 +2138,9 @@ document.querySelector('.heroLogo').addEventListener('click', function () { var 
     $('chatName').textContent = c.n;
     var sb = $('chatSub'); sb.textContent = c.st; sb.className = c.off ? 'off' : '';
     $('chatText').placeholder = 'Message ' + c.n;
-    $('chatCall').querySelector('span').textContent = calling === sel ? 'In call' : 'Call';
+    $('chatCall').querySelector('span').textContent = calling === sel ? (cPhase === 'ring' ? 'Calling...' : 'In call') : 'Call';
     $('chatCall').classList.toggle('live', calling === sel);
+    bar();
     var box = $('chatMsgs');
     box.innerHTML = c.m.map(function (x) { return x[0] === 'inv' ? '<div class="sInv"><b>' + esc(x[1]) + '</b><small>' + esc(x[2]) + '</small></div>' : x[0] === 'typing' ? '<div class="sTyping"><i></i><i></i><i></i></div>' : '<div class="sB ' + x[0] + '">' + esc(x[1]) + '<small>' + x[2] + '</small></div>'; }).join('');
     box.scrollTop = box.scrollHeight;
@@ -2129,12 +2159,33 @@ document.querySelector('.heroLogo').addEventListener('click', function () { var 
       setTimeout(function () { c.m = c.m.filter(function (x) { return x[0] !== 'typing'; }); c.m.push(['them', c.r, time()]); if (sel !== k) c.un = (c.un || 0) + 1; rows(); if (sel === k) msgs(); }, 2100);
     }
   });
+  // ---- a call, right in the chat: it rings, they pick up, you talk ----
+  function bar() {
+    var b = $('chatCallBar');
+    if (calling !== sel) { b.hidden = true; return; }
+    var c = CH[calling], ring = cPhase === 'ring';
+    b.hidden = false; b.className = 'sCallBar' + (ring ? ' ring' : '');
+    b.innerHTML = '<div class="scTop"><span class="cLive"></span><b>' + (ring ? 'Calling ' + esc(c.n) + '...' : 'In a call with ' + esc(c.n)) + '</b>' + (ring ? '' : '<span class="scTime">' + Math.floor(cSec / 60) + ':' + String(cSec % 60).padStart(2, '0') + '</span>') + '</div>'
+      + '<div class="scPeople"><div class="scP' + (!ring && cTalk === 0 && !cMute ? ' talk' : '') + '"><span>' + headSvg(HEADS.faces[0]) + '</span>You' + (cMute ? ' <small class="m">muted</small>' : '') + '</div>'
+      + '<div class="scP' + (ring ? ' wait' : cTalk === 1 ? ' talk' : '') + '"><span>' + headSvg(HEADS.heads[c.h]) + '</span>' + esc(c.n) + (ring ? ' <small>ringing</small>' : '') + '</div></div>'
+      + '<div class="scBtns"><button data-sc="mute" class="' + (cMute ? 'on' : '') + '">' + icon('mic') + (cMute ? 'Unmute' : 'Mute') + '</button><button class="end" data-sc="end">' + icon('phoneoff') + (ring ? 'Cancel' : 'Leave') + '</button></div>';
+  }
+  function endCall(why) { cTimers.forEach(clearTimeout); cTimers.forEach(clearInterval); cTimers = []; var c = CH[calling]; calling = -1; cPhase = ''; if (why) toast(why); if (c) { var m = Math.max(1, Math.round(cSec / 60)); if (cSec) c.m.push(['inv', 'Call ended', m + ' min - ' + c.n]); } cSec = 0; msgs(); rows(); }
   $('chatCall').addEventListener('click', function () {
     var c = CH[sel];
-    if (c.off) { toast(c.n + " isn't online right now"); return; }
-    calling = calling === sel ? -1 : sel;
-    toast(calling === sel ? 'Calling ' + c.n + '...' : 'Call ended');
-    msgs();
+    if (calling === sel) { endCall('Call ended'); return; }
+    if (c.off) { toast(c.n + " isn't online right now - they'll see you called"); return; }
+    if (calling >= 0) endCall();
+    calling = sel; cPhase = 'ring'; cSec = 0; cMute = false; msgs();
+    cTimers.push(setTimeout(function () {
+      cPhase = 'on'; toast(c.n + ' picked up'); msgs();
+      cTimers.push(setInterval(function () { cSec++; if (cSec % 2 === 0) cTalk = Math.random() < .5 ? 0 : 1; if (calling === sel) bar(); }, 1000));
+    }, 1800));
+  });
+  $('chatCallBar').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-sc]'); if (!b) return;
+    if (b.getAttribute('data-sc') === 'mute') { cMute = !cMute; bar(); }
+    else endCall(cPhase === 'ring' ? 'Call cancelled' : 'Call ended');
   });
   rows(); msgs();
 })();
@@ -2202,8 +2253,25 @@ document.querySelector('.heroLogo').addEventListener('click', function () { var 
     cx.imageSmoothingEnabled = false; cx.clearRect(0, 0, 160, 256); cx.drawImage(tiny, 0, 0, 160, 256);
   }
   var drag = null;
-  box.addEventListener('pointerdown', function (e) { e.preventDefault(); drag = { x: e.clientX, y: e.clientY, bx: bx, by: by }; box.setPointerCapture(e.pointerId); pic.classList.add('used'); });
-  box.addEventListener('pointermove', function (e) { if (!drag) return; bx = drag.bx + (e.clientX - drag.x) / pic.clientWidth; by = drag.by + (e.clientY - drag.y) / pic.clientHeight; place(); });
+  box.addEventListener('pointerdown', function (e) {
+    e.preventDefault(); pic.classList.add('used');
+    var c = e.target.getAttribute && e.target.getAttribute('data-c');
+    drag = { x: e.clientX, y: e.clientY, bx: bx, by: by, bh: bh, c: c, w: boxW() };
+    box.setPointerCapture(e.pointerId);
+  });
+  box.addEventListener('pointermove', function (e) {
+    if (!drag) return;
+    var dx = (e.clientX - drag.x) / pic.clientWidth, dy = (e.clientY - drag.y) / pic.clientHeight;
+    if (!drag.c) { bx = drag.bx + dx; by = drag.by + dy; place(); return; }
+    // (a corner: bigger or smaller, the opposite corner stays put - always the cape's own shape)
+    var ratio = pic.clientHeight * 10 / 16 / pic.clientWidth; // (box width for a height of 1)
+    var grow = drag.c === 'br' ? Math.max(dy, dx / ratio) : drag.c === 'tl' ? Math.max(-dy, -dx / ratio) : drag.c === 'tr' ? Math.max(-dy, dx / ratio) : Math.max(dy, -dx / ratio);
+    bh = Math.min(1, Math.max(.35, drag.bh + grow));
+    var w = bh * ratio;
+    bx = drag.c === 'tl' || drag.c === 'bl' ? drag.bx + drag.w - w : drag.bx;
+    by = drag.c === 'tl' || drag.c === 'tr' ? drag.by + drag.bh - bh : drag.by;
+    place();
+  });
   box.addEventListener('pointerup', function () { drag = null; });
   box.addEventListener('pointercancel', function () { drag = null; });
   pic.addEventListener('wheel', function (e) { e.preventDefault(); var c = by + bh / 2, cxm = bx + boxW() / 2; bh *= e.deltaY > 0 ? 1.07 : .93; clamp(); by = c - bh / 2; bx = cxm - boxW() / 2; place(); pic.classList.add('used'); }, { passive: false });
@@ -2287,13 +2355,199 @@ document.querySelector('.heroLogo').addEventListener('click', function () { var 
   $('safeNote').title = 'Try it again';
 })();
 
+// ---------------- the SMP camera: a little Minecraft server, with players and animals walking by and day turning to night ----------------
+var SMP = (function () {
+  var cv = $('mcCanvas'), cx = cv.getContext('2d');
+  var W = 220, H = 108, G = 86; // (the scene in Minecraft pixels; G = the top of the grass)
+  var t = .22; // (time of day: 0 = sunrise, .25 = noon, .5 = sunset, .75 = midnight)
+  var DAY = 56; // (seconds for a whole day)
+  var frozen = false, seen = false, last = 0, raf = 0, sim = 0;
+  function rnd(a, b) { return a + Math.random() * (b - a); }
+
+  // ---- the ground, the house, the tree, the farm: drawn once ----
+  var ground = document.createElement('canvas'); ground.width = W; ground.height = H;
+  (function () {
+    var g = ground.getContext('2d');
+    function px(x, y, w, h, c) { g.fillStyle = c; g.fillRect(x, y, w, h); }
+    // dirt and stone, a bit speckled like the real blocks
+    for (var y = G; y < H; y++) for (var x = 0; x < W; x++) {
+      var deep = y > G + 14, r = (x * 7 + y * 13 + (x * y) % 5) % 9;
+      px(x, y, 1, 1, deep ? (r < 3 ? '#7a7a7a' : r < 6 ? '#8a8a8a' : '#6c6c6c') : (r < 3 ? '#79553a' : r < 6 ? '#8b6542' : '#6b4a30'));
+    }
+    for (var x2 = 0; x2 < W; x2++) { px(x2, G, 1, 3, (x2 % 3) ? '#5fa83d' : '#6cbb47'); if (x2 % 4 === 1) px(x2, G + 3, 1, 1, '#4f8f31'); }
+    // a gravel path
+    for (var x3 = 96; x3 < 132; x3++) px(x3, G, 1, 2, (x3 % 3) ? '#9a948c' : '#8a847c');
+    // the house: cobblestone base, oak planks, a dark oak roof, a door and two windows
+    var hx = 132, hw = 48, hy = G - 34;
+    for (var yy = G - 6; yy < G; yy++) for (var xx = hx; xx < hx + hw; xx++) px(xx, yy, 1, 1, ((xx + yy) % 4) ? '#7d7d7d' : '#6a6a6a');
+    for (var y4 = hy + 10; y4 < G - 6; y4++) for (var x4 = hx; x4 < hx + hw; x4++) px(x4, y4, 1, 1, (y4 % 4 === 0) ? '#9c7a48' : (x4 % 8 === 0 ? '#a8854f' : '#b8925a'));
+    for (var y5 = hy + 10; y5 < G; y5++) { px(hx, y5, 2, 1, '#6b4a2c'); px(hx + hw - 2, y5, 2, 1, '#6b4a2c'); }
+    for (var r2 = 0; r2 < 12; r2++) px(hx - 4 + r2, hy + 10 - r2, hw + 8 - r2 * 2, 1, r2 % 2 ? '#4a3220' : '#3e2a1a');
+    px(hx + 20, G - 16, 8, 16, '#7a5532'); px(hx + 21, G - 15, 6, 6, '#8d6439'); px(hx + 21, G - 8, 6, 7, '#8d6439'); px(hx + 25, G - 9, 1, 2, '#3a2a1a');
+    px(hx + 6, hy + 16, 9, 8, '#3a2a1a'); px(hx + 33, hy + 16, 9, 8, '#3a2a1a');
+    // the tree's trunk (its leaves move, so they're drawn each frame)
+    px(30, G - 22, 4, 22, '#6b4a2c'); px(31, G - 22, 1, 22, '#5a3d24');
+    // the farm: farmland and wheat
+    for (var x6 = 54; x6 < 90; x6++) px(x6, G, 1, 2, x6 % 2 ? '#5a3a22' : '#4e321d');
+    for (var x7 = 55; x7 < 90; x7 += 3) { px(x7, G - 6, 1, 6, '#c9b048'); px(x7 + 1, G - 4, 1, 4, '#a8952f'); px(x7, G - 7, 1, 2, '#e0c860'); }
+    // a fence and a lamp post
+    for (var x8 = 186; x8 < 218; x8 += 6) px(x8, G - 8, 2, 8, '#9c7a48');
+    px(186, G - 6, 32, 1, '#8d6c3e'); px(186, G - 3, 32, 1, '#8d6c3e');
+    px(110, G - 18, 2, 18, '#4a4a4a'); px(109, G - 20, 4, 3, '#6b4a2c');
+  })();
+  var LIGHTS = [[110, G - 21, 26, '255,170,60'], [142, G - 30, 16, '255,210,120'], [169, G - 30, 16, '255,210,120']];
+
+  // ---- who's around ----
+  function P(name, skin, hair, shirt, pants, x) { return { kind: 'player', name: name, skin: skin, hair: hair, shirt: shirt, pants: pants, x: x, dir: Math.random() < .5 ? -1 : 1, v: rnd(10, 14), wait: rnd(0, 2), step: 0, jump: 0 }; }
+  function A(kind, x) { return { kind: kind, x: x, dir: Math.random() < .5 ? -1 : 1, v: kind === 'chicken' ? rnd(5, 8) : rnd(3, 5), wait: rnd(0, 4), step: 0, peck: 0 }; }
+  var ents = [P('Quackers', '#f0c8a0', '#e8c15a', '#3b82f6', '#334155', 70), P('PondSkipper', '#c8956d', '#3b2a1a', '#16a34a', '#1e293b', 120), P('MallardMax', '#a0704a', '#2b2b2b', '#dc2626', '#27272a', 40),
+    { kind: 'dog', x: 60, dir: 1, v: 0, wait: 0, step: 0 },
+    A('cow', 20), A('pig', 196), A('sheep', 200), A('chicken', 80), A('chicken', 66)];
+  var BOUND = { player: [6, 214], cow: [4, 50], pig: [186, 214], sheep: [186, 214], chicken: [52, 94] };
+
+  function update(dt) {
+    t = (t + dt / DAY) % 1; sim += dt;
+    ents.forEach(function (e) {
+      if (e.kind === 'dog') { var own = ents[0], gap = own.x - own.dir * 9 - e.x; if (Math.abs(gap) > 2) { e.dir = gap > 0 ? 1 : -1; e.x += e.dir * Math.min(Math.abs(gap), 16 * dt); e.step += 16 * dt; e.wait = 0; } else { e.wait = 1; e.dir = own.dir; } return; }
+      if (e.wait > 0) { e.wait -= dt; e.step = 0; if (e.kind === 'chicken') e.peck = (e.peck + dt * 6) % 2; return; }
+      var b = BOUND[e.kind];
+      e.x += e.dir * e.v * dt; e.step += e.v * dt;
+      if (e.x < b[0]) { e.x = b[0]; e.dir = 1; } if (e.x > b[1]) { e.x = b[1]; e.dir = -1; }
+      if (Math.random() < dt * (e.kind === 'player' ? .25 : .4)) { e.wait = rnd(.6, e.kind === 'player' ? 2.5 : 4); if (Math.random() < .5) e.dir *= -1; }
+      if (e.kind === 'player' && !e.jump && Math.random() < dt * .12) e.jump = .45;
+      if (e.jump) e.jump = Math.max(0, e.jump - dt);
+    });
+    clouds.forEach(function (c) { c.x += c.v * dt; if (c.x > W + 30) c.x = -40; });
+  }
+  var clouds = [{ x: 10, y: 10, w: 28, v: 2.2 }, { x: 90, y: 6, w: 20, v: 1.6 }, { x: 160, y: 14, w: 34, v: 2.6 }];
+  var stars = []; for (var i = 0; i < 40; i++) stars.push([Math.floor(rnd(0, W)), Math.floor(rnd(0, G - 20)), rnd(0, 6)]);
+
+  function mix(a, b, k) { return a.map(function (v, i) { return Math.round(v + (b[i] - v) * k); }); }
+  function rgb(c) { return 'rgb(' + c.join(',') + ')'; }
+
+  function draw() {
+    var s = cv.width / W; // (screen pixels per Minecraft pixel)
+    cx.setTransform(s, 0, 0, s, 0, 0); cx.imageSmoothingEnabled = false;
+    var sun = Math.sin(t * Math.PI * 2), day = Math.min(1, Math.max(0, (sun + .15) / .4)), dusk = Math.max(0, 1 - Math.abs(sun) / .3) * (sun > -.25 ? 1 : 0);
+    // sky
+    var top = mix(mix([8, 12, 34], [78, 134, 236], day), [86, 78, 150], dusk * .45), bot = mix(mix([20, 26, 62], [176, 208, 255], day), [255, 146, 76], dusk * .8);
+    var gr = cx.createLinearGradient(0, 0, 0, G); gr.addColorStop(0, rgb(top)); gr.addColorStop(1, rgb(bot));
+    cx.fillStyle = gr; cx.fillRect(0, 0, W, G);
+    var starA = Math.min(1, Math.max(0, -sun * 4));
+    if (starA > 0) { cx.fillStyle = '#fff'; stars.forEach(function (st) { cx.globalAlpha = starA * (.5 + .5 * Math.sin(sim * 1.6 + st[2])); cx.fillRect(st[0], st[1], 1, 1); }); cx.globalAlpha = 1; }
+    // the sun and the moon go round
+    var a = t * Math.PI * 2, sx = W / 2 - Math.cos(a) * 92, sy = G - 8 - Math.sin(a) * 62;
+    cx.fillStyle = 'rgba(255, 240, 170, .35)'; cx.fillRect(sx - 7, sy - 7, 14, 14); cx.fillStyle = '#fff6c4'; cx.fillRect(sx - 5, sy - 5, 10, 10);
+    var mx = W / 2 + Math.cos(a) * 92, my = G - 8 + Math.sin(a) * 62;
+    cx.fillStyle = 'rgba(220, 230, 255, .18)'; cx.fillRect(mx - 6, my - 6, 12, 12); cx.fillStyle = '#f1f4fb'; cx.fillRect(mx - 4, my - 4, 8, 8); cx.fillStyle = '#c3ccd9'; cx.fillRect(mx - 2, my - 2, 2, 2); cx.fillRect(mx + 1, my + 1, 2, 1);
+    // clouds
+    cx.fillStyle = 'rgba(255,255,255,' + (.35 + .55 * day) + ')';
+    clouds.forEach(function (c) { cx.fillRect(Math.round(c.x), c.y, c.w, 4); cx.fillRect(Math.round(c.x) + 4, c.y - 2, c.w - 10, 2); });
+    // far away: hazy hills with a few trees on them
+    cx.fillStyle = rgb(mix([18, 26, 52], [150, 192, 170], day));
+    for (var x0 = 0; x0 < W; x0 += 8) { var fh = 18 + Math.round(7 * Math.sin(x0 * .03 + 1) + 4 * Math.sin(x0 * .09)); cx.fillRect(x0, G - fh, 8, fh); }
+    cx.fillStyle = rgb(mix([16, 30, 40], [104, 160, 112], day));
+    [[14, 22], [62, 25], [150, 20], [204, 24]].forEach(function (tr) { cx.fillRect(tr[0], G - tr[1] - 6, 6, 6); cx.fillRect(tr[0] + 2, G - tr[1], 2, 3); });
+    // nearer hills
+    cx.fillStyle = rgb(mix([20, 40, 30], [76, 140, 70], day));
+    for (var x = 0; x < W; x += 6) { var hh = 10 + Math.round(6 * Math.sin(x * .05) + 4 * Math.sin(x * .13)); cx.fillRect(x, G - hh, 6, hh); }
+    // ground, house, farm
+    cx.drawImage(ground, 0, 0);
+    // the tree's leaves, moving a little in the wind
+    var sway = Math.round(Math.sin(sim * 1.1));
+    [[22, G - 34, 20, 8], [18, G - 28, 28, 8], [24, G - 40, 16, 6]].forEach(function (l, k) { cx.fillStyle = k === 1 ? '#3f8a2a' : '#4a9a31'; cx.fillRect(l[0] + (k === 2 ? sway : 0), l[1], l[2], l[3]); });
+    cx.fillStyle = '#367523'; cx.fillRect(26 + sway, G - 30, 3, 2); cx.fillRect(36, G - 26, 3, 2);
+    // everyone
+    ents.slice().sort(function (p, q) { return (p.kind === 'player') - (q.kind === 'player'); }).forEach(drawEnt);
+    // night: darker, with the windows and the lamp glowing
+    var night = 1 - day;
+    if (night > 0) {
+      cx.fillStyle = 'rgba(8, 12, 40,' + (night * .55) + ')'; cx.fillRect(0, 0, W, H);
+      cx.globalCompositeOperation = 'lighter';
+      LIGHTS.forEach(function (L) { var g2 = cx.createRadialGradient(L[0], L[1], 0, L[0], L[1], L[2]); g2.addColorStop(0, 'rgba(' + L[3] + ',' + (.55 * night) + ')'); g2.addColorStop(1, 'rgba(' + L[3] + ',0)'); cx.fillStyle = g2; cx.fillRect(L[0] - L[2], L[1] - L[2], L[2] * 2, L[2] * 2); });
+      cx.globalCompositeOperation = 'source-over';
+      cx.fillStyle = 'rgba(255, 214, 120,' + night + ')'; cx.fillRect(138, G - 18, 9, 8); cx.fillRect(165, G - 18, 9, 8); cx.fillRect(109, G - 21, 4, 2);
+    }
+    // name tags over the players, like in the game
+    cx.setTransform(1, 0, 0, 1, 0, 0);
+    var fs = Math.max(9, Math.round(s * 4.2)); cx.font = '600 ' + fs + 'px ui-monospace, Consolas, monospace'; cx.textAlign = 'center'; cx.textBaseline = 'middle';
+    var tags = [];
+    ents.filter(function (e) { return e.kind === 'player'; }).sort(function (p, q) { return p.x - q.x; }).forEach(function (e) {
+      var w = cx.measureText(e.name).width + fs * 1.6, tx = Math.min(cv.width - w / 2 - 2, Math.max(w / 2 + 2, e.x * s)), ty = (G - 22 - (e.jump ? 3 : 0)) * s;
+      tags.forEach(function (o) { if (Math.abs(o.x - tx) < (o.w + w) / 2 + 4 && Math.abs(o.y - ty) < fs * 1.5) ty = o.y - fs * 1.6; });
+      tags.push({ x: tx, y: ty, w: w });
+      cx.fillStyle = 'rgba(0,0,0,.45)'; cx.fillRect(tx - w / 2, ty - fs * .7, w, fs * 1.4);
+      cx.fillStyle = '#FACC15'; cx.fillRect(tx - w / 2 + fs * .35, ty - fs * .25, fs * .5, fs * .5); // (their duck badge)
+      cx.fillStyle = '#fff'; cx.fillText(e.name, tx + fs * .35, ty + 1);
+    });
+    // the clock in the corner
+    var mins = Math.floor(((t * 24 + 6) % 24) * 60), hh2 = Math.floor(mins / 60), mm = mins % 60;
+    var part = hh2 >= 5 && hh2 < 7 ? 'Sunrise' : hh2 >= 7 && hh2 < 17 ? 'Day' : hh2 >= 17 && hh2 < 19 ? 'Sunset' : 'Night';
+    if (!frozen) $('frClock').textContent = part + ' - ' + String(hh2).padStart(2, '0') + ':' + String(mm - mm % 10).padStart(2, '0');
+  }
+
+  function drawEnt(e) {
+    var x = Math.round(e.x), f = e.dir, leg = e.wait > 0 ? 0 : (Math.floor(e.step / 2) % 2 ? 1 : -1);
+    function px(dx, y, w, h, c) { cx.fillStyle = c; cx.fillRect(f > 0 ? x + dx : x - dx - w, y, w, h); }
+    if (e.kind === 'player') {
+      var up = e.jump ? Math.round(Math.sin(e.jump / .45 * Math.PI) * 3) : 0, y0 = G - 16 - up;
+      cx.fillStyle = e.pants; cx.fillRect(x - 1 + leg, y0 + 10, 2, 6); cx.fillStyle = shade(e.pants); cx.fillRect(x - 1 - leg, y0 + 10, 2, 6); // (legs, one forward, one back)
+      px(-2, y0 + 4, 4, 6, e.shirt); px(-1, y0 + 5, 2, 4, shade(e.shirt)); // (body and arm)
+      px(-2, y0, 4, 4, e.skin); px(-2, y0, 4, 1, e.hair); px(-2, y0 + 1, 1, 1, e.hair); px(1, y0 + 2, 1, 1, '#1f2937'); // (head, hair, eye)
+      return;
+    }
+    if (e.kind === 'cow') {
+      px(-5, G - 9, 10, 5, '#3b2a20'); px(-2, G - 9, 3, 2, '#f5f5f5'); px(2, G - 7, 2, 2, '#f5f5f5');
+      px(-5, G - 4, 2, 4 - (leg > 0 ? 1 : 0), '#3b2a20'); px(3, G - 4, 2, 4 - (leg < 0 ? 1 : 0), '#3b2a20');
+      px(5, G - 11, 4, 4, '#3b2a20'); px(8, G - 9, 2, 2, '#d9b9a0'); px(6, G - 12, 1, 1, '#e5e5e5'); return;
+    }
+    if (e.kind === 'pig') {
+      px(-4, G - 7, 8, 4, '#f0a3a8'); px(-4, G - 3, 2, 3 - (leg > 0 ? 1 : 0), '#e08f95'); px(2, G - 3, 2, 3 - (leg < 0 ? 1 : 0), '#e08f95');
+      px(4, G - 9, 4, 4, '#f0a3a8'); px(7, G - 7, 2, 2, '#e38088'); px(5, G - 8, 1, 1, '#1f2937'); return;
+    }
+    if (e.kind === 'sheep') {
+      px(-5, G - 9, 10, 6, '#ececec'); px(-4, G - 10, 8, 1, '#f7f7f7'); px(-4, G - 3, 2, 3 - (leg > 0 ? 1 : 0), '#d8c6b0'); px(2, G - 3, 2, 3 - (leg < 0 ? 1 : 0), '#d8c6b0');
+      px(5, G - 10, 3, 4, '#d8c6b0'); px(6, G - 9, 1, 1, '#1f2937'); return;
+    }
+    if (e.kind === 'dog') {
+      px(-4, G - 6, 7, 3, '#e5e1dc'); px(-4, G - 3, 1, 3 - (leg > 0 ? 1 : 0), '#d6d1ca'); px(2, G - 3, 1, 3 - (leg < 0 ? 1 : 0), '#d6d1ca');
+      px(-6, G - 7 + (leg ? 0 : 1), 2, 1, '#e5e1dc'); px(3, G - 8, 4, 4, '#e5e1dc'); px(6, G - 6, 2, 2, '#cfc9c1'); px(5, G - 7, 1, 1, '#1f2937'); px(3, G - 9, 1, 1, '#d6d1ca');
+      px(-1, G - 6, 4, 1, '#dc2626'); return; // (the red collar: it's tamed)
+    }
+    // chicken
+    var pk = e.wait > 0 && Math.floor(e.peck) === 1 ? 1 : 0;
+    px(-2, G - 5, 4, 3, '#f5f5f5'); px(-1, G - 2, 1, 2, '#f59e0b'); px(1, G - 2, 1, 2, '#f59e0b');
+    px(1, G - 8 + pk, 2, 3, '#f5f5f5'); px(3, G - 7 + pk, 1, 1, '#f59e0b'); px(1, G - 6 + pk, 1, 1, '#dc2626');
+  }
+  function shade(c) { var n = parseInt(c.slice(1), 16); return 'rgb(' + [(n >> 16) & 255, (n >> 8) & 255, n & 255].map(function (v) { return Math.round(v * .75); }).join(',') + ')'; }
+
+  function size() { var r = cv.getBoundingClientRect(), d = Math.min(2, devicePixelRatio || 1); cv.width = Math.max(220, Math.round(r.width * d)); cv.height = Math.round(cv.width * H / W); }
+  function frame(now) {
+    raf = 0;
+    if (!seen) return;
+    var dt = last ? Math.min(.1, (now - last) / 1000) : 0;
+    if (now - last < 32 && last) { raf = requestAnimationFrame(frame); return; } // (30 a second is plenty)
+    last = now;
+    if (!frozen) update(dt);
+    draw();
+    raf = requestAnimationFrame(frame);
+  }
+  function go() { if (!raf && seen) raf = requestAnimationFrame(frame); }
+  // (only moves while you can see it - nothing runs when it's off screen)
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { seen = es[0].isIntersecting; if (seen) { size(); last = 0; go(); } }, { threshold: .05 }).observe(cv);
+  else { seen = true; size(); go(); }
+  addEventListener('resize', function () { size(); draw(); });
+  size(); draw();
+  return { freeze: function (on) { frozen = on; }, at: function (k) { t = k; draw(); } };
+})();
+
 // ---------------- world freeze ----------------
 (function () {
   var w = $('frWorld'), btn = $('frBtn'), iv = null;
   btn.addEventListener('click', function () {
     clearInterval(iv);
-    if (w.classList.contains('frozen')) { w.classList.remove('frozen', 'told'); $('frClock').textContent = 'Running'; btn.textContent = 'Freeze the world'; return; }
-    w.classList.add('frozen'); btn.textContent = 'Unfreeze it';
+    if (w.classList.contains('frozen')) { w.classList.remove('frozen', 'told'); SMP.freeze(false); btn.textContent = 'Freeze the world'; return; }
+    w.classList.add('frozen'); SMP.freeze(true); btn.textContent = 'Unfreeze it';
     var s = 0;
     iv = setInterval(function () {
       s += 2; $('frClock').textContent = 'Not responding - ' + s + 's';
@@ -2366,7 +2620,20 @@ document.querySelector('.heroLogo').addEventListener('click', function () { var 
 // ---------------- Discord: the chat plays in when you get to it ----------------
 (function () {
   var dc = document.querySelector('.dcBox'); if (!dc) return;
-  [].forEach.call(dc.querySelectorAll('.dcMsg'), function (m, k) { m.style.transitionDelay = (300 + k * 450) + 'ms'; });
+  [].forEach.call(dc.querySelectorAll('.dcMsg'), function (m, k) { m.style.transitionDelay = (300 + k * 450) + 'ms'; m.addEventListener('transitionend', function () { m.style.transitionDelay = '0ms'; }, { once: true }); });
+  // (react like on Discord: click one to add yours - click again to take it back - or add another)
+  dc.addEventListener('click', function (e) {
+    var r = e.target.closest('.dcReacts button:not(.dcAdd)'), pick = e.target.closest('.dcPick button'), add = e.target.closest('.dcAdd');
+    if (pick) { var box = pick.closest('.dcMsg').querySelector('.dcReacts'), em = pick.textContent, have = [].find.call(box.querySelectorAll('button:not(.dcAdd)'), function (b) { return b.textContent.indexOf(em) === 0; });
+      if (!have) { have = document.createElement('button'); have.setAttribute('data-n', '0'); have.innerHTML = em + ' <b>0</b>'; box.insertBefore(have, box.querySelector('.dcAdd')); }
+      if (!have.classList.contains('on')) have.click(); pick.parentNode.remove(); return; }
+    if (add) { var old = dc.querySelector('.dcPick'); if (old) { old.remove(); return; } var p = document.createElement('div'); p.className = 'dcPick'; p.innerHTML = ['🦆', '😂', '❤️', '🔥', '👀', '🎉'].map(function (x) { return '<button>' + x + '</button>'; }).join(''); add.parentNode.after(p); return; }
+    if (!r) return;
+    var on = r.classList.toggle('on'), n = +r.getAttribute('data-n') + (on ? 1 : -1);
+    r.setAttribute('data-n', n); r.querySelector('b').textContent = n;
+    r.classList.remove('pop'); void r.offsetWidth; r.classList.add('pop');
+    if (n <= 0) r.remove();
+  });
 })();
 
 // ---------------- the cool stuff ----------------

@@ -746,6 +746,8 @@
     .topnav::-webkit-scrollbar { display: none; }
     .topnav .extTab { display: none; }
   }
+  .scrollBar { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; pointer-events: none; }
+  .scrollBar i { display: block; height: 100%; width: 100%; transform-origin: 0 50%; transform: scaleX(0); background: #FACC15; opacity: .85; }
   @media (max-width: 520px) { .topnav .tab { padding: 7px 8px; font-size: 13.5px; } .topbar .sideGet { padding: 8px 11px; } .topbar .sideGet .ic { display: none; } }
 
   /* reveal on scroll */
@@ -1465,6 +1467,7 @@
     </nav>
     <a class="sideGet dl" href="#download" data-sec="download"><i class="ic" data-i="download"></i>Download</a>
   </div>
+  <div class="scrollBar" aria-hidden="true"><i></i></div>
 </header>
 
 <main>
@@ -2022,6 +2025,8 @@ function spy() {
   var line = innerHeight * .35, now = secs[0];
   secs.forEach(function (s) { if (s.getBoundingClientRect().top <= line) now = s; });
   if ((innerHeight + scrollY) >= document.documentElement.scrollHeight - 4) now = secs[secs.length - 1];
+  var bar = document.querySelector('.scrollBar i'), max = document.documentElement.scrollHeight - innerHeight;
+  bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, scrollY / max) : 0) + ')';
   document.querySelector('.topbar').classList.toggle('solid', scrollY > 12);
   if (now === cur) return;
   cur = now;

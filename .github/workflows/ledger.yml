@@ -1,0 +1,38 @@
+# Duckky Coins: the ledger. Every 5 minutes it runs for ~4.5 minutes, answering purchases, level rewards and coin
+# packs live. See .github/ledger/run.js
+name: Duckky Coins
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency:
+  group: ledger
+  cancel-in-progress: false
+jobs:
+  ledger:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Get the ledger's saved state
+        run: |
+          git config user.name "Duckky Client"
+          git config user.email "noreply@duckkyinc.github.io"
+          if git fetch -q origin ledger-state; then
+            git worktree add -q .ledger-state origin/ledger-state
+            git -C .ledger-state checkout -q -B ledger-state
+          else
+            git worktree add -q --orphan -b ledger-state .ledger-state
+          fi
+          git -C .ledger-state config user.name "Duckky Client"
+          git -C .ledger-state config user.email "noreply@duckkyinc.github.io"
+          cd .github/ledger && npm i -q --no-save --no-audit --no-fund @noble/curves@1.6.0
+      - name: Run the ledger
+        env:
+          TEBEX_SECRET: ${{ secrets.TEBEX_SECRET }}
+        run: node .github/ledger/run.js
